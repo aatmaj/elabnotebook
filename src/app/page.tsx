@@ -24,25 +24,25 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { Beaker, FileText, Lock, ShieldCheck, Zap, Workflow, Lightbulb, ChevronRight } from "lucide-react";
+import { FileText, Lock, ShieldCheck, Zap, Lightbulb, TestTube, Pill } from "lucide-react";
 import { Bubbles } from "@/components/bubbles";
 import React from "react";
 
 const solutionFeatures = [
   {
     icon: <Zap className="w-8 h-8 text-primary" />,
-    title: "Intelligent Data Capture",
-    description: "Automatically capture and organize structured and unstructured data from all your lab sources in one place.",
+    title: "Accelerated Drug Discovery",
+    description: "Utilize AI-driven tools to analyze molecular data, predict compound efficacy, and shorten discovery timelines.",
   },
   {
-    icon: <Lightbulb className="w-8 h-8 text-primary" />,
-    title: "AI-Powered Insights",
-    description: "Leverage generative AI to summarize complex experiments and generate novel hypotheses from your data.",
+    icon: <TestTube className="w-8 h-8 text-primary" />,
+    title: "Streamlined Clinical Trials",
+    description: "Manage trial data, patient recruitment, and regulatory submissions on a unified, compliant platform.",
   },
   {
-    icon: <ShieldCheck className="w-8 h-8 text-primary" />,
-    title: "Streamlined Compliance",
-    description: "Seamlessly integrate with SOPs and generate compliance reports, making audits a breeze.",
+    icon: <Pill className="w-8 h-8 text-primary" />,
+    title: "Optimized Manufacturing",
+    description: "Ensure quality control and supply chain efficiency with our integrated manufacturing process management tools.",
   },
 ];
 
@@ -59,8 +59,8 @@ const securityFeatures = [
   },
   {
     icon: <FileText className="w-8 h-8 text-primary" />,
-    title: "GDPR & HIPAA Ready",
-    description: "Our platform is designed to meet GDPR and HIPAA requirements for data privacy.",
+    title: "GxP & 21 CFR Part 11",
+    description: "Our platform is built to meet GxP and FDA 21 CFR Part 11 requirements for data integrity and electronic records.",
   },
 ]
 
@@ -77,10 +77,10 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
-                    Future of Lab Research
+                    Accelerating Pharmaceutical Innovation
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                    Paramanu is an intelligent electronic lab notebook designed to streamline your research, foster collaboration, and accelerate scientific discovery.
+                    Paramanu provides an intelligent platform for pharmaceutical companies to streamline drug discovery, development, and compliance.
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
@@ -130,10 +130,10 @@ export default function Home() {
         <section id="solution" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Solution</div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">Accelerate Your Discovery</h2>
+              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Platform</div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">A Unified Pharma Platform</h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Paramanu comes packed with features designed to make your research more efficient, collaborative, and insightful.
+                Paramanu comes packed with features designed to accelerate every stage of the pharmaceutical lifecycle.
               </p>
             </div>
             <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
@@ -154,9 +154,9 @@ export default function Home() {
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Security & Compliance</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">Enterprise-Grade Security</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">Built for Pharma Compliance</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                    We take data security seriously. Your research is protected by industry-leading security standards and protocols.
+                    We take data security and regulatory compliance seriously. Your research is protected by industry-leading standards.
                 </p>
             </div>
             <div className="mx-auto grid gap-8 sm:max-w-4xl md:grid-cols-3 md:gap-12">

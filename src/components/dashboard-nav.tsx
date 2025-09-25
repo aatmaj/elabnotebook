@@ -26,11 +26,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Logo } from "@/components/logo";
 
 const navItems = [
-  { href: "/dashboard", icon: Home, label: "Dashboard" },
-  { href: "/dashboard/experiments", icon: Beaker, label: "Experiments" },
-  { href: "/dashboard/analytics", icon: BarChart3, label: "Analytics" },
-  { href: "/dashboard/ai", icon: Sparkles, label: "AI Tools" },
-  { href: "/dashboard/compliance", icon: FileText, label: "Compliance" },
+  { href: "/", icon: Home, label: "Home" },
 ];
 
 export function DashboardNav() {
@@ -40,7 +36,7 @@ export function DashboardNav() {
   return (
     <>
       <SidebarHeader>
-        <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg">
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
           <Logo className="h-6 w-6" />
           <span>Paramanu</span>
         </Link>
@@ -65,27 +61,6 @@ export function DashboardNav() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarSeparator />
-        <SidebarGroup>
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-2 overflow-hidden">
-               <Avatar className="size-8">
-                {userAvatar && <AvatarImage src={userAvatar.imageUrl} alt="User Avatar" />}
-                <AvatarFallback>SR</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col truncate">
-                <span className="text-sm font-semibold">Dr. S. Rosalind</span>
-                <span className="text-xs text-muted-foreground">
-                  s.rosalind@pioneerlabs.com
-                </span>
-              </div>
-            </div>
-             <SidebarMenuButton variant="ghost" size="icon" className="group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2" asChild>
-                <Link href="/">
-                    <LogOut />
-                </Link>
-            </SidebarMenuButton>
-          </div>
-        </SidebarGroup>
       </SidebarFooter>
     </>
   );

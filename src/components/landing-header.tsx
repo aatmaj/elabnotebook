@@ -8,7 +8,7 @@ import * as React from "react";
 import { Logo } from "@/components/logo";
 
 const navLinks = [
-  { href: "#solution", label: "Solution" },
+  { href: "#solution", label: "Platform" },
   { href: "#security", label: "Security" },
 ];
 
@@ -21,6 +21,7 @@ export function LandingHeader() {
         <div className="mr-4 flex items-center">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
             <Logo className="h-6 w-6" />
+             <span className="font-semibold">Paramanu</span>
           </Link>
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
@@ -35,12 +36,6 @@ export function LandingHeader() {
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button variant="ghost" asChild>
-            <Link href="/login">Login</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/signup">Sign Up</Link>
-          </Button>
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
@@ -53,6 +48,7 @@ export function LandingHeader() {
             <div className="p-4">
               <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={() => setIsOpen(false)}>
                 <Logo className="h-6 w-6" />
+                <span className="font-semibold">Paramanu</span>
               </Link>
               <nav className="mt-8 flex flex-col space-y-4">
                 {navLinks.map((link) => (
