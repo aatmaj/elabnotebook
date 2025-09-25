@@ -14,19 +14,16 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import {
-  Atom,
   BarChart3,
   Beaker,
   FileText,
   Home,
   LogOut,
-  Settings,
-  Share2,
   Sparkles,
-  Users,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Logo } from "@/components/logo";
 
 const navItems = [
   { href: "/dashboard", icon: Home, label: "Dashboard" },
@@ -44,7 +41,7 @@ export function DashboardNav() {
     <>
       <SidebarHeader>
         <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg">
-          <Atom className="h-6 w-6 text-primary" />
+          <Logo className="h-6 w-6" />
           <span className="font-headline">Paramanu</span>
         </Link>
       </SidebarHeader>

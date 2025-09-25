@@ -7,9 +7,9 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { DashboardNav } from '@/components/dashboard-nav';
-import { Atom } from 'lucide-react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { Logo } from '@/components/logo';
 
 export default function DashboardLayout({
   children,
@@ -25,12 +25,12 @@ export default function DashboardLayout({
         <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <SidebarTrigger asChild className="md:hidden">
              <Button variant="ghost" size="icon">
-                <Atom className="size-5"/>
+                <Logo className="size-5"/>
               </Button>
           </SidebarTrigger>
           <div className="flex items-center gap-2 font-bold text-lg md:hidden">
             <Link href="/" className="flex items-center gap-2">
-              <Atom className="h-6 w-6 text-primary" />
+              <Logo className="h-6 w-6" />
               <span className="font-headline">Paramanu</span>
             </Link>
           </div>

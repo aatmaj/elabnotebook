@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Atom } from "lucide-react";
+import { Menu } from "lucide-react";
 import * as React from "react";
+import { Logo } from "@/components/logo";
 
 const navLinks = [
-  { href: "#features", label: "Features" },
+  { href: "#problem", label: "Problem" },
+  { href: "#solution", label: "Solution" },
   { href: "#security", label: "Security" },
-  { href: "#cta", label: "Get Started" },
 ];
 
 export function LandingHeader() {
@@ -20,8 +21,7 @@ export function LandingHeader() {
       <div className="container flex h-14 items-center">
         <div className="mr-4 flex items-center">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-            <Atom className="h-6 w-6 text-primary" />
-            <span className="font-headline">Paramanu</span>
+            <Logo className="h-6 w-6" />
           </Link>
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
@@ -39,7 +39,7 @@ export function LandingHeader() {
           <Button variant="ghost" asChild>
             <Link href="/login">Login</Link>
           </Button>
-          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button asChild>
             <Link href="/signup">Sign Up</Link>
           </Button>
         </div>
@@ -53,8 +53,7 @@ export function LandingHeader() {
           <SheetContent side="left">
             <div className="p-4">
               <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={() => setIsOpen(false)}>
-                <Atom className="h-6 w-6 text-primary" />
-                <span className="font-headline">Paramanu</span>
+                <Logo className="h-6 w-6" />
               </Link>
               <nav className="mt-8 flex flex-col space-y-4">
                 {navLinks.map((link) => (
