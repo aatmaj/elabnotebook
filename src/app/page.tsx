@@ -72,7 +72,6 @@ export default function Home() {
       <LandingHeader />
       <main className="flex-grow">
         <section id="hero" className="relative w-full py-24 md:py-40 lg:py-56 bg-card overflow-hidden">
-          <Bubbles />
           <div className="container px-4 md:px-6 relative z-10">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
