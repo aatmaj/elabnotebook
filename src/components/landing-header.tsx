@@ -14,18 +14,33 @@ const navLinks = [
 
 export function LandingHeader() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header
+      className={`sticky top-0 z-50 w-full transition-colors duration-300 ${
+        scrolled
+          ? "bg-background/80 backdrop-blur-sm"
+          : "bg-transparent"
+      }`}
+    >
       <div className="container flex h-14 items-center">
         <div className="mr-4 flex items-center">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
             <Logo className="h-6 w-6" />
-             <span className="font-semibold">Paramanu</span>
+            <span className="font-semibold">Paramanu</span>
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-6">
-           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
+          <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -46,7 +61,11 @@ export function LandingHeader() {
           </SheetTrigger>
           <SheetContent side="left">
             <div className="p-4">
-              <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={() => setIsOpen(false)}>
+              <Link
+                href="/"
+                className="flex items-center gap-2 font-bold text-lg"
+                onClick={() => setIsOpen(false)}
+              >
                 <Logo className="h-6 w-6" />
                 <span className="font-semibold">Paramanu</span>
               </Link>

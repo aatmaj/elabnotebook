@@ -24,9 +24,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { FileText, Lock, ShieldCheck, Zap, Lightbulb, TestTube, Pill } from "lucide-react";
+import { FileText, Lock, ShieldCheck, Zap, TestTube, Pill } from "lucide-react";
 import React from "react";
-import { Bubbles } from "@/components/bubbles";
+import { Sphere } from "@/components/sphere";
+
 
 const solutionFeatures = [
   {
@@ -71,9 +72,9 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background">
       <LandingHeader />
       <main className="flex-grow">
-        <section id="hero" className="relative w-full py-24 md:py-40 lg:py-56 bg-card overflow-hidden">
-          <div className="container px-4 md:px-6 relative z-10">
-            <div className="flex flex-col items-center space-y-4 text-center">
+        <section id="hero" className="relative w-full h-[100vh] flex items-center justify-center text-center overflow-hidden">
+           <Sphere />
+           <div className="relative z-10 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
                     Driving Innovation in Generics Pharma
@@ -123,7 +124,6 @@ export default function Home() {
                     </Dialog>
                 </div>
               </div>
-          </div>
         </section>
         
         <section id="solution" className="w-full py-12 md:py-24 lg:py-32">
@@ -149,7 +149,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="security" className="w-full py-12 md:py-24 lg:py-32 bg-card">
+        <section id="security" className="w-full py-12 md:py-24 lg:py-32 bg-secondary/20">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Security & Compliance</div>
