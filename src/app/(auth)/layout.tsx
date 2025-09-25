@@ -1,0 +1,24 @@
+import Link from "next/link";
+import { Atom } from "lucide-react";
+
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex min-h-screen flex-col">
+       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center">
+          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+            <Atom className="h-6 w-6 text-primary" />
+            <span className="font-headline">Paramanu</span>
+          </Link>
+        </div>
+      </header>
+      <main className="flex-grow flex items-center justify-center p-4">
+        {children}
+      </main>
+    </div>
+  );
+}
