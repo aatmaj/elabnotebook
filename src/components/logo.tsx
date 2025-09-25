@@ -12,9 +12,10 @@ export function Logo({ className }: { className?: string }) {
       strokeLinejoin="round"
       className={cn("text-primary", className)}
     >
-      <path d="M12 2L2 7l10 5 10-5-10-5z" />
-      <path d="M2 17l10 5 10-5" />
-      <path d="M2 12l10 5 10-5" />
+      <circle cx="12" cy="12" r="1" />
+      <ellipse cx="12" cy="12" rx="10" ry="4" />
+      <ellipse cx="12" cy="12" rx="4" ry="10" transform="rotate(45 12 12)" />
+      <ellipse cx="12" cy="12" rx="4" ry="10" transform="rotate(-45 12 12)" />
     </svg>
   );
 }
