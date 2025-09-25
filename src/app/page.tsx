@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,7 +27,10 @@ import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
 import { FileText, Lock, ShieldCheck, Zap, TestTube, Pill } from "lucide-react";
 import React from "react";
-import { Sphere } from "@/components/sphere";
+
+const Sphere = dynamic(() => import('@/components/sphere').then(mod => mod.Sphere), {
+  ssr: false,
+});
 
 
 const solutionFeatures = [
