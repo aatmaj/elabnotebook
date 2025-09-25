@@ -42,7 +42,7 @@ export function DashboardNav() {
       <SidebarHeader>
         <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg">
           <Logo className="h-6 w-6" />
-          <span className="font-headline">Paramanu</span>
+          <span>Paramanu</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>

@@ -8,7 +8,6 @@ import * as React from "react";
 import { Logo } from "@/components/logo";
 
 const navLinks = [
-  { href: "#problem", label: "Problem" },
   { href: "#solution", label: "Solution" },
   { href: "#security", label: "Security" },
 ];

@@ -24,28 +24,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { Beaker, FileText, Lock, ShieldCheck, Zap, Workflow, Lightbulb } from "lucide-react";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Beaker, FileText, Lock, ShieldCheck, Zap, Workflow, Lightbulb, ChevronRight } from "lucide-react";
 import { Bubbles } from "@/components/bubbles";
 import React from "react";
-
-const problemFeatures = [
-  {
-    icon: <Workflow className="w-8 h-8 text-destructive" />,
-    title: "Fragmented Data",
-    description: "Lab data is scattered across spreadsheets, paper notebooks, and various instruments, leading to inefficiencies.",
-  },
-  {
-    icon: <Beaker className="w-8 h-8 text-destructive" />,
-    title: "Manual Processes",
-    description: "Time-consuming manual data entry and experiment tracking slow down the pace of research and increase errors.",
-  },
-  {
-    icon: <FileText className="w-8 h-8 text-destructive" />,
-    title: "Compliance Headaches",
-    description: "Meeting regulatory standards is complex and burdensome with manual, disconnected systems.",
-  },
-];
 
 const solutionFeatures = [
   {
@@ -84,27 +65,25 @@ const securityFeatures = [
 ]
 
 export default function Home() {
-  const screenshot1 = PlaceHolderImages.find(img => img.id === "screenshot-1");
   const [open, setOpen] = React.useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <LandingHeader />
       <main className="flex-grow">
-        <section id="hero" className="relative w-full py-20 md:py-32 lg:py-40 bg-card overflow-hidden">
+        <section id="hero" className="relative w-full py-24 md:py-40 lg:py-56 bg-card overflow-hidden">
           <Bubbles />
           <div className="container px-4 md:px-6 relative z-10">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-              <div className="flex flex-col justify-center space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                <div className="space-y-2">
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline text-foreground">
-                    The Future of Laboratory Research is Here
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                  <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
+                    Future of Lab Research
                   </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                     Paramanu is an intelligent electronic lab notebook designed to streamline your research, foster collaboration, and accelerate scientific discovery.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
                     <Dialog open={open} onOpenChange={setOpen}>
                       <DialogTrigger asChild>
                          <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
@@ -145,46 +124,10 @@ export default function Home() {
                     </Dialog>
                 </div>
               </div>
-              <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                {screenshot1 && (
-                  <Image
-                    src={screenshot1.imageUrl}
-                    alt={screenshot1.description}
-                    data-ai-hint={screenshot1.imageHint}
-                    width={1200}
-                    height={800}
-                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="problem" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Problem</div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-destructive">Research is Slow and Fragmented</h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Modern labs are held back by outdated tools and manual processes that create data silos and hinder innovation.
-              </p>
-            </div>
-            <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
-              {problemFeatures.map((feature, index) => (
-                <div key={index} className="grid gap-1 p-4 rounded-lg hover:bg-card transition-colors">
-                  <div className="flex items-center gap-4">
-                    {feature.icon}
-                    <h3 className="text-lg font-bold">{feature.title}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
         
-        <section id="solution" className="w-full py-12 md:py-24 lg:py-32 bg-card">
+        <section id="solution" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Solution</div>
@@ -207,7 +150,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="security" className="w-full py-12 md:py-24 lg:py-32 bg-background">
+        <section id="security" className="w-full py-12 md:py-24 lg:py-32 bg-card">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Security & Compliance</div>
@@ -218,7 +161,7 @@ export default function Home() {
             </div>
             <div className="mx-auto grid gap-8 sm:max-w-4xl md:grid-cols-3 md:gap-12">
                {securityFeatures.map((feature, index) => (
-                  <Card key={index} className="bg-card border-none shadow-none">
+                  <Card key={index} className="bg-transparent border-none shadow-none">
                      <CardHeader className="flex flex-row items-center gap-4 pb-2">
                         {feature.icon}
                         <CardTitle className="text-lg">{feature.title}</CardTitle>

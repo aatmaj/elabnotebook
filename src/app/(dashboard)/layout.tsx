@@ -31,7 +31,7 @@ export default function DashboardLayout({
           <div className="flex items-center gap-2 font-bold text-lg md:hidden">
             <Link href="/" className="flex items-center gap-2">
               <Logo className="h-6 w-6" />
-              <span className="font-headline">Paramanu</span>
+              <span>Paramanu</span>
             </Link>
           </div>
         </header>
