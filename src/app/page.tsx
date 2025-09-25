@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,10 +26,6 @@ import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
 import { FileText, Lock, ShieldCheck, Zap, TestTube, Pill } from "lucide-react";
 import React from "react";
-
-const Sphere = dynamic(() => import('@/components/sphere').then(mod => mod.Sphere), {
-  ssr: false,
-});
 
 
 const solutionFeatures = [
@@ -77,7 +72,7 @@ export default function Home() {
       <LandingHeader />
       <main className="flex-grow">
         <section id="hero" className="relative w-full h-[100vh] flex items-center justify-center text-center overflow-hidden">
-           <Sphere />
+           <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_40%,hsl(var(--primary)/0.1),transparent)]" />
            <div className="relative z-10 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
