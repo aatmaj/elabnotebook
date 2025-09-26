@@ -89,10 +89,10 @@ export default function Home() {
            <div className="relative z-10 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
-                    Driving Innovation in Generics Pharma
+                    The Intelligent Lab Notebook for Generics Pharma
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                    Paramanu provides an intelligent platform for generics pharmaceutical companies to streamline drug development and compliance.
+                    Paramanu is an intelligent electronic lab notebook (ELN) platform, purpose-built to accelerate every phase of generic drug development.
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
@@ -142,9 +142,9 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Platform</div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">A Unified Generics Pharma Platform</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">An Intelligent Lab Notebook for the Entire R&D Lifecycle</h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Paramanu comes packed with features designed to accelerate every stage of the generics pharmaceutical lifecycle.
+                Paramanu unifies every stage of your generics R&D workflow into a single, intelligent lab notebook platform.
               </p>
             </div>
             <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
