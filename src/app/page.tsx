@@ -23,26 +23,46 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2 } from "lucide-react";
+import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale } from "lucide-react";
 import React from "react";
+import dynamic from 'next/dynamic';
+
+const DynamicSphere = dynamic(() => import('@/components/sphere').then(mod => mod.Sphere), {
+  ssr: false,
+});
 
 
 const solutionFeatures = [
-  {
+    {
+    icon: <Search className="w-8 h-8 text-primary" />,
+    title: "API Sourcing & Characterization",
+    description: "Utilize AI to identify optimal API suppliers and predict physiochemical properties, ensuring quality and accelerating pre-formulation.",
+    },
+    {
     icon: <FlaskConical className="w-8 h-8 text-primary" />,
+    title: "Pre-Formulation Studies",
+    description: "Leverage AI-powered models to analyze API characteristics and excipient compatibility, predicting stability and performance to minimize costly lab experiments.",
+    },
+    {
+    icon: <SlidersHorizontal className="w-8 h-8 text-primary" />,
     title: "Formulation Development",
-    description: "Intelligently design and optimize generic formulations to achieve bioequivalence with AI-driven excipient selection and process modeling.",
-  },
-  {
+    description: "Intelligently design and optimize robust generic formulations with AI-driven DoE, achieving target product profiles faster than traditional methods.",
+    },
+    {
+    icon: <Scale className="w-8 h-8 text-primary" />,
+    title: "Scale-Up & Tech Transfer",
+    description: "Employ AI simulations to model process parameters for scale-up, ensuring smooth technology transfer and consistent batch quality from lab to commercial production.",
+    },
+    {
     icon: <BarChart3 className="w-8 h-8 text-primary" />,
-    title: "Bioequivalence Studies",
-    description: "Streamline the planning, execution, and analysis of bioequivalence trials with integrated data capture and real-time monitoring.",
-  },
-  {
+    title: "Bioequivalence & Clinicals",
+    description: "Streamline bioequivalence study design and data analysis with AI, enhancing the accuracy of statistical evaluation and reducing trial timelines.",
+    },
+    {
     icon: <FolderGit2 className="w-8 h-8 text-primary" />,
     title: "Regulatory Submission",
-    description: "Automate the compilation of ANDA/dossiers with compliant documentation, tracking, and seamless eCTD publishing.",
-  },
+    description: "Automate the compilation of compliant ANDA/dossiers. Our AI helps check for data integrity and completeness, ensuring a smoother eCTD publishing process.",
+    },
 ];
 
 const securityFeatures = [
@@ -71,7 +91,8 @@ export default function Home() {
       <LandingHeader />
       <main className="flex-grow">
         <section id="hero" className="relative w-full h-[100vh] flex items-center justify-center text-center overflow-hidden">
-           <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_40%,hsl(var(--primary)/0.1),transparent)]" />
+           <div className="absolute inset-0 z-0 bg-transparent" />
+           <DynamicSphere />
            <div className="relative z-10 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
