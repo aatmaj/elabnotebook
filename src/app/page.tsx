@@ -58,9 +58,9 @@ const approachFeatures = [
     description: "Paramanu's generative AI acts as a co-pilot, summarizing complex data, generating novel hypotheses from your results, and identifying unseen connections to accelerate discovery.",
   },
   {
-    icon: <Target className="w-8 h-8 text-primary" />,
-    title: "Predictive Analytics & Insights",
-    description: "Leverage AI-powered models to forecast experimental outcomes, identify optimal parameters, and de-risk your development pipeline by flagging potential failures before they happen.",
+    icon: <BarChart3 className="w-8 h-8 text-primary" />,
+    title: "Analytics & Insights",
+    description: "Visualize your experimental data through intuitive dashboards. Uncover trends, spot outliers, and gain deeper insights from your results to guide your next steps.",
   },
 ]
 
