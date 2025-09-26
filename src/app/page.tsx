@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Logo } from "@/components/logo";
+import { cn } from "@/lib/utils";
 
 const solutionFeatures = [
     {
@@ -150,7 +151,11 @@ export default function Home() {
             </div>
             <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
               {solutionFeatures.map((feature, index) => (
-                <div key={index} className="grid gap-1 p-4 rounded-lg">
+                <div key={index} className={cn("grid gap-1 p-4 rounded-lg", 
+                  solutionFeatures.length % 3 === 1 && index === solutionFeatures.length - 1 && "lg:col-start-2",
+                  solutionFeatures.length % 3 === 2 && index === solutionFeatures.length - 2 && "lg:col-start-1",
+                  solutionFeatures.length % 3 === 2 && index === solutionFeatures.length - 1 && "lg:col-start-3"
+                  )}>
                   <div className="flex items-center gap-4">
                     {feature.icon}
                     <h3 className="text-lg font-bold">{feature.title}</h3>
@@ -191,3 +196,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
