@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Logo } from "@/components/logo";
 
 const solutionFeatures = [
     {
@@ -92,11 +93,12 @@ function ContactForm() {
           </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Contact Us</DialogTitle>
-          <DialogDescription>
-            We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
-          </DialogDescription>
+        <DialogHeader className="items-center text-center">
+            <Logo className="w-10 h-10 mb-2"/>
+            <DialogTitle>How can we help?</DialogTitle>
+            <DialogDescription>
+                Tell us about the biggest problem you're facing in your R&D today.
+            </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4 py-4">
           <div className="grid gap-2">
@@ -108,8 +110,8 @@ function ContactForm() {
             <Input id="email" name="email" type="email" placeholder="your.email@example.com" required />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="message">Message</Label>
-            <Textarea id="message" name="message" placeholder="How can we help you?" required rows={5}/>
+            <Label htmlFor="message">Your Problem</Label>
+            <Textarea id="message" name="message" placeholder="Describe the challenge you're facing..." required rows={5}/>
           </div>
           <Button type="submit">Send Message</Button>
         </form>
