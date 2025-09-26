@@ -1,6 +1,5 @@
 'use client';
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,6 +11,10 @@ import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
 import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale } from "lucide-react";
 import React from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const solutionFeatures = [
     {
@@ -64,6 +67,57 @@ const securityFeatures = [
   },
 ]
 
+function ContactForm() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const message = formData.get("message") as string;
+
+    const mailtoLink = `mailto:contact@paramanu.ai?subject=Contact Form Submission from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0AFrom:%20${encodeURIComponent(name)}%20(${encodeURIComponent(email)})`;
+    
+    window.location.href = mailtoLink;
+    setOpen(false);
+  };
+
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+          <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+              Contact Us
+          </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Contact Us</DialogTitle>
+          <DialogDescription>
+            We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+          <div className="grid gap-2">
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" name="name" placeholder="Your Name" required />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" name="email" type="email" placeholder="your.email@example.com" required />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="message">Message</Label>
+            <Textarea id="message" name="message" placeholder="How can we help you?" required rows={5}/>
+          </div>
+          <Button type="submit">Send Message</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -83,9 +137,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                    <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                       <a href="mailto:contact@paramanu.ai">Contact Us</a>
-                    </Button>
+                    <ContactForm />
                 </div>
               </div>
         </section>
