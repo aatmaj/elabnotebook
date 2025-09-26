@@ -22,7 +22,7 @@ const solutionFeatures = [
     {
     icon: <FlaskConical className="w-8 h-8 text-primary" />,
     title: "Pre-Formulation Studies",
-    description: "Leverage AI-powered models to analyze API characteristics and excipient compatibility, predicting stability and performance to de-risk your development path.",
+    description: "Leverage AI to analyze API characteristics and excipient compatibility, predicting stability and performance to de-risk your development path.",
     },
     {
     icon: <SlidersHorizontal className="w-8 h-8 text-primary" />,
@@ -152,9 +152,7 @@ export default function Home() {
             <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
               {solutionFeatures.map((feature, index) => (
                 <div key={index} className={cn("grid gap-1 p-4 rounded-lg", 
-                  solutionFeatures.length % 3 === 1 && index === solutionFeatures.length - 1 && "lg:col-start-2",
-                  solutionFeatures.length % 3 === 2 && index === solutionFeatures.length - 2 && "lg:col-start-1",
-                  solutionFeatures.length % 3 === 2 && index === solutionFeatures.length - 1 && "lg:col-start-3"
+                  solutionFeatures.length % 2 === 1 && index === solutionFeatures.length - 1 && "sm:col-span-2 lg:col-span-1 lg:col-start-2"
                   )}>
                   <div className="flex items-center gap-4">
                     {feature.icon}
@@ -196,5 +194,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
