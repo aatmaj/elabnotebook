@@ -25,12 +25,6 @@ import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
 import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale } from "lucide-react";
 import React from "react";
-import dynamic from 'next/dynamic';
-
-const DynamicSphere = dynamic(() => import('@/components/sphere').then(mod => mod.Sphere), {
-  ssr: false,
-});
-
 
 const solutionFeatures = [
     {
@@ -91,8 +85,7 @@ export default function Home() {
       <LandingHeader />
       <main className="flex-grow">
         <section id="hero" className="relative w-full h-[100vh] flex items-center justify-center text-center overflow-hidden">
-           <div className="absolute inset-0 z-0 bg-transparent" />
-           <DynamicSphere />
+           <div className="absolute inset-0 z-0" />
            <div className="relative z-10 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
