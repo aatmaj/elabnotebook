@@ -103,7 +103,7 @@ function ContactForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-          <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button size="lg">
               Contact Us
           </Button>
       </DialogTrigger>

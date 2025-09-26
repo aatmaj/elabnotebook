@@ -52,7 +52,7 @@ export function LandingHeader() {
               </Link>
             ))}
           </nav>
-           <Button asChild>
+           <Button variant="outline" asChild>
               <Link href="/login">Login</Link>
           </Button>
         </div>
