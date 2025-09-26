@@ -154,9 +154,6 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                    <Button asChild size="lg">
-                      <Link href="/experiments">Go to Dashboard</Link>
-                    </Button>
                     <ContactForm />
                 </div>
               </div>
@@ -241,3 +238,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
