@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,25 +23,25 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { FileText, Lock, ShieldCheck, Zap, TestTube, Pill } from "lucide-react";
+import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2 } from "lucide-react";
 import React from "react";
 
 
 const solutionFeatures = [
   {
-    icon: <Zap className="w-8 h-8 text-primary" />,
-    title: "Accelerated Drug Development",
-    description: "Utilize AI-driven tools to analyze molecular data, predict compound efficacy, and shorten development timelines for generic drugs.",
+    icon: <FlaskConical className="w-8 h-8 text-primary" />,
+    title: "Formulation Development",
+    description: "Intelligently design and optimize generic formulations to achieve bioequivalence with AI-driven excipient selection and process modeling.",
   },
   {
-    icon: <TestTube className="w-8 h-8 text-primary" />,
-    title: "Streamlined Clinical Trials",
-    description: "Manage trial data, patient recruitment, and regulatory submissions on a unified, compliant platform for generics.",
+    icon: <BarChart3 className="w-8 h-8 text-primary" />,
+    title: "Bioequivalence Studies",
+    description: "Streamline the planning, execution, and analysis of bioequivalence trials with integrated data capture and real-time monitoring.",
   },
   {
-    icon: <Pill className="w-8 h-8 text-primary" />,
-    title: "Optimized Manufacturing",
-    description: "Ensure quality control and supply chain efficiency with our integrated manufacturing process management tools for generic pharmaceuticals.",
+    icon: <FolderGit2 className="w-8 h-8 text-primary" />,
+    title: "Regulatory Submission",
+    description: "Automate the compilation of ANDA/dossiers with compliant documentation, tracking, and seamless eCTD publishing.",
   },
 ];
 
