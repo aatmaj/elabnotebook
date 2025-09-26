@@ -26,28 +26,22 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Logo } from "@/components/logo";
 
 const navItems = [
-  { href: "/", icon: Home, label: "Home" },
+  { href: "/experiments", icon: Beaker, label: "Experiments" },
+  { href: "/analytics", icon: BarChart3, label: "Analytics" },
+  { href: "/compliance", icon: FileText, label: "Compliance" },
+  { href: "/ai", icon: Sparkles, label: "AI Tools" },
 ];
 
 export function DashboardNav() {
   const pathname = usePathname();
-  const userAvatar = PlaceHolderImages.find((img) => img.id === "user-avatar-1");
 
   return (
-    <>
-      <SidebarHeader>
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <Logo className="h-6 w-6" />
-          <span>Paramanu</span>
-        </Link>
-      </SidebarHeader>
-      <SidebarContent>
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.href}
+                isActive={pathname.startsWith(item.href)}
                 tooltip={item.label}
               >
                 <Link href={item.href}>
@@ -58,10 +52,5 @@ export function DashboardNav() {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter>
-        <SidebarSeparator />
-      </SidebarFooter>
-    </>
   );
 }
