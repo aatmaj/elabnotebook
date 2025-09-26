@@ -19,11 +19,6 @@ import { Logo } from "@/components/logo";
 
 const solutionFeatures = [
     {
-    icon: <Search className="w-8 h-8 text-primary" />,
-    title: "API Characterization",
-    description: "Utilize AI to predict crucial physiochemical properties of your API, ensuring quality and accelerating pre-formulation by minimizing costly lab experiments.",
-    },
-    {
     icon: <FlaskConical className="w-8 h-8 text-primary" />,
     title: "Pre-Formulation Studies",
     description: "Leverage AI-powered models to analyze API characteristics and excipient compatibility, predicting stability and performance to de-risk your development path.",
