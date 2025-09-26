@@ -59,8 +59,8 @@ const approachFeatures = [
   },
   {
     icon: <Link2 className="w-8 h-8 text-primary" />,
-    title: "Seamless Lab Integration",
-    description: "Connect directly to lab instruments and existing enterprise systems. Automate data capture, reduce manual error, and ensure a seamless flow of information from bench to submission.",
+    title: "Connected Knowledge Base",
+    description: "Transform your scattered experimental data into a powerful, interconnected knowledge base. Paramanu's AI helps you find past results, connect disparate experiments, and build on institutional knowledge.",
   },
 ]
 
@@ -237,5 +237,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
