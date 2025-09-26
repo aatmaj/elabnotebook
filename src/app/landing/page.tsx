@@ -103,7 +103,7 @@ function ContactForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-          <Button size="lg">
+          <Button size="lg" variant="default">
               Contact Us
           </Button>
       </DialogTrigger>
@@ -159,7 +159,7 @@ export default function Home() {
               </div>
         </section>
         
-        <section id="solution" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="solution" className="w-full py-12 md:py-16 lg:py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Platform</div>
@@ -184,7 +184,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="approach" className="w-full py-12 md:py-24 lg:py-32 bg-secondary/20">
+        <section id="approach" className="w-full py-12 md:py-16 lg:py-20 bg-secondary/20">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Approach</div>
@@ -209,7 +209,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="security" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="security" className="w-full py-12 md:py-16 lg:py-20">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Security & Compliance</div>
