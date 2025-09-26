@@ -7,20 +7,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
 import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale } from "lucide-react";
@@ -78,15 +65,15 @@ const securityFeatures = [
 ]
 
 export default function Home() {
-  const [open, setOpen] = React.useState(false);
-
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <LandingHeader />
       <main className="flex-grow">
         <section id="hero" className="relative w-full h-[100vh] flex items-center justify-center text-center overflow-hidden">
-           <div className="absolute inset-0 z-0" />
-           <div className="relative z-10 flex flex-col items-center space-y-4">
+           <div className="absolute inset-0 z-0 bg-background" />
+            <div className="absolute inset-0 z-10 bg-radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background/0 to-background"></div>
+            <div className="absolute inset-0 z-20 bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_50%,white)]"></div>
+           <div className="relative z-30 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
                     The Intelligent Lab Notebook for Generics Pharma
@@ -96,44 +83,9 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                    <Dialog open={open} onOpenChange={setOpen}>
-                      <DialogTrigger asChild>
-                         <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                           Contact Us
-                         </Button>
-                      </DialogTrigger>
-                       <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle>Contact Us</DialogTitle>
-                          <DialogDescription>
-                            Have a question or want to get a demo? Fill out the form below.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="name" className="text-right">
-                              Name
-                            </Label>
-                            <Input id="name" className="col-span-3" />
-                          </div>
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="email" className="text-right">
-                              Email
-                            </Label>
-                            <Input id="email" type="email" className="col-span-3" />
-                          </div>
-                           <div className="grid grid-cols-4 items-start gap-4">
-                            <Label htmlFor="message" className="text-right pt-2">
-                              Message
-                            </Label>
-                            <Textarea id="message" className="col-span-3" rows={4} />
-                          </div>
-                        </div>
-                        <DialogFooter>
-                          <Button type="submit" onClick={() => setOpen(false)}>Send Message</Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                    <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+                       <a href="mailto:contact@paramanu.ai">Contact Us</a>
+                    </Button>
                 </div>
               </div>
         </section>
