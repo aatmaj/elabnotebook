@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale } from "lucide-react";
+import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale, BrainCircuit, Layers, Link2 } from "lucide-react";
 import React from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -45,6 +45,24 @@ const solutionFeatures = [
     description: "Automate the compilation of compliant ANDA/dossiers. Our AI helps check for data integrity and completeness, ensuring a smoother eCTD publishing process.",
     },
 ];
+
+const approachFeatures = [
+  {
+    icon: <Layers className="w-8 h-8 text-primary" />,
+    title: "Unified Data Foundation",
+    description: "Our ELN breaks down data silos by capturing everything—from instrument readouts to unstructured notes—into a single, queryable format, creating a powerful data asset for your R&D.",
+  },
+  {
+    icon: <BrainCircuit className="w-8 h-8 text-primary" />,
+    title: "AI Co-pilot for Research",
+    description: "Paramanu's generative AI acts as a co-pilot, summarizing complex data, generating novel hypotheses from your results, and identifying unseen connections to accelerate discovery.",
+  },
+  {
+    icon: <Link2 className="w-8 h-8 text-primary" />,
+    title: "Seamless Lab Integration",
+    description: "Connect directly to lab instruments and existing enterprise systems. Automate data capture, reduce manual error, and ensure a seamless flow of information from bench to submission.",
+  },
+]
 
 const securityFeatures = [
   {
@@ -152,7 +170,7 @@ export default function Home() {
             <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
               {solutionFeatures.map((feature, index) => (
                 <div key={index} className={cn("grid gap-1 p-4 rounded-lg", 
-                  solutionFeatures.length % 3 === 2 && index === solutionFeatures.length - 1 && "lg:col-start-2"
+                  solutionFeatures.length === 5 && index === 4 && "lg:col-start-2"
                   )}>
                   <div className="flex items-center gap-4">
                     {feature.icon}
@@ -165,7 +183,32 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="security" className="w-full py-12 md:py-24 lg:py-32 bg-secondary/20">
+        <section id="approach" className="w-full py-12 md:py-24 lg:py-32 bg-secondary/20">
+          <div className="container px-4 md:px-6">
+             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Approach</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">How We Accelerate Discovery</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    Paramanu is built on three core principles that turn your laboratory data into a strategic advantage.
+                </p>
+            </div>
+            <div className="mx-auto grid gap-8 sm:max-w-4xl md:grid-cols-3 md:gap-12">
+               {approachFeatures.map((feature, index) => (
+                  <Card key={index} className="bg-transparent border-none shadow-none">
+                     <CardHeader className="flex flex-col items-center text-center gap-4 pb-4">
+                        {feature.icon}
+                        <CardTitle className="text-lg">{feature.title}</CardTitle>
+                     </CardHeader>
+                     <CardContent className="text-center">
+                       <p className="text-sm text-muted-foreground">{feature.description}</p>
+                     </CardContent>
+                  </Card>
+               ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="security" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Security & Compliance</div>
@@ -194,3 +237,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
