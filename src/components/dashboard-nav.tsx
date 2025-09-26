@@ -28,7 +28,6 @@ import { Logo } from "@/components/logo";
 const navItems = [
   { href: "/experiments", icon: Beaker, label: "Experiments" },
   { href: "/analytics", icon: BarChart3, label: "Analytics" },
-  { href: "/compliance", icon: FileText, label: "Compliance" },
   { href: "/ai", icon: Sparkles, label: "AI Tools" },
 ];
 
