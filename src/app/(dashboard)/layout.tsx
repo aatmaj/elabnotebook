@@ -5,7 +5,6 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-  SidebarRail,
   SidebarContent,
   SidebarFooter
 } from '@/components/ui/sidebar';
@@ -13,10 +12,10 @@ import { DashboardNav } from '@/components/dashboard-nav';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
-import { LandingHeader } from '@/components/landing-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { LogOut } from 'lucide-react';
+import { Home } from 'lucide-react';
 
 export default function DashboardLayout({
   children,
@@ -28,7 +27,7 @@ export default function DashboardLayout({
     <SidebarProvider>
         <Sidebar>
             <SidebarHeader>
-                <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+                <Link href="/experiments" className="flex items-center gap-2 font-bold text-lg">
                     <Logo className="h-6 w-6" />
                     <span className="group-data-[collapsible=icon]:hidden">Paramanu</span>
                 </Link>
@@ -60,7 +59,7 @@ export default function DashboardLayout({
                 </div>
                  <div className="flex items-center gap-4">
                     <Button variant="outline" asChild>
-                        <Link href="/">Return to Landing</Link>
+                        <Link href="/landing"><Home className='mr-2' /> Return to Landing</Link>
                     </Button>
                 </div>
             </header>

@@ -35,7 +35,7 @@ export function LandingHeader() {
     >
       <div className="container flex h-14 items-center">
         <div className="mr-4 flex items-center">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+          <Link href="/landing" className="flex items-center gap-2 font-bold text-lg">
             <Logo className="h-6 w-6" />
             <span className="font-semibold">Paramanu</span>
           </Link>
@@ -52,6 +52,9 @@ export function LandingHeader() {
               </Link>
             ))}
           </nav>
+           <Button asChild>
+              <Link href="/login">Login</Link>
+          </Button>
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
@@ -63,7 +66,7 @@ export function LandingHeader() {
           <SheetContent side="left">
             <div className="p-4">
               <Link
-                href="/"
+                href="/landing"
                 className="flex items-center gap-2 font-bold text-lg"
                 onClick={() => setIsOpen(false)}
               >
@@ -81,6 +84,9 @@ export function LandingHeader() {
                     {link.label}
                   </Link>
                 ))}
+                 <Button asChild>
+                    <Link href="/login">Login</Link>
+                 </Button>
               </nav>
             </div>
           </SheetContent>
