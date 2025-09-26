@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale, BrainCircuit, Layers, Link2 } from "lucide-react";
+import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale, BrainCircuit, Layers, Link2, GitBranch, Target } from "lucide-react";
 import React from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -48,9 +48,9 @@ const solutionFeatures = [
 
 const approachFeatures = [
   {
-    icon: <Layers className="w-8 h-8 text-primary" />,
-    title: "Unified Data Foundation",
-    description: "Our ELN breaks down data silos by capturing everything—from instrument readouts to unstructured notes—into a single, queryable format, creating a powerful data asset for your R&D.",
+    icon: <GitBranch className="w-8 h-8 text-primary" />,
+    title: "Unified Knowledge Graph",
+    description: "We structure your disparate R&D data—unstructured notes, instrument data, and results—into an interconnected knowledge graph, revealing hidden relationships between experiments, compounds, and outcomes.",
   },
   {
     icon: <BrainCircuit className="w-8 h-8 text-primary" />,
@@ -58,9 +58,9 @@ const approachFeatures = [
     description: "Paramanu's generative AI acts as a co-pilot, summarizing complex data, generating novel hypotheses from your results, and identifying unseen connections to accelerate discovery.",
   },
   {
-    icon: <Link2 className="w-8 h-8 text-primary" />,
-    title: "Connected Knowledge Base",
-    description: "Transform your scattered experimental data into a powerful, interconnected knowledge base. Paramanu's AI helps you find past results, connect disparate experiments, and build on institutional knowledge.",
+    icon: <Target className="w-8 h-8 text-primary" />,
+    title: "Predictive Analytics & Insights",
+    description: "Leverage AI-powered models to forecast experimental outcomes, identify optimal parameters, and de-risk your development pipeline by flagging potential failures before they happen.",
   },
 ]
 
@@ -237,7 +237,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
-    
