@@ -51,9 +51,12 @@ export function LandingHeader() {
                 {link.label}
               </Link>
             ))}
+             <Button variant="ghost" asChild size="sm">
+                <Link href="/login">Login</Link>
+            </Button>
           </nav>
-           <Button variant="outline" asChild>
-              <Link href="/login">Login</Link>
+           <Button asChild size="sm">
+              <Link href="/signup">Sign Up</Link>
           </Button>
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -84,8 +87,11 @@ export function LandingHeader() {
                     {link.label}
                   </Link>
                 ))}
-                 <Button asChild>
+                 <Button variant="outline" asChild>
                     <Link href="/login">Login</Link>
+                 </Button>
+                 <Button asChild>
+                    <Link href="/signup">Sign Up</Link>
                  </Button>
               </nav>
             </div>
@@ -95,5 +101,3 @@ export function LandingHeader() {
     </header>
   );
 }
-
-    
