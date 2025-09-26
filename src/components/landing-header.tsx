@@ -46,7 +46,7 @@ export function LandingHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition-colors hover:text-foreground/80 text-foreground/60"
+                className="transition-colors hover:text-primary text-foreground/60"
               >
                 {link.label}
               </Link>
@@ -55,9 +55,6 @@ export function LandingHeader() {
                 <Link href="/login">Login</Link>
             </Button>
           </nav>
-           <Button asChild size="sm">
-              <Link href="/signup">Sign Up</Link>
-          </Button>
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
@@ -81,7 +78,7 @@ export function LandingHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-lg font-medium transition-colors hover:text-foreground"
+                    className="text-lg font-medium transition-colors hover:text-primary"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.label}
