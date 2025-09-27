@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster"
 export const metadata: Metadata = {
   title: 'Paramanu - The Future of Laboratory Research',
   description: 'An intelligent electronic lab notebook to accelerate scientific discovery.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({

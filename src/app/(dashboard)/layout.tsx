@@ -52,7 +52,7 @@ export default function DashboardLayout({
             </SidebarFooter>
         </Sidebar>
         <SidebarInset>
-            <header className="flex h-14 items-center justify-between border-b bg-background px-4">
+            <header className="flex h-16 items-center justify-between border-b bg-background px-4">
                 <div className="flex items-center gap-2">
                     <SidebarTrigger className="md:hidden" />
                     <h1 className="text-lg font-semibold">Dashboard</h1>
