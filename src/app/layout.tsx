@@ -6,7 +6,9 @@ export const metadata: Metadata = {
   title: 'Paramanu - The Future of Laboratory Research',
   description: 'An intelligent electronic lab notebook to accelerate scientific discovery.',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/logo.svg',
+    shortcut: '/logo.svg',
+    apple: '/logo.svg',
   },
 };
 
