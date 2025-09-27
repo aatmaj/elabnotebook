@@ -12,89 +12,103 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { CheckCircle } from "lucide-react";
 
 export default function SignupPage() {
-    const router = useRouter();
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [submitted, setSubmitted] = React.useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Signup submitted", { firstName, lastName, email, password });
-        // Here you would typically handle user creation
-        // For now, we'll just redirect to the dashboard
-        router.push("/experiments");
+        console.log("Waitlist signup", { firstName, lastName, email });
+        // Here you would typically send this data to your backend/waitlist service
+        setSubmitted(true);
     };
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="text-xl">Sign Up</CardTitle>
+        <CardTitle className="text-xl">{submitted ? "You're on the list!" : "Join the Waitlist"}</CardTitle>
         <CardDescription>
-          Enter your information to create an account
+          {submitted 
+            ? "We'll be in touch soon with an invitation to join." 
+            : "Sign up to be one of the first to get access to Paramanu."
+          }
         </CardDescription>
       </CardHeader>
-       <form onSubmit={handleSubmit}>
-        <CardContent>
-            <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                <Label htmlFor="first-name">First name</Label>
-                <Input 
-                    id="first-name" 
-                    placeholder="Max" 
-                    required 
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                />
+      {!submitted ? (
+        <form onSubmit={handleSubmit}>
+            <CardContent>
+                <div className="grid gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                    <Label htmlFor="first-name">First name</Label>
+                    <Input 
+                        id="first-name" 
+                        placeholder="Max" 
+                        required 
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+                    </div>
+                    <div className="grid gap-2">
+                    <Label htmlFor="last-name">Last name</Label>
+                    <Input 
+                        id="last-name" 
+                        placeholder="Robinson" 
+                        required 
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
+                    </div>
                 </div>
                 <div className="grid gap-2">
-                <Label htmlFor="last-name">Last name</Label>
-                <Input 
-                    id="last-name" 
-                    placeholder="Robinson" 
-                    required 
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                />
-                </div>
-            </div>
-            <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input 
-                    id="password" 
-                    type="password" 
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
                     required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <Button type="submit" className="w-full">
-                Create an account
-            </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
-            <Link href="/login" className="underline">
-                Sign in
-            </Link>
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input 
+                        id="password" 
+                        type="password" 
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <Button type="submit" className="w-full">
+                    Join Waitlist
+                </Button>
+                </div>
+                <div className="mt-4 text-center text-sm">
+                Already have an account?{" "}
+                <Link href="/login" className="underline">
+                    Sign in
+                </Link>
+                </div>
+            </CardContent>
+        </form>
+      ) : (
+        <CardContent>
+            <div className="flex flex-col items-center justify-center text-center p-8">
+                <CheckCircle className="w-16 h-16 text-primary mb-4" />
+                <p className="text-muted-foreground">Thank you for your interest in Paramanu.</p>
+                <Button variant="outline" asChild className="mt-6">
+                    <Link href="/landing">Return to Homepage</Link>
+                </Button>
             </div>
         </CardContent>
-      </form>
+      )}
     </Card>
   );
 }
