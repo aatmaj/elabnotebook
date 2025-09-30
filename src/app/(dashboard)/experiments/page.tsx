@@ -88,8 +88,22 @@ export default function ExperimentsPage() {
   }
   
   const filteredExperiments = allExperiments.filter(experiment => {
-    const searchContent = Object.values(experiment).join(" ").toLowerCase();
-    return searchContent.includes(searchQuery.toLowerCase());
+    const searchContent = [
+      experiment.id,
+      experiment.name,
+      experiment.project,
+      experiment.date,
+      ...experiment.tags,
+      experiment.outcome,
+    ].join(" ").toLowerCase();
+
+    const searchTerms = searchQuery.toLowerCase().split(' ').filter(term => term.trim() !== '');
+
+    if (searchTerms.length === 0) {
+      return true;
+    }
+
+    return searchTerms.every(term => searchContent.includes(term));
   })
 
   return (
