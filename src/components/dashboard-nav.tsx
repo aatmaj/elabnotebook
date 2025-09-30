@@ -21,7 +21,8 @@ const navItems = [
   { href: "/molecules", icon: LayoutDashboard, label: "Portfolio", roles: ["Leadership"] },
   { href: "/projects", icon: FolderKanban, label: "Projects", roles: ["PMO", "Leadership"] },
   { href: "/experiments", icon: Beaker, label: "Experiments", roles: ["Scientist", "PMO", "Leadership"] },
-  { href: "/formulation", icon: FlaskConical, label: "Formulation Study", roles: ["Scientist", "Leadership"] },
+  { href: "/formulation", icon: FlaskConical, label: "Formulation Study", roles: ["Scientist"] },
+  { href: "/coscientist", icon: Bot, label: "Co-scientist", roles: ["Scientist", "Leadership", "PMO"] },
 ];
 
 export function DashboardNav({ role }: { role: UserRole }) {
