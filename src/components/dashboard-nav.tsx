@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import {
   Beaker,
+  Bot,
   FlaskConical,
   FolderKanban,
   LayoutDashboard,
@@ -21,12 +22,16 @@ const navItems = [
   { href: "/projects", icon: FolderKanban, label: "Projects", roles: ["PMO", "Leadership"] },
   { href: "/experiments", icon: Beaker, label: "Experiments", roles: ["Scientist", "PMO", "Leadership"] },
   { href: "/formulation", icon: FlaskConical, label: "Formulation Study", roles: ["Scientist", "Leadership"] },
+  { href: "/coscientist", icon: Bot, label: "Co-scientist", roles: ["Scientist", "Leadership"] },
 ];
 
 export function DashboardNav({ role }: { role: UserRole }) {
   const pathname = usePathname();
 
-  const filteredNavItems = navItems.filter(item => item.roles.includes(role));
+  const filteredNavItems = navItems.filter(item => {
+    if (role === "Leadership") return true; // Leadership sees all
+    return item.roles.includes(role);
+  });
 
   return (
         <SidebarMenu>
