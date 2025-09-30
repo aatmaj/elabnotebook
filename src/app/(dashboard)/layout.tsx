@@ -21,7 +21,7 @@ import { Home } from 'lucide-react';
 export type UserRole = "Scientist" | "PMO" | "Leadership";
 
 // Simulate the current user's role. In a real app, this would come from your auth provider.
-const currentUserRole: UserRole = "Leadership";
+const currentUserRole: UserRole = "Scientist";
 
 export default function DashboardLayout({
   children,
@@ -49,8 +49,8 @@ export default function DashboardLayout({
                         <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col text-sm group-data-[collapsible=icon]:hidden">
-                        <span className="font-medium text-sidebar-foreground">Leadership User</span>
-                        <span className="text-muted-foreground text-xs">leadership@paramanu.ai</span>
+                        <span className="font-medium text-sidebar-foreground">Scientist User</span>
+                        <span className="text-muted-foreground text-xs">scientist@paramanu.ai</span>
                     </div>
                      <Button variant="ghost" size="icon" className="ml-auto group-data-[collapsible=icon]:hidden">
                         <LogOut />
