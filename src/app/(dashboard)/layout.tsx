@@ -84,7 +84,6 @@ export default function DashboardLayout({
             <header className="flex h-20 items-center justify-between border-b bg-background px-4">
                 <div className="flex items-center gap-2">
                     <SidebarTrigger className="md:hidden" />
-                    <h1 className="text-lg font-semibold">Dashboard</h1>
                 </div>
                  <div className="flex items-center gap-4">
                     <Button variant="outline" asChild>
