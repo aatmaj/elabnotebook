@@ -11,18 +11,22 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const CoScientistInputSchema = z.object({
-  query: z
-    .string()
-    .describe('The question or topic to research.'),
+  query: z.string().describe('The question or topic to research.'),
 });
 export type CoScientistInput = z.infer<typeof CoScientistInputSchema>;
 
 const CoScientistOutputSchema = z.object({
-  answer: z.string().describe('A factual, referenced answer to the query. Use Markdown for formatting.'),
+  answer: z
+    .string()
+    .describe(
+      'A factual, referenced answer to the query. Use Markdown for formatting.'
+    ),
 });
 export type CoScientistOutput = z.infer<typeof CoScientistOutputSchema>;
 
-export async function askCoScientist(input: CoScientistInput): Promise<CoScientistOutput> {
+export async function askCoScientist(
+  input: CoScientistInput
+): Promise<CoScientistOutput> {
   return coScientistFlow(input);
 }
 
@@ -30,6 +34,7 @@ const prompt = ai.definePrompt({
   name: 'coScientistPrompt',
   input: {schema: CoScientistInputSchema},
   output: {schema: CoScientistOutputSchema},
+  model: 'googleai/gemini-1.5-pro-latest',
   prompt: `You are an expert pharmaceutical research co-scientist. Your purpose is to provide factual, evidence-based answers to questions from formulation scientists.
 
 You must answer questions related to chemistry, patents, and FDA regulations.
