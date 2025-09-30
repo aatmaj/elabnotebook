@@ -7,7 +7,6 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
 import {
   Table,
@@ -18,9 +17,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { listModels } from "@/app/actions/ai-actions";
-import { Loader } from "lucide-react";
 
 // This data would be fetched from Firestore.
 // Query: Sort Molecules by risk_score (desc) and filter where status is NOT 'Filing'.
@@ -40,25 +36,6 @@ const statusVariantMap: { [key: string]: "default" | "secondary" | "destructive"
 
 
 export default function MoleculesPage() {
-  const [models, setModels] = React.useState<string[]>([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-
-  const handleListModels = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await listModels();
-      setModels(result.models);
-    } catch (e: any) {
-      setError("Failed to fetch models. Check the server console for more details.");
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-
   return (
     <div className="space-y-6">
       <Card>
@@ -94,38 +71,6 @@ export default function MoleculesPage() {
             </TableBody>
           </Table>
         </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>AI Model Debugger</CardTitle>
-          <CardDescription>
-            Use this to see the list of currently available models from the AI provider.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {error && (
-            <div className="mb-4 text-sm font-medium text-destructive bg-destructive/10 p-3 rounded-md">
-              {error}
-            </div>
-          )}
-          {models.length > 0 && (
-            <div>
-              <h3 className="font-semibold mb-2">Available Models:</h3>
-              <pre className="bg-muted p-4 rounded-md text-sm">
-                <code>
-                  {JSON.stringify(models, null, 2)}
-                </code>
-              </pre>
-            </div>
-          )}
-        </CardContent>
-        <CardFooter>
-            <Button onClick={handleListModels} disabled={isLoading}>
-              {isLoading && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              {isLoading ? "Listing..." : "List Available Models"}
-            </Button>
-        </CardFooter>
       </Card>
     </div>
   );
