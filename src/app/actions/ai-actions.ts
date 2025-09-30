@@ -3,9 +3,11 @@
 import { summarizeExperiment as summarizeExperimentFlow } from "@/ai/flows/ai-driven-experiment-summaries";
 import { generateKnowledgeGraph as generateKnowledgeGraphFlow } from "@/ai/flows/knowledge-graph-generation";
 import { askCoScientist as askCoScientistFlow } from "@/ai/flows/coscientist-flow";
+import { listModels as listModelsFlow } from "@/ai/flows/list-models-flow";
 import type { SummarizeExperimentInput, SummarizeExperimentOutput } from "@/ai/flows/ai-driven-experiment-summaries";
 import type { KnowledgeGraphInput, KnowledgeGraphOutput } from "@/ai/flows/knowledge-graph-generation";
 import type { CoScientistInput, CoScientistOutput } from "@/ai/flows/coscientist-flow";
+import type { ListModelsOutput } from "@/ai/flows/list-models-flow";
 
 export async function summarizeExperiment(input: SummarizeExperimentInput): Promise<SummarizeExperimentOutput> {
     return await summarizeExperimentFlow(input);
@@ -17,4 +19,8 @@ export async function generateKnowledgeGraph(input: KnowledgeGraphInput): Promis
 
 export async function askCoScientist(input: CoScientistInput): Promise<CoScientistOutput> {
     return await askCoScientistFlow(input);
+}
+
+export async function listModels(): Promise<ListModelsOutput> {
+    return await listModelsFlow();
 }
