@@ -31,34 +31,52 @@ import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Link from "next/link";
 
-const experiments = [
+const allExperiments = [
   {
     id: "EXP-001",
-    name: "CRISPR-Cas9 Gene Editing Efficacy",
+    name: "Metformin ER 500mg Dissolution Study",
     project: "PROJ-001",
-    date: "2023-06-23",
+    date: "2023-11-10",
     scientist: "user-avatar-1",
-    tags: ["crispr", "gene-editing"],
-    outcome: "Successful gene insertion with 92% efficiency."
+    tags: ["metformin", "dissolution", "qbd"],
+    outcome: "F2 similarity achieved against innovator."
   },
   {
     id: "EXP-002",
-    name: "Protein Folding Simulation #3",
+    name: "Amlodipine Besylate API Characterization",
     project: "PROJ-002",
-    date: "2023-06-15",
+    date: "2023-10-22",
     scientist: "user-avatar-2",
-    tags: ["simulation", "protein-folding"],
-    outcome: "Model inconclusive. Requires parameter tuning."
+    tags: ["api-char", "amlodipine", "polymorphism"],
+    outcome: "Polymorphic Form A confirmed by XRD."
   },
   {
     id: "EXP-003",
-    name: "Formulation Study - Round 1",
+    name: "Paracetamol IV Excipient Compatibility",
     project: "PROJ-003",
-    date: "2023-07-01",
+    date: "2023-09-05",
     scientist: "user-avatar-1",
-    tags: ["formulation", "dissolution"],
-    outcome: "Successful dissolution profile achieved."
+    tags: ["formulation", "excipients", "hplc"],
+    outcome: "No significant degradation with tested excipients."
   },
+    {
+    id: "EXP-004",
+    name: "Dapoxetine ER Stability - 3 Month Accelerated",
+    project: "PROJ-005",
+    date: "2024-01-15",
+    scientist: "user-avatar-3",
+    tags: ["stability", "dapoxetine", "accelerated"],
+    outcome: "Assay and impurity levels within acceptable limits."
+  },
+  {
+    id: "EXP-005",
+    name: "Metformin ER - Wet Granulation Trial",
+    project: "PROJ-001",
+    date: "2023-12-01",
+    scientist: "user-avatar-2",
+    tags: ["metformin", "granulation", "process-dev"],
+    outcome: "Good flowability achieved with 10% binder."
+  }
 ];
 
 export default function ExperimentsPage() {
@@ -68,13 +86,11 @@ export default function ExperimentsPage() {
   const getAvatarUrl = (id: string) => {
     return avatars.find(avatar => avatar.id === id)?.imageUrl || "";
   }
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    // Placeholder for calling the semantic search AI flow
-    console.log("Searching for:", query);
-  };
+  
+  const filteredExperiments = allExperiments.filter(experiment => {
+    const searchContent = Object.values(experiment).join(" ").toLowerCase();
+    return searchContent.includes(searchQuery.toLowerCase());
+  })
 
   return (
     <Card>
@@ -99,10 +115,10 @@ export default function ExperimentsPage() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Semantic Search (e.g., 'dissolution profile for acidic API')..."
+            placeholder="Search experiments by name, tag, outcome..."
             className="w-full pl-8"
             value={searchQuery}
-            onChange={handleSearch}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </CardHeader>
@@ -122,7 +138,7 @@ export default function ExperimentsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {experiments.map((experiment) => (
+            {filteredExperiments.map((experiment) => (
               <TableRow key={experiment.id}>
                 <TableCell className="font-medium">{experiment.id}</TableCell>
                 <TableCell className="font-medium">{experiment.name}</TableCell>
