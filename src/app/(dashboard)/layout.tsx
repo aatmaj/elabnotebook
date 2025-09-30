@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from 'react';
 import {
   Sidebar,
@@ -15,13 +17,18 @@ import { Logo } from '@/components/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { LogOut } from 'lucide-react';
-import { Home } from 'lucide-react';
+import { Home, Users } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from '@/components/ui/label';
 
 // Define user roles
 export type UserRole = "Scientist" | "PMO" | "Leadership";
-
-// Simulate the current user's role. In a real app, this would come from your auth provider.
-const currentUserRole: UserRole = "Leadership";
 
 export default function DashboardLayout({
   children,
@@ -29,6 +36,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const userAvatar = PlaceHolderImages.find((img) => img.id === "user-avatar-1");
+  // Simulate the current user's role with state for demos
+  const [currentUserRole, setCurrentUserRole] = React.useState<UserRole>("Leadership");
   
   return (
     <SidebarProvider>
@@ -65,6 +74,22 @@ export default function DashboardLayout({
                     <h1 className="text-lg font-semibold">Dashboard</h1>
                 </div>
                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="role-switcher" className="text-sm font-medium flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        <span>Demo Role:</span>
+                      </Label>
+                      <Select value={currentUserRole} onValueChange={(value) => setCurrentUserRole(value as UserRole)}>
+                        <SelectTrigger className="w-[180px]" id="role-switcher">
+                          <SelectValue placeholder="Select a role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Leadership">Leadership</SelectItem>
+                          <SelectItem value="PMO">PMO</SelectItem>
+                          <SelectItem value="Scientist">Scientist</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     <Button variant="outline" asChild>
                         <Link href="/landing"><Home className='mr-2' /> Return to Landing</Link>
                     </Button>
@@ -77,3 +102,5 @@ export default function DashboardLayout({
     </SidebarProvider>
   );
 }
+
+    
