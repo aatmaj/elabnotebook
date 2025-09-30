@@ -3,4 +3,3 @@ config();
 
 import '@/ai/flows/ai-driven-experiment-summaries.ts';
 import '@/ai/flows/knowledge-graph-generation.ts';
-import '@/ai/flows/list-models-flow.ts';

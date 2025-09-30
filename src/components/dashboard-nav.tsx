@@ -22,7 +22,6 @@ const navItems = [
   { href: "/projects", icon: FolderKanban, label: "Projects", roles: ["PMO", "Leadership"] },
   { href: "/experiments", icon: Beaker, label: "Experiments", roles: ["Scientist", "PMO", "Leadership"] },
   { href: "/formulation", icon: FlaskConical, label: "Formulation Study", roles: ["Scientist"] },
-  { href: "/gemini", icon: Bot, label: "Gemini", roles: ["Scientist", "PMO", "Leadership"] },
 ];
 
 export function DashboardNav({ role }: { role: UserRole }) {
@@ -41,7 +40,6 @@ export function DashboardNav({ role }: { role: UserRole }) {
       { href: "/molecules", icon: LayoutDashboard, label: "Portfolio", roles: ["Leadership"] },
       { href: "/projects", icon: FolderKanban, label: "Projects", roles: ["Leadership", "PMO"] },
       { href: "/experiments", icon: Beaker, label: "Experiments", roles: ["Leadership", "Scientist", "PMO"] },
-      { href: "/gemini", icon: Bot, label: "Gemini", roles: ["Scientist", "PMO", "Leadership"] },
     ];
     return (
        <SidebarMenu>
