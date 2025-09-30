@@ -9,6 +9,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {googleAI} from '@genkit-ai/googleai';
 
 const CoScientistInputSchema = z.object({
   query: z.string().describe('The question or topic to research.'),
@@ -34,7 +35,7 @@ const prompt = ai.definePrompt({
   name: 'coScientistPrompt',
   input: {schema: CoScientistInputSchema},
   output: {schema: CoScientistOutputSchema},
-  model: 'gemini-1.5-flash-latest',
+  model: googleAI.model('gemini-1.5-flash-latest'),
   prompt: `You are an expert pharmaceutical research co-scientist. Your purpose is to provide factual, evidence-based answers to questions from formulation scientists.
 
 You must answer questions related to chemistry, patents, and FDA regulations.
