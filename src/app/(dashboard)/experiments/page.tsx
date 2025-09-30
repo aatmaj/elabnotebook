@@ -63,10 +63,18 @@ const experiments = [
 
 export default function ExperimentsPage() {
   const avatars = PlaceHolderImages.filter(img => img.id.includes('user-avatar'));
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const getAvatarUrl = (id: string) => {
     return avatars.find(avatar => avatar.id === id)?.imageUrl || "";
   }
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    // Placeholder for calling the semantic search AI flow
+    console.log("Searching for:", query);
+  };
 
   return (
     <Card>
@@ -93,6 +101,8 @@ export default function ExperimentsPage() {
             type="search"
             placeholder="Semantic Search (e.g., 'dissolution profile for acidic API')..."
             className="w-full pl-8"
+            value={searchQuery}
+            onChange={handleSearch}
           />
         </div>
       </CardHeader>
