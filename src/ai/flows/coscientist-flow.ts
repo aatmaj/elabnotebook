@@ -31,7 +31,7 @@ const prompt = ai.definePrompt({
   name: 'coScientistPrompt',
   input: {schema: CoScientistInputSchema},
   output: {schema: CoScientistOutputSchema},
-  model: googleAI.model('gemini-1.0-pro'),
+  model: googleAI.model('gemini-2.5-flash-preview'),
   prompt: `You are an expert AI Co-scientist for pharmaceutical R&D, specializing in generic drug development. Your name is Paramanu.
 
 Your task is to answer user questions about chemistry, patents, and FDA guidelines with factual, accurate, and concise information.
