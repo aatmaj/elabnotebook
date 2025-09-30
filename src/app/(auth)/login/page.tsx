@@ -23,8 +23,8 @@ export default function LoginPage() {
         e.preventDefault();
         console.log("Login submitted", { email, password });
         // Here you would typically handle authentication
-        // For now, we'll just redirect to the dashboard
-        router.push("/experiments");
+        // For now, we'll just redirect to the dashboard's default page
+        router.push("/molecules");
     };
 
   return (
