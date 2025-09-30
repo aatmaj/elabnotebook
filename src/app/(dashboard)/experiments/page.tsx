@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PlusCircle, MoreHorizontal } from "lucide-react";
+import { PlusCircle, MoreHorizontal, Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Link from "next/link";
 
@@ -70,11 +71,11 @@ export default function ExperimentsPage() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start gap-4">
           <div>
-            <CardTitle>Experiments</CardTitle>
+            <CardTitle>Experiment Library</CardTitle>
             <CardDescription>
-              Browse and manage all experiments across projects.
+              Browse and intelligently search all experiments across projects.
             </CardDescription>
           </div>
            <Button size="sm" className="gap-1" asChild>
@@ -85,6 +86,14 @@ export default function ExperimentsPage() {
                 </span>
               </Link>
             </Button>
+        </div>
+        <div className="relative mt-4">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Semantic Search (e.g., 'dissolution profile for acidic API')..."
+            className="w-full pl-8"
+          />
         </div>
       </CardHeader>
       <CardContent>
