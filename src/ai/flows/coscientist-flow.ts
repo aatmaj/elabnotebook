@@ -34,6 +34,7 @@ const prompt = ai.definePrompt({
   name: 'coScientistPrompt',
   input: {schema: CoScientistInputSchema},
   output: {schema: CoScientistOutputSchema},
+  model: 'googleai/gemini-1.5-pro-latest',
   prompt: `You are an expert pharmaceutical research co-scientist. Your purpose is to provide factual, evidence-based answers to questions from formulation scientists.
 
 You must answer questions related to chemistry, patents, and FDA regulations.
