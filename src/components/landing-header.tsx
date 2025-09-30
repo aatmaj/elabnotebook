@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import * as React from "react";
 import { Logo } from "@/components/logo";
@@ -64,6 +64,9 @@ export function LandingHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left">
+            <SheetHeader>
+                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+            </SheetHeader>
             <div className="p-4">
               <Link
                 href="/landing"
