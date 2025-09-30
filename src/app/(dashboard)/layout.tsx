@@ -21,7 +21,7 @@ import { Home } from 'lucide-react';
 export type UserRole = "Scientist" | "PMO" | "Leadership";
 
 // Simulate the current user's role. In a real app, this would come from your auth provider.
-const currentUserRole: UserRole = "Scientist";
+const currentUserRole: UserRole = "Leadership";
 
 export default function DashboardLayout({
   children,
