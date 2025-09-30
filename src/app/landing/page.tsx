@@ -147,7 +147,7 @@ export default function Home() {
            <div className="relative z-30 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
-                    The Intelligent Lab Notebook for Generics Pharma
+                    The Intelligent E-Lab Notebook for Generics Pharma
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                     Paramanu is an intelligent electronic lab notebook (ELN) platform, purpose-built to accelerate every phase of generic drug development.
@@ -159,7 +159,7 @@ export default function Home() {
               </div>
         </section>
         
-        <section id="solution" className="w-full py-12 md:py-16 lg:py-20">
+        <section id="solution" className="w-full py-8 md:py-10 lg:py-12">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Platform</div>
@@ -184,7 +184,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="approach" className="w-full py-12 md:py-16 lg:py-20 bg-secondary/20">
+        <section id="approach" className="w-full py-8 md:py-10 lg:py-12 bg-secondary/20">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Approach</div>
@@ -209,7 +209,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="security" className="w-full py-12 md:py-16 lg:py-20">
+        <section id="security" className="w-full py-8 md:py-10 lg:py-12">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Security & Compliance</div>
