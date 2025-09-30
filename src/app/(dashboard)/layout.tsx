@@ -17,23 +17,30 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { LogOut } from 'lucide-react';
 import { Home } from 'lucide-react';
 
+// Define user roles
+export type UserRole = "Scientist" | "PMO" | "Leadership";
+
+// Simulate the current user's role. In a real app, this would come from your auth provider.
+const currentUserRole: UserRole = "Leadership";
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const userAvatar = PlaceHolderImages.find((img) => img.id === "user-avatar-1");
+  
   return (
     <SidebarProvider>
         <Sidebar>
             <SidebarHeader>
-                <Link href="/experiments" className="flex items-center gap-2 font-bold text-lg">
+                <Link href="/molecules" className="flex items-center gap-2 font-bold text-lg">
                     <Logo className="h-6 w-6" />
                     <span className="group-data-[collapsible=icon]:hidden">Paramanu</span>
                 </Link>
             </SidebarHeader>
             <SidebarContent>
-                 <DashboardNav />
+                 <DashboardNav role={currentUserRole} />
             </SidebarContent>
              <SidebarFooter>
                 <div className="flex items-center gap-2 p-2">
@@ -42,8 +49,8 @@ export default function DashboardLayout({
                         <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col text-sm group-data-[collapsible=icon]:hidden">
-                        <span className="font-medium text-sidebar-foreground">User Name</span>
-                        <span className="text-muted-foreground text-xs">user@paramanu.ai</span>
+                        <span className="font-medium text-sidebar-foreground">Leadership User</span>
+                        <span className="text-muted-foreground text-xs">leadership@paramanu.ai</span>
                     </div>
                      <Button variant="ghost" size="icon" className="ml-auto group-data-[collapsible=icon]:hidden">
                         <LogOut />
@@ -52,7 +59,7 @@ export default function DashboardLayout({
             </SidebarFooter>
         </Sidebar>
         <SidebarInset>
-            <header className="flex h-16 items-center justify-between border-b bg-background px-4">
+            <header className="flex h-20 items-center justify-between border-b bg-background px-4">
                 <div className="flex items-center gap-2">
                     <SidebarTrigger className="md:hidden" />
                     <h1 className="text-lg font-semibold">Dashboard</h1>
@@ -70,5 +77,3 @@ export default function DashboardLayout({
     </SidebarProvider>
   );
 }
-
-    

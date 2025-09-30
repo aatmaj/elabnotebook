@@ -4,39 +4,36 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  SidebarContent,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarFooter,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import {
   BarChart3,
   Beaker,
   FileText,
-  Home,
-  LogOut,
+  FlaskConical,
+  FolderKanban,
+  LayoutDashboard,
   Sparkles,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Logo } from "@/components/logo";
+import type { UserRole } from "@/app/(dashboard)/layout";
 
 const navItems = [
-  { href: "/experiments", icon: Beaker, label: "Experiments" },
-  { href: "/analytics", icon: BarChart3, label: "Analytics" },
-  { href: "/ai", icon: Sparkles, label: "AI Tools" },
+  { href: "/molecules", icon: LayoutDashboard, label: "Portfolio", roles: ["Leadership"] },
+  { href: "/projects", icon: FolderKanban, label: "Projects", roles: ["PMO", "Leadership"] },
+  { href: "/experiments", icon: Beaker, label: "Experiments", roles: ["Scientist", "PMO"] },
+  { href: "/formulation", icon: FlaskConical, label: "Formulation Study", roles: ["Scientist"] },
 ];
 
-export function DashboardNav() {
+export function DashboardNav({ role }: { role: UserRole }) {
   const pathname = usePathname();
+
+  const filteredNavItems = navItems.filter(item => item.roles.includes(role));
 
   return (
         <SidebarMenu>
-          {navItems.map((item) => (
+          {filteredNavItems.map((item) => (
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild

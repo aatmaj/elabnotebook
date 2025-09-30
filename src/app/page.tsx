@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 
 export default function Page() {
-  redirect('/landing');
+  // Default to the portfolio view for leadership
+  redirect('/molecules');
 }
-
-    

@@ -33,7 +33,7 @@ export function LandingHeader() {
           : "bg-transparent"
       }`}
     >
-      <div className="container flex h-16 items-center">
+      <div className="container flex h-20 items-center">
         <div className="mr-4 flex items-center">
           <Link href="/landing" className="flex items-center gap-2 font-bold text-lg">
             <Logo className="h-6 w-6" />

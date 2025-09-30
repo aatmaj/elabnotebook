@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Bubbles } from "@/components/bubbles";
 
 const solutionFeatures = [
     {
@@ -142,6 +143,7 @@ export default function Home() {
       <main className="flex-grow">
         <section id="hero" className="relative w-full h-[100vh] flex items-center justify-center text-center overflow-hidden">
            <div className="absolute inset-0 z-0 bg-background" />
+            <Bubbles />
             <div className="absolute inset-0 z-10 bg-radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background/0 to-background"></div>
             <div className="absolute inset-0 z-20 bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_50%,white)]"></div>
            <div className="relative z-30 flex flex-col items-center space-y-4">

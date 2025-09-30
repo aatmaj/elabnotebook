@@ -1,0 +1,46 @@
+// This is a placeholder for your Firestore security rules.
+// You will need to deploy this file to Firebase using the Firebase CLI.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    // Helper functions for auth roles
+    function isScientist() {
+      return request.auth.token.role == 'Scientist';
+    }
+    
+    function isPmo() {
+      return request.auth.token.role == 'PMO';
+    }
+    
+    function isLeadership() {
+      return request.auth.token.role == 'Leadership';
+    }
+
+    // Molecules: Read-only for authenticated users
+    match /molecules/{moleculeId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Immutable for now
+    }
+    
+    // Projects: Read-only for authenticated users
+    match /projects/{projectId} {
+      // PMO and Leadership can update project milestones
+      allow read: if request.auth != null;
+      allow update: if isPmo() || isLeadership();
+      allow create, delete: if false;
+    }
+
+    // Experiments:
+    // Scientists can create and can only read/write their own experiments.
+    // PMO and Leadership can read all experiments.
+    match /experiments/{experimentId} {
+      allow read: if (isPmo() || isLeadership()) || (isScientist() && resource.data.scientist_uid == request.auth.uid);
+      allow create: if isScientist() && request.resource.data.scientist_uid == request.auth.uid;
+      allow update: if isScientist() && resource.data.scientist_uid == request.auth.uid;
+      allow delete: if false;
+    }
+  }
+}
