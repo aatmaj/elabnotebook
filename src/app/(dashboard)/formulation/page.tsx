@@ -104,6 +104,10 @@ export default function FormulationPage() {
     setSummary(null);
 
     const file = attachments[0];
+    if (!file) {
+        setIsSummarizing(false);
+        return;
+    }
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = async () => {
