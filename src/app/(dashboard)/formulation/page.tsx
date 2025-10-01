@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusCircle, Trash2, Paperclip, Bot, File as FileIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { summarizeExperiment } from "@/app/actions/ai-actions";
+import { summarizeExperiment, enhanceText } from "@/app/actions/ai-actions";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useExperimentStore } from "@/lib/store";
@@ -54,8 +54,12 @@ export default function FormulationPage() {
   ]);
   const [attachments, setAttachments] = React.useState<File[]>([]);
   const [isSummarizing, setIsSummarizing] = React.useState(false);
+  const [isEnhancing, setIsEnhancing] = React.useState<null | 'rawData' | 'outcome'>(null);
   const [summary, setSummary] = React.useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [rawData, setRawData] = React.useState("");
+  const [outcome, setOutcome] = React.useState("");
+
 
   const addExcipient = () => {
     setExcipients([
@@ -128,14 +132,44 @@ export default function FormulationPage() {
     }
   };
 
+  const handleEnhanceText = async (field: 'rawData' | 'outcome') => {
+    const textToEnhance = field === 'rawData' ? rawData : outcome;
+    if (!textToEnhance.trim()) {
+        toast({
+            variant: "destructive",
+            title: "No text to enhance",
+            description: "Please enter some text before using the AI enhancement.",
+        });
+        return;
+    }
+
+    setIsEnhancing(field);
+    try {
+        const context = field === 'rawData' ? 'Raw Data & Observations' : 'Outcome';
+        const result = await enhanceText({ text: textToEnhance, context });
+        if (field === 'rawData') {
+            setRawData(result.enhancedText);
+        } else {
+            setOutcome(result.enhancedText);
+        }
+    } catch (error) {
+        console.error(`Error enhancing ${field}:`, error);
+        toast({
+            variant: "destructive",
+            title: "Enhancement Failed",
+            description: "The AI could not enhance the text.",
+        });
+    } finally {
+        setIsEnhancing(null);
+    }
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const experimentId = formData.get("experiment-id") as string;
     const projectRef = formData.get("project-ref") as string;
-    const rawData = formData.get("raw-data") as string;
-    const outcome = formData.get("outcome") as string;
-
+    
     const newExperiment = {
         id: experimentId,
         name: `New Study: ${experimentId}`, // Simple name for now
@@ -281,13 +315,25 @@ export default function FormulationPage() {
           )}
 
           <div className="grid gap-2">
+            <div className="flex items-center justify-between">
               <Label htmlFor="raw-data">Raw Data & Observations</Label>
-              <Textarea name="raw-data" id="raw-data" rows={6} placeholder="Enter unstructured data, observations, and methodologies..." />
+              <Button type="button" variant="ghost" size="sm" onClick={() => handleEnhanceText('rawData')} disabled={isEnhancing === 'rawData'}>
+                <Bot className="mr-2 h-4 w-4" />
+                {isEnhancing === 'rawData' ? 'Enhancing...' : 'Enhance with AI'}
+              </Button>
+            </div>
+              <Textarea name="raw-data" id="raw-data" rows={6} placeholder="Enter unstructured data, observations, and methodologies..." value={rawData} onChange={(e) => setRawData(e.target.value)} />
           </div>
           
           <div className="grid gap-2">
+            <div className="flex items-center justify-between">
               <Label htmlFor="outcome">Outcome</Label>
-              <Textarea name="outcome" id="outcome" rows={3} placeholder="Describe the outcome, e.g., 'Successful dissolution profile achieved.'"/>
+               <Button type="button" variant="ghost" size="sm" onClick={() => handleEnhanceText('outcome')} disabled={isEnhancing === 'outcome'}>
+                <Bot className="mr-2 h-4 w-4" />
+                {isEnhancing === 'outcome' ? 'Enhancing...' : 'Enhance with AI'}
+              </Button>
+            </div>
+              <Textarea name="outcome" id="outcome" rows={3} placeholder="Describe the outcome, e.g., 'Successful dissolution profile achieved.'" value={outcome} onChange={(e) => setOutcome(e.target.value)} />
           </div>
 
         </CardContent>
