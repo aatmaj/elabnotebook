@@ -8,6 +8,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {googleAI} from '@genkit-ai/googleai';
 import {z} from 'genkit';
 
 const EnhanceTextInputSchema = z.object({
@@ -37,6 +38,7 @@ const prompt = ai.definePrompt({
   name: 'enhanceTextPrompt',
   input: {schema: EnhanceTextInputSchema},
   output: {schema: EnhanceTextOutputSchema},
+  model: googleAI('gemini-1.5-flash-latest'),
   prompt: `You are an expert scientific writer. Your task is to enhance the provided text to make it clearer, more professional, and more concise, while strictly preserving all factual information. Do not add or invent any new information.
 
 Context of the text: {{{context}}}
