@@ -87,7 +87,11 @@ export default function FormulationPage() {
   };
 
   const handleRemoveAttachment = (fileName: string) => {
-    setAttachments(attachments.filter(f => f.name !== fileName));
+    const newAttachments = attachments.filter(f => f.name !== fileName);
+    setAttachments(newAttachments);
+    if (newAttachments.length === 0) {
+      setSummary(null);
+    }
   };
   
   const handleGenerateSummary = async () => {
