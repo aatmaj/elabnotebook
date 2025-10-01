@@ -19,6 +19,8 @@ import { useToast } from "@/hooks/use-toast";
 import { summarizeExperiment } from "@/app/actions/ai-actions";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useExperimentStore } from "@/lib/store";
+import { useRouter } from "next/navigation";
 
 type Excipient = {
   id: number;
@@ -44,6 +46,9 @@ const callAutocomplete = async (query: string) => {
 
 export default function FormulationPage() {
   const { toast } = useToast();
+  const router = useRouter();
+  const addExperiment = useExperimentStore((state) => state.addExperiment);
+
   const [excipients, setExcipients] = React.useState<Excipient[]>([
     { id: 1, name: "", quantity: "", lotNumber: "" },
   ]);
@@ -125,11 +130,31 @@ export default function FormulationPage() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Saving experiment...");
+    const formData = new FormData(event.currentTarget);
+    const experimentId = formData.get("experiment-id") as string;
+    const projectRef = formData.get("project-ref") as string;
+    const rawData = formData.get("raw-data") as string;
+    const outcome = formData.get("outcome") as string;
+
+    const newExperiment = {
+        id: experimentId,
+        name: `New Study: ${experimentId}`, // Simple name for now
+        project: projectRef,
+        date: new Date().toISOString().split('T')[0], // Today's date
+        scientist: 'user-avatar-4', // Placeholder for current user
+        tags: ['new', 'formulation'],
+        methodology: rawData,
+        outcome: outcome,
+    };
+
+    addExperiment(newExperiment);
+
     toast({
       title: "Experiment Saved",
       description: "Your new formulation study has been successfully saved.",
     });
+
+    router.push('/experiments');
   };
 
   return (
@@ -145,11 +170,11 @@ export default function FormulationPage() {
           <div className="grid md:grid-cols-2 gap-4">
               <div className="grid gap-2">
                   <Label htmlFor="experiment-id">Experiment ID</Label>
-                  <Input id="experiment-id" defaultValue={`EXP-${Date.now().toString().slice(-4)}`} />
+                  <Input name="experiment-id" id="experiment-id" defaultValue={`EXP-${Date.now().toString().slice(-4)}`} />
               </div>
               <div className="grid gap-2">
                   <Label htmlFor="project-ref">Project Reference</Label>
-                  <Input id="project-ref" placeholder="e.g., PROJ-003" />
+                  <Input name="project-ref" id="project-ref" placeholder="e.g., PROJ-003" />
               </div>
           </div>
 
@@ -257,12 +282,12 @@ export default function FormulationPage() {
 
           <div className="grid gap-2">
               <Label htmlFor="raw-data">Raw Data & Observations</Label>
-              <Textarea id="raw-data" rows={6} placeholder="Enter unstructured data, observations, and methodologies..." />
+              <Textarea name="raw-data" id="raw-data" rows={6} placeholder="Enter unstructured data, observations, and methodologies..." />
           </div>
           
           <div className="grid gap-2">
               <Label htmlFor="outcome">Outcome</Label>
-              <Textarea id="outcome" rows={3} placeholder="Describe the outcome, e.g., 'Successful dissolution profile achieved.'"/>
+              <Textarea name="outcome" id="outcome" rows={3} placeholder="Describe the outcome, e.g., 'Successful dissolution profile achieved.'"/>
           </div>
 
         </CardContent>
@@ -273,5 +298,3 @@ export default function FormulationPage() {
     </form>
   );
 }
-
-    
