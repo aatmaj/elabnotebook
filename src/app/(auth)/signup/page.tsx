@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 import { CheckCircle } from "lucide-react";
-import { useAuth, useFirestore, addDocumentNonBlocking, initiateEmailSignUp } from "@/firebase";
+import { useAuth, useFirestore, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
 
 export default function SignupPage() {
@@ -23,14 +23,11 @@ export default function SignupPage() {
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
     const [submitted, setSubmitted] = React.useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!firestore) return;
-
-        initiateEmailSignUp(auth, email, password);
 
         const waitlistCollection = collection(firestore, 'waitlist');
         addDocumentNonBlocking(waitlistCollection, {
@@ -49,7 +46,7 @@ export default function SignupPage() {
         <CardTitle className="text-xl">{submitted ? "You're on the list!" : "Join the Waitlist"}</CardTitle>
         <CardDescription>
           {submitted
-            ? "We'll be in touch soon. You can now log in."
+            ? "We'll be in touch soon. You can now log in if you have an account."
             : "Sign up to be one of the first to get access to Paramanu."
           }
         </CardDescription>
@@ -89,16 +86,6 @@ export default function SignupPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                        id="password"
-                        type="password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 <Button type="submit" className="w-full">
