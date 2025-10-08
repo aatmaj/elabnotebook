@@ -21,6 +21,11 @@ import Link from "next/link";
 
 const solutionFeatures = [
     {
+    icon: <Scale className="w-8 h-8 text-primary" />,
+    title: "Scale-Up & Tech Transfer",
+    description: "Employ AI simulations to model process parameters for scale-up, ensuring smooth technology transfer and consistent batch quality from lab to commercial production.",
+    },
+    {
     icon: <FlaskConical className="w-8 h-8 text-primary" />,
     title: "Pre-Formulation Studies",
     description: "Leverage AI to analyze API characteristics and excipient compatibility, predicting stability and performance to de-risk your development path.",
@@ -29,11 +34,6 @@ const solutionFeatures = [
     icon: <SlidersHorizontal className="w-8 h-8 text-primary" />,
     title: "Formulation Development",
     description: "Intelligently design and optimize robust generic formulations with AI-driven DoE, achieving target product profiles faster than traditional methods.",
-    },
-    {
-    icon: <Scale className="w-8 h-8 text-primary" />,
-    title: "Scale-Up & Tech Transfer",
-    description: "Employ AI simulations to model process parameters for scale-up, ensuring smooth technology transfer and consistent batch quality from lab to commercial production.",
     },
     {
     icon: <BarChart3 className="w-8 h-8 text-primary" />,
@@ -53,15 +53,15 @@ const approachFeatures = [
     title: "Unified Knowledge Graph",
     description: "We structure your disparate R&D data—unstructured notes, instrument data, and results—into an interconnected knowledge graph, revealing hidden relationships between experiments, compounds, and outcomes.",
   },
+   {
+    icon: <Scale className="w-8 h-8 text-primary" />,
+    title: "Predictive Scale-Up Modeling",
+    description: "Go from lab to production with confidence. Our AI models predict optimal parameters for scale-up, minimizing trial-and-error and accelerating your time to market.",
+  },
   {
     icon: <BrainCircuit className="w-8 h-8 text-primary" />,
     title: "AI Co-pilot for Research",
     description: "Paramanu's generative AI acts as a co-pilot, summarizing complex data, generating novel hypotheses from your results, and identifying unseen connections to accelerate discovery.",
-  },
-  {
-    icon: <BarChart3 className="w-8 h-8 text-primary" />,
-    title: "Analytics & Insights",
-    description: "Visualize your experimental data through intuitive dashboards. Uncover trends, spot outliers, and gain deeper insights from your results to guide your next steps.",
   },
 ]
 
@@ -147,10 +147,10 @@ export default function Home() {
            <div className="relative z-30 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
-                    The Intelligent E-Lab Notebook for Generics Pharma
+                    Predict Your Scale-Up Success
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                    Paramanu is an intelligent electronic lab notebook (ELN) platform, purpose-built to accelerate every phase of generic drug development.
+                    Paramanu is the intelligent electronic lab notebook (ELN) for generics pharma, purpose-built to accelerate drug development with predictive modeling and generative AI.
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
@@ -162,8 +162,8 @@ export default function Home() {
         <section id="solution" className="w-full py-8 md:py-10 lg:py-12">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Platform</div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">An Intelligent Lab Notebook for the Entire R&D Lifecycle</h2>
+              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">From Prediction to Production</div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">An Intelligent Platform for the Entire R&D Lifecycle</h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Paramanu unifies every stage of your generics R&D workflow into a single, intelligent lab notebook platform.
               </p>
@@ -187,10 +187,10 @@ export default function Home() {
         <section id="approach" className="w-full py-8 md:py-10 lg:py-12 bg-secondary/20">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Approach</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">How We Accelerate Discovery</h2>
+                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Paramanu Method</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">How We Turn Data into Discovery</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                    Paramanu is built on three core principles that turn your laboratory data into a strategic advantage.
+                    Paramanu is built on core principles that turn your laboratory data into a strategic, predictive advantage.
                 </p>
             </div>
             <div className="mx-auto grid gap-8 sm:max-w-4xl md:grid-cols-3 md:gap-12">
