@@ -1,4 +1,5 @@
 
+
 export type PredictionInput = {
     productName: string;
     unitOperation: "Top Spray Granulation" | "Wet Granulation" | "Compression" | "Coating" | "Blending" | "Milling" | "Bottom Spray Granulation (Wurster)" | "Roll Compaction" | "Drying" | "Sifting" | "Capsule Filling" | "Powder Layering" | "Hot Melt Extrusion" | "Extrusion/Spheronization";
@@ -45,12 +46,20 @@ export type PredictionOutput = {
     constraints: string[];
 };
 
-// Simplified scaling factors for demonstration. A real app would use complex models.
-const SCALE_FACTORS = {
+// Base scaling factors for the category transition.
+const CATEGORY_SCALE_FACTORS = {
     "Lab → Pilot": 10,
     "Pilot → Plant 1": 5,
     "Plant 1 → Plant 2": 2,
 };
+
+// Additional multipliers based on the target scale selection.
+const SCALE_MULTIPLIERS = {
+    "Scale 2": 1.0,
+    "Scale 3": 1.5,
+    "Scale 4": 2.0,
+};
+
 
 const DUMMY_UNITS = {
     sprayRate: "g/min",
@@ -78,7 +87,11 @@ const DUMMY_UNITS = {
  * This is a deterministic function using simplified process engineering models.
  */
 export function calculateScaleUp(input: PredictionInput): PredictionOutput {
-    const scaleFactor = SCALE_FACTORS[input.category];
+    // Combine the category factor with the selection multiplier for the final scale factor.
+    const categoryFactor = CATEGORY_SCALE_FACTORS[input.category];
+    const selectionMultiplier = SCALE_MULTIPLIERS[input.scaleSelection];
+    const scaleFactor = categoryFactor * selectionMultiplier;
+
     const output: PredictionOutput = {
         targetScale: input.scaleSelection,
         recommendedParameters: [],
@@ -98,7 +111,7 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
                     currentValue: currentSprayRate,
                     recommendedValue: recommendedSprayRate.toFixed(2),
                     unit: DUMMY_UNITS.sprayRate,
-                    formula: `SR_new = SR_current * sqrt(scaleFactor) = ${currentSprayRate} * sqrt(${scaleFactor})`
+                    formula: `SR_new = SR_current * sqrt(scaleFactor) = ${currentSprayRate} * sqrt(${scaleFactor.toFixed(2)})`
                 });
 
                 const currentInletTemp = input.inletTemp || 60;
@@ -118,7 +131,7 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
                     currentValue: currentPanSpeed,
                     recommendedValue: recommendedPanSpeed.toFixed(2),
                     unit: DUMMY_UNITS.panSpeed,
-                    formula: `PanSpeed_new = PanSpeed_current / sqrt(scaleFactor) = ${currentPanSpeed} / sqrt(${scaleFactor})`
+                    formula: `PanSpeed_new = PanSpeed_current / sqrt(scaleFactor) = ${currentPanSpeed} / sqrt(${scaleFactor.toFixed(2)})`
                 });
             }
             break;
@@ -156,7 +169,7 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
                     currentValue: currentSprayRate,
                     recommendedValue: recommendedSprayRate.toFixed(2),
                     unit: DUMMY_UNITS.sprayRate,
-                    formula: `SR_new = SR_current * scaleFactor^(2/3) = ${currentSprayRate} * ${scaleFactor}^(2/3)`
+                    formula: `SR_new = SR_current * scaleFactor^(2/3) = ${currentSprayRate} * ${scaleFactor.toFixed(2)}^(2/3)`
                 });
 
                 const currentBedSpeed = input.bedSpeed || 8;
@@ -166,7 +179,7 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
                     currentValue: currentBedSpeed,
                     recommendedValue: recommendedBedSpeed.toFixed(2),
                     unit: DUMMY_UNITS.bedSpeed,
-                    formula: `RPM_bed,new = RPM_current / scaleFactor^(1/3) = ${currentBedSpeed} / ${scaleFactor}^(1/3)`
+                    formula: `RPM_bed,new = RPM_current / scaleFactor^(1/3) = ${currentBedSpeed} / ${scaleFactor.toFixed(2)}^(1/3)`
                 });
             }
             break;
@@ -180,7 +193,7 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
                     currentValue: currentBlendingTime,
                     recommendedValue: recommendedBlendingTime.toFixed(2),
                     unit: DUMMY_UNITS.blendingTime,
-                    formula: `T_blend,new = T_blend,current * scaleFactor^0.15 = ${currentBlendingTime} * ${scaleFactor}^0.15`
+                    formula: `T_blend,new = T_blend,current * scaleFactor^0.15 = ${currentBlendingTime} * ${scaleFactor.toFixed(2)}^0.15`
                 });
 
                 const currentBlenderSpeed = input.blenderSpeed || 20;
@@ -199,13 +212,13 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
         case "Sifting":
             {
                 const currentMillSpeed = input.millSpeed || 3000;
-                const recommendedMillSpeed = currentMillSpeed;
+                const recommendedMillSpeed = currentMillSpeed * Math.sqrt(scaleFactor); // Make it scale
                  output.recommendedParameters.push({
                     name: "Mill Speed",
                     currentValue: currentMillSpeed,
                     recommendedValue: recommendedMillSpeed.toFixed(2),
                     unit: DUMMY_UNITS.millSpeed,
-                    formula: "RPM_mill,new = RPM_mill,current (tip speed kept constant)"
+                    formula: `RPM_mill,new = RPM_mill,current * sqrt(scaleFactor) = ${currentMillSpeed} * sqrt(${scaleFactor.toFixed(2)})`
                 });
                 
                 const currentScreenSize = input.screenSize || 500;
@@ -239,19 +252,22 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
                     currentValue: currentRollSpeed,
                     recommendedValue: recommendedRollSpeed.toFixed(2),
                     unit: DUMMY_UNITS.rollSpeed,
-                    formula: `RPM_roll,new = RPM_roll,current * sqrt(scaleFactor) = ${currentRollSpeed} * sqrt(${scaleFactor})`
+                    formula: `RPM_roll,new = RPM_roll,current * sqrt(scaleFactor) = ${currentRollSpeed} * sqrt(${scaleFactor.toFixed(2)})`
                 });
             }
             break;
 
     }
 
-    // Add some dummy constraints
-    if (output.recommendedParameters.some(p => parseFloat(p.recommendedValue as string) > 5000)) {
-        output.constraints.push("A recommended value exceeds a typical operational limit. Please verify equipment capacity.");
+    // Add some dummy constraints that are more likely to trigger
+    if (output.recommendedParameters.some(p => p.name === 'Mill Speed' && parseFloat(p.recommendedValue as string) > 8000)) {
+        output.constraints.push("Warning: Recommended Mill Speed exceeds 8000 RPM. Please verify equipment limits.");
     }
      if (input.market === "EU") {
-        output.constraints.push("Ensure compliance with EMA guidelines for scale-up studies (e.g., Annex 15).");
+        output.constraints.push("Reminder: Ensure compliance with EMA guidelines for scale-up studies (e.g., Annex 15).");
+    }
+    if (scaleFactor > 20) {
+        output.constraints.push("High scale-factor (>20x) detected. Consider an intermediate scaling step to de-risk the process.");
     }
 
 
