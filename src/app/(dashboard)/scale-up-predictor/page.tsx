@@ -30,6 +30,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -47,9 +52,10 @@ import {
   ChartLegendContent
 } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
-import { calculateScaleUp, type PredictionInput, type PredictionOutput } from "@/lib/scale-up-calculations";
+import { calculateScaleUp, type PredictionInput, type PredictionOutput, RecommendedParameter } from "@/lib/scale-up-calculations";
 import { useAppStore } from "@/lib/store";
-import { Loader2, PlusCircle, Trash2 } from "lucide-react";
+import { Loader2, PlusCircle, Trash2, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const unitOperationSchema = z.object({
   unitOperation: z.enum(["Top Spray Granulation", "Wet Granulation", "Compression", "Coating", "Blending", "Milling", "Bottom Spray Granulation (Wurster)", "Roll Compaction", "Drying", "Sifting", "Capsule Filling", "Powder Layering", "Hot Melt Extrusion", "Extrusion/Spheronization"]),
@@ -409,6 +415,40 @@ const DynamicFields: React.FC<{ control: any; index: number, unitOperation: any 
     }
 };
 
+const ResultRow = ({ param, index }: { param: RecommendedParameter; index: number }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    return (
+        <Collapsible key={`${param.name}-${index}`} asChild>
+        <>
+            <TableRow>
+            <TableCell>{param.name}</TableCell>
+            <TableCell>{param.currentValue}</TableCell>
+            <TableCell className="font-bold">{param.recommendedValue}</TableCell>
+            <TableCell>{param.unit}</TableCell>
+            <TableCell className="text-right">
+                <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="icon" onClick={() => setIsOpen(prev => !prev)}>
+                    <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
+                    <span className="sr-only">{isOpen ? "Hide" : "Show"} formula</span>
+                </Button>
+                </CollapsibleTrigger>
+            </TableCell>
+            </TableRow>
+            <CollapsibleContent asChild>
+            <TableRow>
+                <TableCell colSpan={5} className="p-0">
+                    <div className="p-4 bg-muted/50">
+                        <p className="font-mono text-xs text-muted-foreground">{param.formula}</p>
+                    </div>
+                </TableCell>
+            </TableRow>
+            </CollapsibleContent>
+        </>
+        </Collapsible>
+    )
+}
+
 export default function ScaleUpPredictorPage() {
   const [prediction, setPrediction] = React.useState<PredictionOutput | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -724,16 +764,12 @@ export default function ScaleUpPredictorPage() {
                                 <TableHead>Current Value</TableHead>
                                 <TableHead>Recommended Value</TableHead>
                                 <TableHead>Unit</TableHead>
+                                <TableHead className="text-right">Details</TableHead>
                             </TableRow>
                             </TableHeader>
                             <TableBody>
                             {prediction.recommendedParameters.map((param, i) => (
-                                <TableRow key={`${param.name}-${i}`}>
-                                <TableCell>{param.name}</TableCell>
-                                <TableCell>{param.currentValue}</TableCell>
-                                <TableCell className="font-bold">{param.recommendedValue}</TableCell>
-                                <TableCell>{param.unit}</TableCell>
-                                </TableRow>
+                                <ResultRow param={param} index={i} key={`${param.name}-${i}`}/>
                             ))}
                             </TableBody>
                         </Table>
