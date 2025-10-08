@@ -150,7 +150,7 @@ export default function Home() {
                     Predict Your Scale-Up Success
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                    Paramanu is the intelligent electronic lab notebook (ELN) for generics pharma, purpose-built to accelerate drug development with predictive modeling and generative AI.
+                    Paramanu is purpose-built to accelerate drug development for generics pharma with predictive modeling and generative AI.
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
@@ -163,9 +163,9 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">From Prediction to Production</div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">An Intelligent Platform for the Entire R&D Lifecycle</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">A Unified Platform for the Entire R&D Lifecycle</h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Paramanu unifies every stage of your generics R&D workflow into a single, intelligent lab notebook platform.
+                Paramanu unifies every stage of your generics R&D workflow into a single, intelligent platform.
               </p>
             </div>
             <div className="mx-auto grid items-start gap-8 sm:max-w-4xl sm:grid-cols-2 md:gap-12 lg:max-w-5xl lg:grid-cols-3">
