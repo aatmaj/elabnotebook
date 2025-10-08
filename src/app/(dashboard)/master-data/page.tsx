@@ -305,7 +305,7 @@ export default function MasterDataPage() {
               <CardDescription>
                 Manage all equipment linked to specific plants.
               </CardDescription>
-            </Header>
+            </CardHeader>
             <CardContent>
                {isLoadingEquipment ? <TableSkeleton headers={equipmentHeaders} /> : (
                 <Table>
