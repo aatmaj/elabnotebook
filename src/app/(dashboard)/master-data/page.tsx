@@ -18,24 +18,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { useAppStore } from "@/lib/store";
 
-// Placeholder data - this will be managed via a backend and state management
-const masterData = {
-  plants: [
-    { id: 1, name: "PharmaPlant A", location: "New Jersey", category: "Pilot", vertical: "OSD", market: "USA" },
-    { id: 2, name: "PharmaPlant B", location: "Hyderabad", category: "Plant 1", vertical: "Injectable", market: "India" },
-  ],
-  equipment: [
-    { id: 1, name: "Granulator-01", type: "Top Spray Granulator", plant: "PharmaPlant A", capacity: "100L" },
-    { id: 2, name: "Compressor-5", type: "Tablet Press", plant: "PharmaPlant B", capacity: "500,000 tablets/hr" },
-  ],
-  parameters: [
-    { id: 1, name: "Spray Rate", unitOp: "Granulation", min: 50, max: 200, unit: "mL/min" },
-    { id: 2, name: "Turret Speed", unitOp: "Compression", min: 10, max: 60, unit: "RPM" },
-  ]
-};
 
 export default function MasterDataPage() {
+  const { plants, equipment } = useAppStore();
+
   return (
     <div className="space-y-6">
        <div className="flex justify-between items-start gap-4">
@@ -72,7 +60,7 @@ export default function MasterDataPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {masterData.plants.map((plant) => (
+              {plants.map((plant) => (
                 <TableRow key={plant.id}>
                   <TableCell className="font-medium">{plant.name}</TableCell>
                   <TableCell>{plant.location}</TableCell>
@@ -104,7 +92,7 @@ export default function MasterDataPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {masterData.equipment.map((equip) => (
+              {equipment.map((equip) => (
                 <TableRow key={equip.id}>
                   <TableCell className="font-medium">{equip.name}</TableCell>
                   <TableCell>{equip.type}</TableCell>

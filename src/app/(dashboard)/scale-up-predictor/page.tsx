@@ -48,6 +48,7 @@ import {
 } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import { calculateScaleUp, type PredictionInput, type PredictionOutput } from "@/lib/scale-up-calculations";
+import { useAppStore } from "@/lib/store";
 import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
@@ -55,8 +56,8 @@ const formSchema = z.object({
   unitOperation: z.enum(["Top Spray Granulation", "Wet Granulation", "Compression", "Coating"]),
   category: z.enum(["Lab → Pilot", "Pilot → Plant 1", "Plant 1 → Plant 2"]),
   strength: z.coerce.number().positive({ message: "Strength must be a positive number." }),
-  vertical: z.enum(["OSD", "Injectable", "Liquid", "Other"]),
-  market: z.enum(["USA", "EU", "India", "Other"]),
+  vertical: z.string(),
+  market: z.string(),
   scaleSelection: z.enum(["Scale 2", "Scale 3", "Scale 4"]),
   sprayRate: z.coerce.number().optional(),
   binderPercentage: z.coerce.number().optional(),
@@ -76,6 +77,10 @@ type FormValues = z.infer<typeof formSchema>;
 export default function ScaleUpPredictorPage() {
   const [prediction, setPrediction] = React.useState<PredictionOutput | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const { getUniqueValues } = useAppStore();
+
+  const markets = getUniqueValues("market");
+  const verticals = getUniqueValues("vertical");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -83,8 +88,8 @@ export default function ScaleUpPredictorPage() {
       productName: "",
       unitOperation: "Top Spray Granulation",
       category: "Lab → Pilot",
-      vertical: "OSD",
-      market: "USA",
+      vertical: verticals[0] || "",
+      market: markets[0] || "",
       scaleSelection: "Scale 2",
       sprayRate: undefined,
       binderPercentage: undefined,
@@ -397,10 +402,9 @@ export default function ScaleUpPredictorPage() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="OSD">OSD</SelectItem>
-                              <SelectItem value="Injectable">Injectable</SelectItem>
-                              <SelectItem value="Liquid">Liquid</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
+                              {verticals.map((v) => (
+                                <SelectItem key={v} value={v}>{v}</SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -420,10 +424,9 @@ export default function ScaleUpPredictorPage() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="USA">USA</SelectItem>
-                              <SelectItem value="EU">EU</SelectItem>
-                              <SelectItem value="India">India</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
+                              {markets.map((m) => (
+                                <SelectItem key={m} value={m}>{m}</SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                           <FormMessage />
