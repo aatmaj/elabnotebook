@@ -15,9 +15,10 @@ import { DashboardNav } from '@/components/dashboard-nav';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
-import { Home, LogOut, Users } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 export default function DashboardLayout({
   children,
@@ -27,6 +28,7 @@ export default function DashboardLayout({
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const { toast } = useToast();
 
   React.useEffect(() => {
     // If not loading and there's no user, or the user is anonymous, redirect to login.
@@ -35,9 +37,14 @@ export default function DashboardLayout({
     }
   }, [user, isUserLoading, router]);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     if (auth) {
-        auth.signOut();
+        await auth.signOut();
+        toast({
+            title: "Signed out successfully",
+            description: "You have been logged out of your account.",
+        });
+        router.push('/landing');
     }
   };
 
@@ -75,9 +82,7 @@ export default function DashboardLayout({
                     <SidebarTrigger className="md:hidden" />
                 </div>
                  <div className="flex items-center gap-4">
-                    <Button variant="outline" asChild>
-                        <Link href="/landing"><Home className='mr-2' /> Return to Landing</Link>
-                    </Button>
+                    {/* The "Return to Landing" button was here */}
                 </div>
             </header>
             <main className="flex-1 overflow-auto p-4 md:p-6">
