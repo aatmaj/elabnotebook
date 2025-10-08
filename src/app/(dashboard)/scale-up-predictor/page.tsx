@@ -145,7 +145,6 @@ export default function ScaleUpPredictorPage() {
       case "Top Spray Granulation":
       case "Bottom Spray Granulation (Wurster)":
       case "Powder Layering":
-      case "Wet Granulation":
         return (
           <>
             <FormField
@@ -225,6 +224,37 @@ export default function ScaleUpPredictorPage() {
                   <FormMessage />
                 </FormItem>
               )}
+            />
+          </>
+        );
+    case "Wet Granulation":
+        return (
+          <>
+            <FormField
+                control={form.control}
+                name="panSpeed"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>RMG Speed (RPM)</FormLabel>
+                    <FormControl>
+                    <Input type="number" placeholder="e.g., 150" {...field} value={field.value ?? ""} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+                )}
+            />
+             <FormField
+                control={form.control}
+                name="blendingTime"
+                render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Wet Massing Time (min)</FormLabel>
+                    <FormControl>
+                    <Input type="number" placeholder="e.g., 5" {...field} value={field.value ?? ""} />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+                )}
             />
           </>
         );
@@ -680,3 +710,5 @@ export default function ScaleUpPredictorPage() {
     </div>
   );
 }
+
+    
