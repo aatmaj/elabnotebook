@@ -612,7 +612,7 @@ export default function ScaleUpPredictorPage() {
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select target scale" />
-                              </Trigger>
+                              </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="Scale 2">Scale 2</SelectItem>
@@ -710,5 +710,3 @@ export default function ScaleUpPredictorPage() {
     </div>
   );
 }
-
-    
