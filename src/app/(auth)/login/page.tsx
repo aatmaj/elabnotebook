@@ -24,7 +24,7 @@ export default function LoginPage() {
         console.log("Login submitted", { email, password });
         // Here you would typically handle authentication
         // For now, we'll just redirect to the dashboard's default page
-        router.push("/molecules");
+        router.push("/scale-up-predictor");
     };
 
   return (
