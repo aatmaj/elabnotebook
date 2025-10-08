@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,16 +49,10 @@ import {
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import { calculateScaleUp, type PredictionInput, type PredictionOutput } from "@/lib/scale-up-calculations";
 import { useAppStore } from "@/lib/store";
-import { Loader2 } from "lucide-react";
+import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 
-const formSchema = z.object({
-  productName: z.string().min(2, { message: "Product name must be at least 2 characters." }),
+const unitOperationSchema = z.object({
   unitOperation: z.enum(["Top Spray Granulation", "Wet Granulation", "Compression", "Coating", "Blending", "Milling", "Bottom Spray Granulation (Wurster)", "Roll Compaction", "Drying", "Sifting", "Capsule Filling", "Powder Layering", "Hot Melt Extrusion", "Extrusion/Spheronization"]),
-  category: z.enum(["Lab → Pilot", "Pilot → Plant 1", "Plant 1 → Plant 2"]),
-  strength: z.coerce.number().positive({ message: "Strength must be a positive number." }),
-  vertical: z.string(),
-  market: z.string(),
-  scaleSelection: z.enum(["Scale 2", "Scale 3", "Scale 4"]),
   // Granulation
   sprayRate: z.coerce.number().optional(),
   binderPercentage: z.coerce.number().optional(),
@@ -85,79 +79,28 @@ const formSchema = z.object({
   gapSize: z.coerce.number().optional(),
 });
 
+const formSchema = z.object({
+  productName: z.string().min(2, { message: "Product name must be at least 2 characters." }),
+  strength: z.coerce.number().positive({ message: "Strength must be a positive number." }),
+  category: z.enum(["Lab → Pilot", "Pilot → Plant 1", "Plant 1 → Plant 2"]),
+  vertical: z.string(),
+  market: z.string(),
+  scaleSelection: z.enum(["Scale 2", "Scale 3", "Scale 4"]),
+  operations: z.array(unitOperationSchema).min(1, "Please add at least one unit operation."),
+});
+
 type FormValues = z.infer<typeof formSchema>;
 
-export default function ScaleUpPredictorPage() {
-  const [prediction, setPrediction] = React.useState<PredictionOutput | null>(null);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const { getUniqueValues } = useAppStore();
-  const resultsRef = React.useRef<HTMLDivElement>(null);
-
-  const markets = getUniqueValues("market");
-  const verticals = getUniqueValues("vertical");
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      productName: "",
-      unitOperation: "Top Spray Granulation",
-      category: "Lab → Pilot",
-      vertical: verticals[0] || "",
-      market: markets[0] || "",
-      scaleSelection: "Scale 2",
-      sprayRate: undefined,
-      binderPercentage: undefined,
-      inletTemp: undefined,
-      outletTemp: undefined,
-      panSpeed: undefined,
-      nozzlePosition: undefined,
-      turretSpeed: undefined,
-      numberOfPunches: undefined,
-      compressionForce: undefined,
-      bedSpeed: undefined,
-      atomizationPressure: undefined,
-      blendingTime: undefined,
-      blenderSpeed: undefined,
-      millSpeed: undefined,
-      screenSize: undefined,
-      rollForce: undefined,
-      rollSpeed: undefined,
-      gapSize: undefined,
-    },
-  });
-
-  const selectedUnitOp = form.watch("unitOperation");
-
-  function onSubmit(values: FormValues) {
-    setIsLoading(true);
-    setPrediction(null);
-    console.log("Form Submitted:", values);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-        const result = calculateScaleUp(values as PredictionInput);
-        setPrediction(result);
-        setIsLoading(false);
-    }, 1000);
-  }
-
-  React.useEffect(() => {
-    if (prediction && resultsRef.current) {
-      resultsRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [prediction]);
-
-
-  const renderDynamicFields = () => {
-    switch (selectedUnitOp) {
+const DynamicFields: React.FC<{ control: any; index: number, unitOperation: any }> = ({ control, index, unitOperation }) => {
+    switch (unitOperation) {
       case "Top Spray Granulation":
       case "Bottom Spray Granulation (Wurster)":
       case "Powder Layering":
         return (
           <>
             <FormField
-              control={form.control}
-              name="sprayRate"
+              control={control}
+              name={`operations.${index}.sprayRate`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Spray Rate (g/min)</FormLabel>
@@ -169,8 +112,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
             <FormField
-              control={form.control}
-              name="binderPercentage"
+              control={control}
+              name={`operations.${index}.binderPercentage`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Binder %</FormLabel>
@@ -182,8 +125,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
              <FormField
-              control={form.control}
-              name="inletTemp"
+              control={control}
+              name={`operations.${index}.inletTemp`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Inlet Temp (°C)</FormLabel>
@@ -195,8 +138,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
              <FormField
-              control={form.control}
-              name="outletTemp"
+              control={control}
+              name={`operations.${index}.outletTemp`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Outlet Temp (°C)</FormLabel>
@@ -208,8 +151,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
              <FormField
-              control={form.control}
-              name="panSpeed"
+              control={control}
+              name={`operations.${index}.panSpeed`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pan Speed (RPM)</FormLabel>
@@ -221,8 +164,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
              <FormField
-              control={form.control}
-              name="nozzlePosition"
+              control={control}
+              name={`operations.${index}.nozzlePosition`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nozzle Position</FormLabel>
@@ -239,8 +182,8 @@ export default function ScaleUpPredictorPage() {
         return (
           <>
             <FormField
-                control={form.control}
-                name="panSpeed"
+                control={control}
+                name={`operations.${index}.panSpeed`}
                 render={({ field }) => (
                 <FormItem>
                     <FormLabel>RMG Speed (RPM)</FormLabel>
@@ -252,8 +195,8 @@ export default function ScaleUpPredictorPage() {
                 )}
             />
              <FormField
-                control={form.control}
-                name="blendingTime"
+                control={control}
+                name={`operations.${index}.blendingTime`}
                 render={({ field }) => (
                 <FormItem>
                     <FormLabel>Wet Massing Time (min)</FormLabel>
@@ -270,8 +213,8 @@ export default function ScaleUpPredictorPage() {
         return (
           <>
             <FormField
-              control={form.control}
-              name="turretSpeed"
+              control={control}
+              name={`operations.${index}.turretSpeed`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Turret Speed (RPM)</FormLabel>
@@ -283,8 +226,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
             <FormField
-              control={form.control}
-              name="numberOfPunches"
+              control={control}
+              name={`operations.${index}.numberOfPunches`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Number of Punches</FormLabel>
@@ -296,8 +239,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
             <FormField
-              control={form.control}
-              name="compressionForce"
+              control={control}
+              name={`operations.${index}.compressionForce`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Compression Force (kN)</FormLabel>
@@ -314,8 +257,8 @@ export default function ScaleUpPredictorPage() {
         return (
           <>
              <FormField
-              control={form.control}
-              name="sprayRate"
+              control={control}
+              name={`operations.${index}.sprayRate`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Spray Rate (g/min)</FormLabel>
@@ -327,8 +270,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
              <FormField
-              control={form.control}
-              name="bedSpeed"
+              control={control}
+              name={`operations.${index}.bedSpeed`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Bed Speed (RPM)</FormLabel>
@@ -340,8 +283,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
             <FormField
-              control={form.control}
-              name="atomizationPressure"
+              control={control}
+              name={`operations.${index}.atomizationPressure`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Atomization Pressure (bar)</FormLabel>
@@ -358,8 +301,8 @@ export default function ScaleUpPredictorPage() {
         return (
           <>
             <FormField
-              control={form.control}
-              name="blendingTime"
+              control={control}
+              name={`operations.${index}.blendingTime`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Blending Time (min)</FormLabel>
@@ -371,8 +314,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
             <FormField
-              control={form.control}
-              name="blenderSpeed"
+              control={control}
+              name={`operations.${index}.blenderSpeed`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Blender Speed (RPM)</FormLabel>
@@ -390,8 +333,8 @@ export default function ScaleUpPredictorPage() {
         return (
           <>
             <FormField
-              control={form.control}
-              name="millSpeed"
+              control={control}
+              name={`operations.${index}.millSpeed`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Mill Speed (RPM)</FormLabel>
@@ -403,8 +346,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
             <FormField
-              control={form.control}
-              name="screenSize"
+              control={control}
+              name={`operations.${index}.screenSize`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Screen Size (microns)</FormLabel>
@@ -421,8 +364,8 @@ export default function ScaleUpPredictorPage() {
         return (
           <>
             <FormField
-              control={form.control}
-              name="rollForce"
+              control={control}
+              name={`operations.${index}.rollForce`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Roll Force (kN/cm)</FormLabel>
@@ -434,8 +377,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
             <FormField
-              control={form.control}
-              name="rollSpeed"
+              control={control}
+              name={`operations.${index}.rollSpeed`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Roll Speed (RPM)</FormLabel>
@@ -447,8 +390,8 @@ export default function ScaleUpPredictorPage() {
               )}
             />
              <FormField
-              control={form.control}
-              name="gapSize"
+              control={control}
+              name={`operations.${index}.gapSize`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gap Size (mm)</FormLabel>
@@ -462,9 +405,73 @@ export default function ScaleUpPredictorPage() {
           </>
         );
       default:
-        return <p className="text-muted-foreground text-sm">Prediction for this unit operation is not yet implemented.</p>;
+        return <p className="text-muted-foreground text-sm col-span-3">Prediction for this unit operation is not yet implemented.</p>;
     }
-  };
+};
+
+export default function ScaleUpPredictorPage() {
+  const [prediction, setPrediction] = React.useState<PredictionOutput | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const { getUniqueValues } = useAppStore();
+  const resultsRef = React.useRef<HTMLDivElement>(null);
+
+  const markets = getUniqueValues("market");
+  const verticals = getUniqueValues("vertical");
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      productName: "",
+      category: "Lab → Pilot",
+      vertical: verticals[0] || "",
+      market: markets[0] || "",
+      scaleSelection: "Scale 2",
+      operations: [{ unitOperation: "Top Spray Granulation" }],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "operations"
+  });
+
+  const watchedOperations = form.watch("operations");
+
+  function onSubmit(values: FormValues) {
+    setIsLoading(true);
+    setPrediction(null);
+    console.log("Form Submitted:", values);
+    
+    // Simulate API call delay for each operation
+    // In a real app, this might be a single batch API call
+    const allPredictions: PredictionOutput[] = [];
+    values.operations.forEach(op => {
+       const result = calculateScaleUp({
+         ...values,
+         ...op,
+       });
+       allPredictions.push(result);
+    });
+
+    // For this simplified example, we will just display the results of the last operation
+    // A more advanced implementation would show results for each step.
+    const combinedPrediction: PredictionOutput = {
+        targetScale: values.scaleSelection,
+        recommendedParameters: allPredictions.flatMap(p => p.recommendedParameters),
+        constraints: allPredictions.flatMap(p => p.constraints)
+    };
+
+    setTimeout(() => {
+        setPrediction(combinedPrediction);
+        setIsLoading(false);
+    }, 1000);
+  }
+
+  React.useEffect(() => {
+    if (prediction && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [prediction]);
 
 
   return (
@@ -475,7 +482,7 @@ export default function ScaleUpPredictorPage() {
           <CardHeader>
             <CardTitle>Scale-Up Predictor</CardTitle>
             <CardDescription>
-              Predict optimal process parameters for scaling up formulations.
+              Build a sequence of unit operations and predict optimal process parameters for scaling up formulations.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6">
@@ -509,39 +516,6 @@ export default function ScaleUpPredictorPage() {
               </div>
 
                <div className="grid md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="unitOperation"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Unit Operation</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a unit operation" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="Blending">Blending</SelectItem>
-                            <SelectItem value="Bottom Spray Granulation (Wurster)">Bottom Spray Granulation (Wurster)</SelectItem>
-                            <SelectItem value="Capsule Filling">Capsule Filling</SelectItem>
-                            <SelectItem value="Coating">Coating</SelectItem>
-                            <SelectItem value="Compression">Compression</SelectItem>
-                            <SelectItem value="Drying">Drying</SelectItem>
-                            <SelectItem value="Extrusion/Spheronization">Extrusion/Spheronization</SelectItem>
-                            <SelectItem value="Hot Melt Extrusion">Hot Melt Extrusion</SelectItem>
-                            <SelectItem value="Milling">Milling</SelectItem>
-                            <SelectItem value="Powder Layering">Powder Layering</SelectItem>
-                            <SelectItem value="Roll Compaction">Roll Compaction</SelectItem>
-                            <SelectItem value="Sifting">Sifting</SelectItem>
-                            <SelectItem value="Top Spray Granulation">Top Spray Granulation</SelectItem>
-                            <SelectItem value="Wet Granulation">Wet Granulation</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                    <FormField
                     control={form.control}
                     name="category"
@@ -564,6 +538,7 @@ export default function ScaleUpPredictorPage() {
                       </FormItem>
                     )}
                   />
+                   <div />
                </div>
                <div className="grid md:grid-cols-3 gap-4">
                   <FormField
@@ -636,11 +611,78 @@ export default function ScaleUpPredictorPage() {
 
               <Separator className="my-4" />
 
-              <div>
-                <h3 className="text-lg font-medium mb-4">Unit Operation Parameters (Current Scale)</h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  {renderDynamicFields()}
-                </div>
+              <div className="space-y-6">
+                <h3 className="text-lg font-medium">Unit Operation Sequence</h3>
+                 {fields.map((field, index) => (
+                   <Card key={field.id} className="bg-secondary/20">
+                     <CardHeader className="flex flex-row items-center justify-between pb-4">
+                        <div className="flex-1">
+                             <FormField
+                                control={form.control}
+                                name={`operations.${index}.unitOperation`}
+                                render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Unit Operation #{index + 1}</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                        <SelectValue placeholder="Select a unit operation" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="Blending">Blending</SelectItem>
+                                        <SelectItem value="Bottom Spray Granulation (Wurster)">Bottom Spray Granulation (Wurster)</SelectItem>
+                                        <SelectItem value="Capsule Filling">Capsule Filling</SelectItem>
+                                        <SelectItem value="Coating">Coating</SelectItem>
+                                        <SelectItem value="Compression">Compression</SelectItem>
+                                        <SelectItem value="Drying">Drying</SelectItem>
+                                        <SelectItem value="Extrusion/Spheronization">Extrusion/Spheronization</SelectItem>
+                                        <SelectItem value="Hot Melt Extrusion">Hot Melt Extrusion</SelectItem>
+                                        <SelectItem value="Milling">Milling</SelectItem>
+                                        <SelectItem value="Powder Layering">Powder Layering</SelectItem>
+                                        <SelectItem value="Roll Compaction">Roll Compaction</SelectItem>
+                                        <SelectItem value="Sifting">Sifting</SelectItem>
+                                        <SelectItem value="Top Spray Granulation">Top Spray Granulation</SelectItem>
+                                        <SelectItem value="Wet Granulation">Wet Granulation</SelectItem>
+                                    </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                                )}
+                            />
+                        </div>
+                         <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="ml-4 mt-6 text-muted-foreground hover:text-destructive"
+                            onClick={() => remove(index)}
+                            disabled={fields.length <= 1}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Remove Operation</span>
+                        </Button>
+                     </CardHeader>
+                     <CardContent>
+                        <div className="grid md:grid-cols-3 gap-4">
+                            <DynamicFields control={form.control} index={index} unitOperation={watchedOperations[index]?.unitOperation} />
+                        </div>
+                     </CardContent>
+                   </Card>
+                 ))}
+                 <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="gap-1"
+                    onClick={() => append({ unitOperation: 'Blending' })}
+                  >
+                    <PlusCircle className="h-3.5 w-3.5" />
+                    Add Unit Operation
+                </Button>
+                {form.formState.errors.operations && (
+                    <p className="text-sm font-medium text-destructive">{form.formState.errors.operations.message}</p>
+                )}
               </div>
           </CardContent>
           <CardFooter>
@@ -673,8 +715,8 @@ export default function ScaleUpPredictorPage() {
                             </TableRow>
                             </TableHeader>
                             <TableBody>
-                            {prediction.recommendedParameters.map((param) => (
-                                <TableRow key={param.name}>
+                            {prediction.recommendedParameters.map((param, i) => (
+                                <TableRow key={`${param.name}-${i}`}>
                                 <TableCell>{param.name}</TableCell>
                                 <TableCell>{param.currentValue}</TableCell>
                                 <TableCell className="font-bold">{param.recommendedValue}</TableCell>
