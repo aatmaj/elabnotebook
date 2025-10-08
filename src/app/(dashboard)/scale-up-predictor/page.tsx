@@ -428,12 +428,10 @@ const ResultRow = ({ param }: { param: RecommendedParameter }) => {
                 <TableCell className="font-bold">{param.recommendedValue}</TableCell>
                 <TableCell>{param.unit}</TableCell>
                 <TableCell className="text-right">
-                    <CollapsibleTrigger asChild>
-                        <Button variant="ghost" size="icon" onClick={() => setIsOpen(prev => !prev)}>
-                            <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
-                            <span className="sr-only">{isOpen ? "Hide" : "Show"} formula</span>
-                        </Button>
-                    </CollapsibleTrigger>
+                    <Button variant="ghost" size="icon" onClick={() => setIsOpen(prev => !prev)}>
+                        <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
+                        <span className="sr-only">{isOpen ? "Hide" : "Show"} formula</span>
+                    </Button>
                 </TableCell>
             </TableRow>
             {isOpen && (
