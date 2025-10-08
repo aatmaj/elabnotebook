@@ -66,6 +66,17 @@ export default function ScaleUpPredictorPage() {
       vertical: "OSD",
       market: "USA",
       scaleSelection: "Scale 2",
+      sprayRate: undefined,
+      binderPercentage: undefined,
+      inletTemp: undefined,
+      outletTemp: undefined,
+      panSpeed: undefined,
+      nozzlePosition: undefined,
+      turretSpeed: undefined,
+      numberOfPunches: undefined,
+      compressionForce: undefined,
+      bedSpeed: undefined,
+      atomizationPressure: undefined,
     },
   });
 
@@ -89,7 +100,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Spray Rate (g/min)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 150" {...field} />
+                    <Input type="number" placeholder="e.g., 150" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,7 +113,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Binder %</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 5" {...field} />
+                    <Input type="number" placeholder="e.g., 5" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,7 +126,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Inlet Temp (°C)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 60" {...field} />
+                    <Input type="number" placeholder="e.g., 60" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,7 +139,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Outlet Temp (°C)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 45" {...field} />
+                    <Input type="number" placeholder="e.g., 45" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,7 +152,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Pan Speed (RPM)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 10" {...field} />
+                    <Input type="number" placeholder="e.g., 10" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,7 +165,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Nozzle Position</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 3" {...field} />
+                    <Input type="number" placeholder="e.g., 3" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,7 +183,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Turret Speed (RPM)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 25" {...field} />
+                    <Input type="number" placeholder="e.g., 25" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -185,7 +196,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Number of Punches</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 45" {...field} />
+                    <Input type="number" placeholder="e.g., 45" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -198,7 +209,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Compression Force (kN)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 15" {...field} />
+                    <Input type="number" placeholder="e.g., 15" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -216,7 +227,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Spray Rate (g/min)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 120" {...field} />
+                    <Input type="number" placeholder="e.g., 120" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -229,7 +240,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Bed Speed (RPM)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 8" {...field} />
+                    <Input type="number" placeholder="e.g., 8" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -242,7 +253,7 @@ export default function ScaleUpPredictorPage() {
                 <FormItem>
                   <FormLabel>Atomization Pressure (bar)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 2.5" {...field} />
+                    <Input type="number" placeholder="e.g., 2.5" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -288,7 +299,7 @@ export default function ScaleUpPredictorPage() {
                       <FormItem>
                         <FormLabel>Strength (mg)</FormLabel>
                         <FormControl>
-                          <Input type="number" placeholder="e.g., 500" {...field} />
+                          <Input type="number" placeholder="e.g., 500" {...field} value={field.value ?? ""} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
