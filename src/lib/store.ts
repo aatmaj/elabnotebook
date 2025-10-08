@@ -2,7 +2,8 @@ import { create } from 'zustand';
 
 // --- Data Types ---
 export type Plant = {
-  id: number;
+  id: string; // Changed for Firestore
+  userId: string; // To make it user-specific
   name: string;
   location: string;
   category: string;
@@ -11,7 +12,8 @@ export type Plant = {
 };
 
 export type Equipment = {
-  id: number;
+  id: string; // Changed for Firestore
+  userId: string; // To make it user-specific
   name: string;
   type: string;
   plant: string; // This is the name of the linked plant
@@ -42,25 +44,16 @@ type AppState = {
   parameters: Parameter[];
   // Actions
   getUniqueValues: (key: keyof Plant) => string[];
-  addPlant: (plant: Omit<Plant, 'id'>) => void;
-  addEquipment: (equipment: Omit<Equipment, 'id'>) => void;
+  setPlants: (plants: Plant[]) => void;
+  addPlant: (plant: Omit<Plant, 'id' | 'userId'>) => void;
+  addEquipment: (equipment: Omit<Equipment, 'id' | 'userId'>) => void;
 };
 
 // --- Store Implementation ---
 export const useAppStore = create<AppState>((set, get) => ({
   // --- State Properties ---
-  plants: [
-    { id: 1, name: "PharmaPlant A", location: "New Jersey", category: "Pilot", vertical: "OSD", market: "USA" },
-    { id: 2, name: "PharmaPlant B", location: "Hyderabad", category: "Plant 1", vertical: "Injectable", market: "India" },
-    { id: 3, name: "LabScale Labs", location: "San Diego", category: "Lab", vertical: "OSD", market: "USA" },
-    { id: 4, name: "Euro-Formulate", location: "Frankfurt", category: "Plant 2", vertical: "Liquid", market: "EU" },
-  ],
-  equipment: [
-    { id: 1, name: "Granulator-01", type: "Top Spray Granulator", plant: "PharmaPlant A", capacity: "100L" },
-    { id: 2, name: "Compressor-5", type: "Tablet Press", plant: "PharmaPlant B", capacity: "500,000 tablets/hr" },
-    { id: 3, name: "Lab Granulator", type: "Wet Granulator", plant: "LabScale Labs", capacity: "5L" },
-    { id: 4, name: "Coater-EU-01", type: "Coater", plant: "Euro-Formulate", capacity: "150L" },
-  ],
+  plants: [],
+  equipment: [],
   parameters: [
     { id: 1, name: "Spray Rate", unitOp: "Granulation", min: 50, max: 200, unit: "mL/min" },
     { id: 2, name: "Turret Speed", unitOp: "Compression", min: 10, max: 60, unit: "RPM" },
@@ -72,28 +65,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     const values = plants.map(plant => plant[key]);
     return [...new Set(values)];
   },
+  
+  setPlants: (plants) => set({ plants }),
 
   addPlant: (plant) => {
-    set((state) => ({
-      plants: [
-        ...state.plants,
-        {
-          id: state.plants.length > 0 ? Math.max(...state.plants.map(p => p.id)) + 1 : 1,
-          ...plant,
-        },
-      ],
-    }));
+    // This is now handled by Firestore, but keeping the structure for potential future local state needs.
   },
 
   addEquipment: (equipment) => {
-    set((state) => ({
-      equipment: [
-        ...state.equipment,
-        {
-          id: state.equipment.length > 0 ? Math.max(...state.equipment.map(e => e.id)) + 1 : 1,
-          ...equipment,
-        },
-      ],
-    }));
+    // This is now handled by Firestore.
   },
 }));

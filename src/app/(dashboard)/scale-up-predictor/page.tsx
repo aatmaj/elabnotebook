@@ -83,8 +83,8 @@ const formSchema = z.object({
   productName: z.string().min(2, { message: "Product name must be at least 2 characters." }),
   strength: z.coerce.number().positive({ message: "Strength must be a positive number." }),
   category: z.enum(["Lab → Pilot", "Pilot → Plant 1", "Plant 1 → Plant 2"]),
-  vertical: z.string(),
-  market: z.string(),
+  vertical: z.string().min(1, "Please select a vertical."),
+  market: z.string().min(1, "Please select a market."),
   scaleSelection: z.enum(["Scale 2", "Scale 3", "Scale 4"]),
   operations: z.array(unitOperationSchema).min(1, "Please add at least one unit operation."),
 });
@@ -423,13 +423,13 @@ export default function ScaleUpPredictorPage() {
     defaultValues: {
       productName: "",
       category: "Lab → Pilot",
-      vertical: verticals[0] || "",
-      market: markets[0] || "",
+      vertical: "",
+      market: "",
       scaleSelection: "Scale 2",
       operations: [{ unitOperation: "Top Spray Granulation" }],
     },
   });
-
+  
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "operations"
@@ -437,13 +437,20 @@ export default function ScaleUpPredictorPage() {
 
   const watchedOperations = form.watch("operations");
 
+  React.useEffect(() => {
+    if (verticals.length > 0 && !form.getValues('vertical')) {
+      form.setValue('vertical', verticals[0]);
+    }
+    if (markets.length > 0 && !form.getValues('market')) {
+      form.setValue('market', markets[0]);
+    }
+  }, [markets, verticals, form]);
+
   function onSubmit(values: FormValues) {
     setIsLoading(true);
     setPrediction(null);
     console.log("Form Submitted:", values);
     
-    // Simulate API call delay for each operation
-    // In a real app, this might be a single batch API call
     const allPredictions: PredictionOutput[] = [];
     values.operations.forEach(op => {
        const result = calculateScaleUp({
@@ -453,8 +460,6 @@ export default function ScaleUpPredictorPage() {
        allPredictions.push(result);
     });
 
-    // For this simplified example, we will just display the results of the last operation
-    // A more advanced implementation would show results for each step.
     const combinedPrediction: PredictionOutput = {
         targetScale: values.scaleSelection,
         recommendedParameters: allPredictions.flatMap(p => p.recommendedParameters),
@@ -554,16 +559,16 @@ export default function ScaleUpPredictorPage() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Vertical</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select a vertical" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {verticals.map((v) => (
+                              {verticals.length > 0 ? verticals.map((v) => (
                                 <SelectItem key={v} value={v}>{v}</SelectItem>
-                              ))}
+                              )) : <SelectItem value="loading" disabled>Loading...</SelectItem>}
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -576,16 +581,16 @@ export default function ScaleUpPredictorPage() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Market</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select a market" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {markets.map((m) => (
+                              {markets.length > 0 ? markets.map((m) => (
                                 <SelectItem key={m} value={m}>{m}</SelectItem>
-                              ))}
+                              )) : <SelectItem value="loading" disabled>Loading...</SelectItem>}
                             </SelectContent>
                           </Select>
                           <FormMessage />
