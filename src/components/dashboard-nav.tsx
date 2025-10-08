@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -13,15 +14,27 @@ import {
   Scaling,
   Users,
 } from "lucide-react";
+import { useUser } from "@/firebase";
 
-const navItems = [
-  { href: "/scale-up-predictor", icon: Scaling, label: "Predictor" },
-  { href: "/master-data", icon: Database, label: "Master Data" },
-  { href: "/waitlist", icon: Users, label: "Waitlist" },
+const allNavItems = [
+  { href: "/scale-up-predictor", icon: Scaling, label: "Predictor", adminOnly: false },
+  { href: "/master-data", icon: Database, label: "Master Data", adminOnly: false },
+  { href: "/waitlist", icon: Users, label: "Users", adminOnly: true },
 ];
 
 export function DashboardNav() {
   const pathname = usePathname();
+  const { user } = useUser();
+
+  const navItems = React.useMemo(() => {
+    if (!user) return [];
+    return allNavItems.filter(item => {
+        if (item.adminOnly) {
+            return user.email === 'phaniksrm@gmail.com';
+        }
+        return true;
+    });
+  }, [user]);
 
   return (
         <SidebarMenu>

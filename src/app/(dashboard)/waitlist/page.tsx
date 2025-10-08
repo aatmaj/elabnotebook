@@ -1,7 +1,8 @@
+
 "use client";
 
 import * as React from "react";
-import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
+import { useFirestore, useCollection, useMemoFirebase, useUser } from "@/firebase";
 import { collection, query, orderBy } from "firebase/firestore";
 import {
     Card,
@@ -25,28 +26,64 @@ import type { WaitlistUser } from "@/lib/store";
 
 export default function WaitlistPage() {
     const firestore = useFirestore();
+    const { user, isUserLoading: isUserLoading } = useUser();
     
     const waitlistQuery = useMemoFirebase(() => {
         if (!firestore) return null;
-        return query(collection(firestore, "waitlist"), orderBy("date", "desc"));
-    }, [firestore]);
+        // Only allow the specific user to query the collection
+        if (user?.email === 'phaniksrm@gmail.com') {
+            return query(collection(firestore, "waitlist"), orderBy("date", "desc"));
+        }
+        return null;
+    }, [firestore, user]);
 
-    const { data: waitlist, isLoading } = useCollection<WaitlistUser>(waitlistQuery);
+    const { data: waitlist, isLoading: isWaitlistLoading } = useCollection<WaitlistUser>(waitlistQuery);
+
+    if (isUserLoading) {
+        return (
+            <div className="space-y-6">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-4 w-96" />
+                <Card>
+                    <CardHeader>
+                        <Skeleton className="h-6 w-40" />
+                        <Skeleton className="h-4 w-80" />
+                    </CardHeader>
+                    <CardContent>
+                       <Skeleton className="h-48 w-full" />
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
+    if (user?.email !== 'phaniksrm@gmail.com') {
+        return (
+             <div className="space-y-6">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Permission Denied</h1>
+                    <p className="text-muted-foreground">
+                        You do not have access to this page.
+                    </p>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Waitlist</h1>
+                <h1 className="text-3xl font-bold tracking-tight">Users</h1>
                 <p className="text-muted-foreground">
-                    Users who have signed up to join the platform.
+                    A list of users who have signed up and joined the waitlist.
                 </p>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Waitlist Signups</CardTitle>
+                    <CardTitle>Platform Users & Waitlist</CardTitle>
                     <CardDescription>
-                        A real-time list of all users currently on the waitlist.
+                        A real-time list of all users who have created an account.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -60,7 +97,7 @@ export default function WaitlistPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {isLoading ? (
+                            {isWaitlistLoading ? (
                                 Array.from({ length: 3 }).map((_, i) => (
                                     <TableRow key={i}>
                                         <TableCell><Skeleton className="h-4 w-24" /></TableCell>
@@ -75,7 +112,7 @@ export default function WaitlistPage() {
                                     <TableCell className="font-medium">{user.firstName}</TableCell>
                                     <TableCell>{user.lastName}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.date ? format(user.date.toDate(), "PPP") : 'N/A'}</TableCell>
+                                    <TableCell>{user.date && user.date.toDate ? format(user.date.toDate(), "PPP") : 'N/A'}</TableCell>
                                 </TableRow>
                             ))
                             ) : (
