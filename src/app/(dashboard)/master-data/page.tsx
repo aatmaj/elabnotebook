@@ -142,7 +142,30 @@ function AddNewDialog({
               <>
                 <FormField control={equipmentForm.control} name="name" render={({ field }) => ( <FormItem> <FormLabel>Name</FormLabel> <FormControl><Input placeholder="e.g., Blender-02" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
                 <FormField control={equipmentForm.control} name="type" render={({ field }) => ( <FormItem> <FormLabel>Type</FormLabel> <FormControl><Input placeholder="e.g., V-Blender" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
-                <FormField control={equipmentForm.control} name="plant" render={({ field }) => ( <FormItem> <FormLabel>Linked Plant</FormLabel> <Select onValueChange={field.onChange} defaultValue={field.value}> <FormControl> <SelectTrigger> <SelectValue placeholder="Select a plant to link" /> </SelectTrigger> </FormControl> <SelectContent> {plants.map((plant) => ( <SelectItem key={plant.id} value={plant.name}> {plant.name} </SelectItem> ))} </SelectContent> </Select> <FormMessage /> </FormItem> )} />
+                <FormField
+                  control={equipmentForm.control}
+                  name="plant"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Linked Plant</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a plant to link" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {plants.map((plant) => (
+                            <SelectItem key={plant.id} value={plant.name}>
+                              {plant.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField control={equipmentForm.control} name="capacity" render={({ field }) => ( <FormItem> <FormLabel>Capacity/Speed</FormLabel> <FormControl><Input placeholder="e.g., 200L" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
               </>
             )}
@@ -282,7 +305,7 @@ export default function MasterDataPage() {
               <CardDescription>
                 Manage all equipment linked to specific plants.
               </CardDescription>
-            </CardHeader>
+            </Header>
             <CardContent>
                {isLoadingEquipment ? <TableSkeleton headers={equipmentHeaders} /> : (
                 <Table>
@@ -316,5 +339,3 @@ export default function MasterDataPage() {
     </div>
   );
 }
-
-    
