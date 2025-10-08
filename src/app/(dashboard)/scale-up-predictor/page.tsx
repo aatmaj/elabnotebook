@@ -201,7 +201,7 @@ export default function ScaleUpPredictorPage() {
                     <Input type="number" placeholder="e.g., 15" {...field} />
                   </FormControl>
                   <FormMessage />
-                </Item>
+                </FormItem>
               )}
             />
           </>
@@ -330,7 +330,7 @@ export default function ScaleUpPredictorPage() {
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select a scaling category" />
-                            </Trigger>
+                            </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="Lab → Pilot">Lab → Pilot</SelectItem>
@@ -377,7 +377,7 @@ export default function ScaleUpPredictorPage() {
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select a market" />
-                              </Trigger>
+                              </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="USA">USA</SelectItem>
@@ -400,12 +400,12 @@ export default function ScaleUpPredictorPage() {
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select target scale" />
-                              </Trigger>
+                              </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="Scale 2">Scale 2</SelectItem>
                               <SelectItem value="Scale 3">Scale 3</SelectItem>
-                              <SelectItem value="Scale 4">Scale 4</Ttem>
+                              <SelectItem value="Scale 4">Scale 4</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -431,5 +431,3 @@ export default function ScaleUpPredictorPage() {
     </Form>
   );
 }
-
-    
