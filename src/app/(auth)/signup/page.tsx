@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -13,10 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 import { CheckCircle } from "lucide-react";
-import { useFirestore, addDocumentNonBlocking } from "@/firebase";
+import { useAuth, useFirestore, addDocumentNonBlocking, initiateEmailSignUp } from "@/firebase";
 import { collection } from "firebase/firestore";
 
 export default function SignupPage() {
+    const auth = useAuth();
     const firestore = useFirestore();
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
@@ -28,12 +30,14 @@ export default function SignupPage() {
         e.preventDefault();
         if (!firestore) return;
 
+        initiateEmailSignUp(auth, email, password);
+
         const waitlistCollection = collection(firestore, 'waitlist');
-        addDocumentNonBlocking(waitlistCollection, { 
-            firstName, 
-            lastName, 
-            email, 
-            date: new Date() 
+        addDocumentNonBlocking(waitlistCollection, {
+            firstName,
+            lastName,
+            email,
+            date: new Date()
         });
 
         setSubmitted(true);
@@ -44,8 +48,8 @@ export default function SignupPage() {
       <CardHeader>
         <CardTitle className="text-xl">{submitted ? "You're on the list!" : "Join the Waitlist"}</CardTitle>
         <CardDescription>
-          {submitted 
-            ? "We'll be in touch soon with an invitation to join." 
+          {submitted
+            ? "We'll be in touch soon. You can now log in."
             : "Sign up to be one of the first to get access to Paramanu."
           }
         </CardDescription>
@@ -57,20 +61,20 @@ export default function SignupPage() {
                 <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
                     <Label htmlFor="first-name">First name</Label>
-                    <Input 
-                        id="first-name" 
-                        placeholder="Max" 
-                        required 
+                    <Input
+                        id="first-name"
+                        placeholder="Max"
+                        required
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                     />
                     </div>
                     <div className="grid gap-2">
                     <Label htmlFor="last-name">Last name</Label>
-                    <Input 
-                        id="last-name" 
-                        placeholder="Robinson" 
-                        required 
+                    <Input
+                        id="last-name"
+                        placeholder="Robinson"
+                        required
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                     />
@@ -89,9 +93,9 @@ export default function SignupPage() {
                 </div>
                 <div className="grid gap-2">
                     <Label htmlFor="password">Password</Label>
-                    <Input 
-                        id="password" 
-                        type="password" 
+                    <Input
+                        id="password"
+                        type="password"
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -115,7 +119,7 @@ export default function SignupPage() {
                 <CheckCircle className="w-16 h-16 text-primary mb-4" />
                 <p className="text-muted-foreground">Thank you for your interest in Paramanu.</p>
                 <Button variant="outline" asChild className="mt-6">
-                    <Link href="/landing">Return to Homepage</Link>
+                    <Link href="/login">Proceed to Login</Link>
                 </Button>
             </div>
         </CardContent>

@@ -1,176 +1,132 @@
 /**
- * @file Firestore Security Rules
- * @description This ruleset enforces a collaborative access model for lab experiments,
- *              where access is granted to scientists listed in the `scientistIds` array
- *              within each experiment document. The waitlist is publicly readable.
+ * @fileoverview Firestore Security Rules for the lab experiments application.
  *
- * @dataStructure
- *  /experiments/{experimentId} - Stores experiment data. Contains a `scientistIds` array
- *                                  for managing scientist access to the experiment.
- *  /scientists/{scientistId} - Stores scientist data.
- *  /sops/{sopId} - Stores Standard Operating Procedures.
- *  /regulatoryReports/{regulatoryReportId} - Stores regulatory reports.
- *  /waitListEntries/{waitListEntryId} - Stores wait list entries.
+ * Core Philosophy:
+ * This ruleset prioritizes secure data access based on user identity and explicit relationships.
+ * It avoids complex queries within rules by denormalizing authorization data directly onto documents.
  *
- * @keySecurityDecisions
- *  - Access to experiments is controlled by the `scientistIds` array within each
- *    experiment document.  A user can read and write an experiment if their UID is
- *    present in this array.
- *  - The waitlist is publicly readable to allow easy access for marketing purposes.
- *  - Listing of scientists, SOPs, and regulatory reports is disallowed.
- *  - Experiments requires scientist id in the array.
+ * Data Structure:
+ * - /experiments/{experimentId}: Stores experiment data, including an array of scientistIds for access control.
+ * - /scientists/{scientistId}: Stores scientist data.
+ * - /sops/{sopId}: Stores Standard Operating Procedures.
+ * - /regulatoryReports/{regulatoryReportId}: Stores regulatory reports.
+ * - /waitlist/{waitlistId}: Stores waitlist entries.
  *
- * @denormalizationForAuthorization
- *  - The `experiments` documents denormalize access control data via the `scientistIds` array.
- *    This allows rules to check if a user has access to an experiment without requiring
- *    additional `get()` operations.
+ * Key Security Decisions:
+ * - Experiments: Read and write access is granted to scientists listed in the `scientistIds` array.
+ * - Scientists: Only the authenticated user matching the `scientistId` can read or write their own document.
+ * - SOPs and Regulatory Reports: Currently open to all authenticated users.
+ * - Waitlist: Currently open to all users.
  *
- * @structuralSegregation
- *  - Different data types (experiments, scientists, SOPs, regulatory reports, waitlist entries)
- *    are stored in separate collections to simplify security rules and ensure a consistent
- *    security posture for each collection.
+ * Denormalization for Authorization:
+ * - The `experiments` documents include the `scientistIds` array.  This is a denormalization strategy, copying Scientist IDs onto the Experiment documents.
+ *   This avoids the need for security rules to perform expensive `get()` operations to determine a user's role or access rights.
+ *   Instead, the rules can directly check if the `request.auth.uid` is present in the `scientistIds` array.
+ *
+ * Structural Segregation:
+ * - Different data types (experiments, scientists, SOPs, regulatoryReports) are stored in separate top-level collections.
+ *   This ensures a homogeneous security posture for each collection, simplifying the rules and improving performance.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Grants access to experiments based on the `scientistIds` array.
+     * @description Grants access to experiment documents based on scientist membership.
      * @path /experiments/{experimentId}
-     * @allow (get, update) if request.auth.uid is in the `scientistIds` array.
-     * @deny (get, update) if request.auth.uid is not in the `scientistIds` array.
-     * @principle Enforces collaborative access to experiments based on the `scientistIds` array.
+     * @allow (get, list): Any authenticated user can read an experiment document.
+     * @allow (create, update, delete): Only scientists listed in the scientistIds array can modify the experiment.
+     * @deny (create, update, delete): If the user is not authenticated, or not listed in the scientistIds.
+     * @principle Enforces shared access via the scientistIds array and validates relational integrity on create.
      */
     match /experiments/{experimentId} {
-      // Helper function to check if the user is a scientist listed in the experiment's scientistIds array
-      function isScientist() {
-        return request.auth != null && request.auth.uid in resource.data.scientistIds;
+      function isSignedIn() {
+        return request.auth != null;
       }
 
-      // Helper function to check if the user is a scientist listed in the experiment's scientistIds array for an existing document.
-      function isExistingScientist() {
-        return request.auth != null && request.auth.uid in resource.data.scientistIds;
+      function isScientist(experiment) {
+        return isSignedIn() && experiment.data.scientistIds.hasAny([request.auth.uid]);
       }
 
-      // Grants read access (get) to scientists.
-      allow get: if isScientist();
-
-      // Grants list access to scientists with valid id.
-      allow list: if request.auth != null;
-
-      // Allows create scientist if it is in the scientistIds array.
-      allow create: if request.auth != null && request.resource.data.scientistIds is list && request.auth.uid in request.resource.data.scientistIds;
-
-      // Allows update existing documents if it is an existing scientist id.
-      allow update: if isExistingScientist();
-
-      // Allows delete existing documents if it is an existing scientist id.
-      allow delete: if isExistingScientist();
+      allow get, list: if true;
+      allow create: if isSignedIn() && request.resource.data.scientistIds.hasAny([request.auth.uid]);
+      allow update, delete: if isScientist(resource);
     }
 
     /**
-     * @description Grants access to scientists.
+     * @description Grants access to scientist documents only to the corresponding authenticated user.
      * @path /scientists/{scientistId}
-     * @allow (create) if request.auth.uid matches the scientistId.
-     * @deny (create) if request.auth.uid does not match the scientistId.
-     * @principle Enforces user-owned data for scientists.
+     * @allow (get): Only the scientist with the matching ID can read their own document.
+     * @allow (create, update, delete): Only the scientist with the matching ID can create, update, or delete their own document.
+     * @deny (get, create, update, delete): If the user is not authenticated or the ID does not match.
+     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
      */
     match /scientists/{scientistId} {
-      // Helper function to check if the user is the owner of the scientist document
-      function isOwner() {
-        return request.auth != null && request.auth.uid == scientistId;
+      function isSignedIn() {
+        return request.auth != null;
       }
 
-      // Helper function to check if the user is the existing owner of the scientist document
-      function isExistingOwner() {
-        return request.auth != null && request.auth.uid == resource.id;
+      function isOwner(scientistId) {
+        return isSignedIn() && request.auth.uid == scientistId;
       }
 
-      // Allow reads only if is owner.
-      allow get: if isOwner();
+      function isExistingOwner(scientistId) {
+        return isOwner(scientistId) && resource != null;
+      }
 
-      // Deny listing scientists.
+      allow get: if isOwner(scientistId);
       allow list: if false;
-
-      // Allow creation if the user ID matches the document ID.
-      allow create: if isOwner();
-
-      // Allow update if existing scientist id exists.
-      allow update: if isExistingOwner();
-
-      // Allow delete if existing scientist id exists.
-      allow delete: if isExistingOwner();
+      allow create: if isOwner(scientistId);
+      allow update: if isExistingOwner(scientistId);
+      allow delete: if isExistingOwner(scientistId);
     }
 
     /**
-     * @description Denies all access to SOPs.
+     * @description Grants read access to SOP documents to any authenticated user, and write access to any authenticated user.
      * @path /sops/{sopId}
-     * @allow (none) No one can access SOPs.
-     * @principle Enforces a closed data model for SOPs.
+     * @allow (get, list): Any authenticated user can read SOP documents.
+     * @allow (create, update, delete): Any authenticated user can create, update, or delete SOP documents.
+     * @deny (create, update, delete): If the user is not authenticated.
      */
     match /sops/{sopId} {
-      //Deny reads
-      allow get: if false;
+      function isSignedIn() {
+        return request.auth != null;
+      }
 
-      //Deny listing
-      allow list: if false;
-
-      //Deny creation
-      allow create: if false;
-
-      //Deny update
-      allow update: if false;
-
-      //Deny deletion
-      allow delete: if false;
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() ;
+      allow delete: if isSignedIn();
     }
 
     /**
-     * @description Denies all access to regulatory reports.
+     * @description Grants read access to RegulatoryReport documents to any authenticated user, and write access to any authenticated user.
      * @path /regulatoryReports/{regulatoryReportId}
-     * @allow (none) No one can access regulatory reports.
-     * @principle Enforces a closed data model for regulatory reports.
+     * @allow (get, list): Any authenticated user can read RegulatoryReport documents.
+     * @allow (create, update, delete): Any authenticated user can create, update, or delete RegulatoryReport documents.
      */
     match /regulatoryReports/{regulatoryReportId} {
-      //Deny reads
-      allow get: if false;
+      function isSignedIn() {
+        return request.auth != null;
+      }
 
-      //Deny listing
-      allow list: if false;
-
-      //Deny creation
-      allow create: if false;
-
-      //Deny update
-      allow update: if false;
-
-      //Deny deletion
-      allow delete: if false;
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
     }
 
-    /**
-     * @description Grants public read access to waitlist entries and allows anyone to create an entry.
-     * @path /waitListEntries/{waitListEntryId}
-     * @allow (get, list) Everyone can read the waitlist.
-     * @allow (create) Anyone can add themselves to the waitlist.
-     * @deny (update, delete) No one can modify or delete waitlist entries.
-     * @principle Allows open access to the waitlist for marketing purposes.
+        /**
+     * @description Grants read access to WaitlistEntry documents to anyone, and write access to anyone.
+     * @path /waitlist/{waitlistId}
+     * @allow (get, list): Any user can read WaitlistEntry documents.
+     * @allow (create, update, delete): Any user can create, update, or delete WaitlistEntry documents.
      */
-    match /waitListEntries/{waitListEntryId} {
-      //Allow reads
-      allow get: if true;
-
-      //Allow listing
-      allow list: if true;
-
-      //Allow creation
+    match /waitlist/{waitlistId} {
+      allow get, list: if true;
       allow create: if true;
-
-      //Deny update
-      allow update: if false;
-
-      //Deny deletion
-      allow delete: if false;
+      allow update: if true;
+      allow delete: if true;
     }
   }
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from 'react';
@@ -14,21 +15,36 @@ import { DashboardNav } from '@/components/dashboard-nav';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
-import { Home, Users } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Label } from '@/components/ui/label';
+import { Home, LogOut, Users } from 'lucide-react';
+import { useAuth, useUser } from '@/firebase';
+import { useRouter } from 'next/navigation';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const auth = useAuth();
+  const { user, isUserLoading } = useUser();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (!isUserLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isUserLoading, router]);
+
+  const handleSignOut = () => {
+    auth.signOut();
+  };
+
+  if (isUserLoading || !user) {
+    return (
+        <div className="flex min-h-screen items-center justify-center">
+            <p>Loading...</p>
+        </div>
+    );
+  }
   
   return (
     <SidebarProvider>
@@ -43,7 +59,9 @@ export default function DashboardLayout({
                  <DashboardNav />
             </SidebarContent>
              <SidebarFooter>
-                
+                <Button variant="ghost" onClick={handleSignOut}>
+                    <LogOut className='mr-2' /> Sign Out
+                </Button>
             </SidebarFooter>
         </Sidebar>
         <SidebarInset>
