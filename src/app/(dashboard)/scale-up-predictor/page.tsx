@@ -31,6 +31,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent
+} from "@/components/ui/chart";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import { calculateScaleUp, type PredictionInput, type PredictionOutput } from "@/lib/scale-up-calculations";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   productName: z.string().min(2, { message: "Product name must be at least 2 characters." }),
@@ -40,7 +58,6 @@ const formSchema = z.object({
   vertical: z.enum(["OSD", "Injectable", "Liquid", "Other"]),
   market: z.enum(["USA", "EU", "India", "Other"]),
   scaleSelection: z.enum(["Scale 2", "Scale 3", "Scale 4"]),
-  // Dynamic parameters based on unit operation
   sprayRate: z.coerce.number().optional(),
   binderPercentage: z.coerce.number().optional(),
   inletTemp: z.coerce.number().optional(),
@@ -57,6 +74,9 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function ScaleUpPredictorPage() {
+  const [prediction, setPrediction] = React.useState<PredictionOutput | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -83,8 +103,16 @@ export default function ScaleUpPredictorPage() {
   const selectedUnitOp = form.watch("unitOperation");
 
   function onSubmit(values: FormValues) {
-    // This is where we will call the backend calculation logic
+    setIsLoading(true);
+    setPrediction(null);
     console.log("Form Submitted:", values);
+    
+    // Simulate API call delay
+    setTimeout(() => {
+        const result = calculateScaleUp(values as PredictionInput);
+        setPrediction(result);
+        setIsLoading(false);
+    }, 1000);
   }
 
   const renderDynamicFields = () => {
@@ -268,6 +296,7 @@ export default function ScaleUpPredictorPage() {
 
 
   return (
+    <div className="space-y-8">
      <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <Card className="max-w-4xl mx-auto">
@@ -435,10 +464,77 @@ export default function ScaleUpPredictorPage() {
               </div>
           </CardContent>
           <CardFooter>
-              <Button type="submit">Predict Parameters</Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Predict Parameters
+              </Button>
           </CardFooter>
         </Card>
       </form>
     </Form>
+    
+    {prediction && (
+        <Card className="max-w-4xl mx-auto mt-8">
+            <CardHeader>
+                <CardTitle>Prediction Results</CardTitle>
+                <CardDescription>Recommended parameters for {prediction.targetScale}.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+                <div>
+                    <h4 className="font-medium mb-2">Recommended Parameters</h4>
+                    <Table>
+                        <TableHeader>
+                        <TableRow>
+                            <TableHead>Parameter</TableHead>
+                            <TableHead>Current Value</TableHead>
+                            <TableHead>Recommended Value</TableHead>
+                            <TableHead>Unit</TableHead>
+                        </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                        {prediction.recommendedParameters.map((param) => (
+                            <TableRow key={param.name}>
+                            <TableCell>{param.name}</TableCell>
+                            <TableCell>{param.currentValue}</TableCell>
+                            <TableCell className="font-bold">{param.recommendedValue}</TableCell>
+                            <TableCell>{param.unit}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </div>
+                <div>
+                    <h4 className="font-medium mb-2">Scale-Up Comparison</h4>
+                     <ChartContainer config={{
+                        current: { label: "Current", color: "hsl(var(--chart-1))" },
+                        recommended: { label: "Recommended", color: "hsl(var(--chart-2))" },
+                     }} className="h-[250px] w-full">
+                        <BarChart accessibilityLayer data={prediction.recommendedParameters.map(p => ({name: p.name, current: p.currentValue, recommended: p.recommendedValue}))}>
+                            <CartesianGrid vertical={false} />
+                            <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
+                            <YAxis />
+                            <ChartTooltip content={<ChartTooltipContent />} />
+                            <ChartLegend content={<ChartLegendContent />} />
+                            <Bar dataKey="current" fill="var(--color-current)" radius={4} />
+                            <Bar dataKey="recommended" fill="var(--color-recommended)" radius={4} />
+                        </BarChart>
+                    </ChartContainer>
+                </div>
+
+                <div>
+                    <h4 className="font-medium mb-2">Constraints & Warnings</h4>
+                    {prediction.constraints.length > 0 ? (
+                        <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                            {prediction.constraints.map((c, i) => <li key={i}>{c}</li>)}
+                        </ul>
+                    ) : (
+                        <p className="text-sm text-muted-foreground">No constraints or warnings.</p>
+                    )}
+                </div>
+
+            </CardContent>
+        </Card>
+    )}
+    </div>
   );
 }
