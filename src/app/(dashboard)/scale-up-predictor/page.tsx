@@ -91,6 +91,7 @@ export default function ScaleUpPredictorPage() {
   const [prediction, setPrediction] = React.useState<PredictionOutput | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const { getUniqueValues } = useAppStore();
+  const resultsRef = React.useRef<HTMLDivElement>(null);
 
   const markets = getUniqueValues("market");
   const verticals = getUniqueValues("vertical");
@@ -139,6 +140,13 @@ export default function ScaleUpPredictorPage() {
         setIsLoading(false);
     }, 1000);
   }
+
+  React.useEffect(() => {
+    if (prediction && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [prediction]);
+
 
   const renderDynamicFields = () => {
     switch (selectedUnitOp) {
@@ -646,66 +654,68 @@ export default function ScaleUpPredictorPage() {
     </Form>
     
     {prediction && (
-        <Card className="max-w-4xl mx-auto mt-8">
-            <CardHeader>
-                <CardTitle>Prediction Results</CardTitle>
-                <CardDescription>Recommended parameters for {prediction.targetScale}.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                <div>
-                    <h4 className="font-medium mb-2">Recommended Parameters</h4>
-                    <Table>
-                        <TableHeader>
-                        <TableRow>
-                            <TableHead>Parameter</TableHead>
-                            <TableHead>Current Value</TableHead>
-                            <TableHead>Recommended Value</TableHead>
-                            <TableHead>Unit</TableHead>
-                        </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                        {prediction.recommendedParameters.map((param) => (
-                            <TableRow key={param.name}>
-                            <TableCell>{param.name}</TableCell>
-                            <TableCell>{param.currentValue}</TableCell>
-                            <TableCell className="font-bold">{param.recommendedValue}</TableCell>
-                            <TableCell>{param.unit}</TableCell>
+        <div ref={resultsRef}>
+            <Card className="max-w-4xl mx-auto mt-8">
+                <CardHeader>
+                    <CardTitle>Prediction Results</CardTitle>
+                    <CardDescription>Recommended parameters for {prediction.targetScale}.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div>
+                        <h4 className="font-medium mb-2">Recommended Parameters</h4>
+                        <Table>
+                            <TableHeader>
+                            <TableRow>
+                                <TableHead>Parameter</TableHead>
+                                <TableHead>Current Value</TableHead>
+                                <TableHead>Recommended Value</TableHead>
+                                <TableHead>Unit</TableHead>
                             </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </div>
-                <div>
-                    <h4 className="font-medium mb-2">Scale-Up Comparison</h4>
-                     <ChartContainer config={{
-                        current: { label: "Current", color: "hsl(var(--chart-1))" },
-                        recommended: { label: "Recommended", color: "hsl(var(--chart-2))" },
-                     }} className="h-[250px] w-full">
-                        <BarChart accessibilityLayer data={prediction.recommendedParameters.map(p => ({name: p.name, current: p.currentValue, recommended: p.recommendedValue}))}>
-                            <CartesianGrid vertical={false} />
-                            <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
-                            <YAxis />
-                            <ChartTooltip content={<ChartTooltipContent />} />
-                            <ChartLegend content={<ChartLegendContent />} />
-                            <Bar dataKey="current" fill="var(--color-current)" radius={4} />
-                            <Bar dataKey="recommended" fill="var(--color-recommended)" radius={4} />
-                        </BarChart>
-                    </ChartContainer>
-                </div>
+                            </TableHeader>
+                            <TableBody>
+                            {prediction.recommendedParameters.map((param) => (
+                                <TableRow key={param.name}>
+                                <TableCell>{param.name}</TableCell>
+                                <TableCell>{param.currentValue}</TableCell>
+                                <TableCell className="font-bold">{param.recommendedValue}</TableCell>
+                                <TableCell>{param.unit}</TableCell>
+                                </TableRow>
+                            ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <div>
+                        <h4 className="font-medium mb-2">Scale-Up Comparison</h4>
+                         <ChartContainer config={{
+                            current: { label: "Current", color: "hsl(var(--chart-1))" },
+                            recommended: { label: "Recommended", color: "hsl(var(--chart-2))" },
+                         }} className="h-[250px] w-full">
+                            <BarChart accessibilityLayer data={prediction.recommendedParameters.map(p => ({name: p.name, current: p.currentValue, recommended: p.recommendedValue}))}>
+                                <CartesianGrid vertical={false} />
+                                <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
+                                <YAxis />
+                                <ChartTooltip content={<ChartTooltipContent />} />
+                                <ChartLegend content={<ChartLegendContent />} />
+                                <Bar dataKey="current" fill="var(--color-current)" radius={4} />
+                                <Bar dataKey="recommended" fill="var(--color-recommended)" radius={4} />
+                            </BarChart>
+                        </ChartContainer>
+                    </div>
 
-                <div>
-                    <h4 className="font-medium mb-2">Constraints & Warnings</h4>
-                    {prediction.constraints.length > 0 ? (
-                        <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                            {prediction.constraints.map((c, i) => <li key={i}>{c}</li>)}
-                        </ul>
-                    ) : (
-                        <p className="text-sm text-muted-foreground">No constraints or warnings.</p>
-                    )}
-                </div>
+                    <div>
+                        <h4 className="font-medium mb-2">Constraints & Warnings</h4>
+                        {prediction.constraints.length > 0 ? (
+                            <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                                {prediction.constraints.map((c, i) => <li key={i}>{c}</li>)}
+                            </ul>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">No constraints or warnings.</p>
+                        )}
+                    </div>
 
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </div>
     )}
     </div>
   );
