@@ -53,9 +53,11 @@ import {
 } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import { calculateScaleUp, type PredictionInput, type PredictionOutput, RecommendedParameter } from "@/lib/scale-up-calculations";
-import { useAppStore } from "@/lib/store";
+import { useAppStore, type Plant } from "@/lib/store";
 import { Loader2, PlusCircle, Trash2, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useFirestore, useUser, useCollection, useMemoFirebase } from "@/firebase";
+import { collection, query, where } from "firebase/firestore";
 
 const unitOperationSchema = z.object({
   unitOperation: z.enum(["Top Spray Granulation", "Wet Granulation", "Compression", "Coating", "Blending", "Milling", "Bottom Spray Granulation (Wurster)", "Roll Compaction", "Drying", "Sifting", "Capsule Filling", "Powder Layering", "Hot Melt Extrusion", "Extrusion/Spheronization"]),
@@ -452,8 +454,18 @@ const ResultRow = ({ param, index }: { param: RecommendedParameter; index: numbe
 export default function ScaleUpPredictorPage() {
   const [prediction, setPrediction] = React.useState<PredictionOutput | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
-  const { getUniqueValues } = useAppStore();
+  const { getUniqueValues, setPlants } = useAppStore();
   const resultsRef = React.useRef<HTMLDivElement>(null);
+  
+  const firestore = useFirestore();
+  const { user } = useUser();
+
+  const plantsQuery = useMemoFirebase(() => {
+    if (!firestore || !user) return null;
+    return query(collection(firestore, "plants"), where("userId", "==", user.uid));
+  }, [firestore, user]);
+
+  const { data: plants } = useCollection<Plant>(plantsQuery);
 
   const markets = getUniqueValues("market");
   const verticals = getUniqueValues("vertical");
@@ -476,6 +488,12 @@ export default function ScaleUpPredictorPage() {
   });
 
   const watchedOperations = form.watch("operations");
+  
+  React.useEffect(() => {
+    if(plants) {
+      setPlants(plants);
+    }
+  }, [plants, setPlants]);
 
   React.useEffect(() => {
     if (verticals.length > 0 && !form.getValues('vertical')) {
