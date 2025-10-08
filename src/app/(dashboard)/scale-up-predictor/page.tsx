@@ -475,14 +475,21 @@ export default function ScaleUpPredictorPage() {
 
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Scale-Up Predictor</h1>
+        <p className="text-muted-foreground max-w-2xl">
+          Build a sequence of unit operations and predict optimal process parameters for scaling up formulations.
+        </p>
+      </div>
+
      <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <Card className="max-w-4xl mx-auto">
+        <Card className="max-w-4xl">
           <CardHeader>
-            <CardTitle>Scale-Up Predictor</CardTitle>
+            <CardTitle>Process Input</CardTitle>
             <CardDescription>
-              Build a sequence of unit operations and predict optimal process parameters for scaling up formulations.
+              Define the product and the scaling parameters for your prediction.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-6">
@@ -697,7 +704,7 @@ export default function ScaleUpPredictorPage() {
     
     {prediction && (
         <div ref={resultsRef}>
-            <Card className="max-w-4xl mx-auto mt-8">
+            <Card className="max-w-4xl mt-8">
                 <CardHeader>
                     <CardTitle>Prediction Results</CardTitle>
                     <CardDescription>Recommended parameters for {prediction.targetScale}.</CardDescription>

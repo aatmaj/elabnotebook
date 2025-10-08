@@ -64,7 +64,7 @@ export default function DashboardLayout({
             <SidebarHeader>
                 <Link href="/scale-up-predictor" className="flex items-center gap-2 font-bold text-lg">
                     <Logo className="h-6 w-6" />
-                    <span className="group-data-[collapsible=icon]:hidden">Scale-Up Predictor</span>
+                    <span className="group-data-[collapsible=icon]:hidden">Paramanu</span>
                 </Link>
             </SidebarHeader>
             <SidebarContent>
@@ -77,15 +77,14 @@ export default function DashboardLayout({
             </SidebarFooter>
         </Sidebar>
         <SidebarInset>
-            <header className="flex h-20 items-center justify-between border-b bg-background px-4">
+            <header className="flex h-16 items-center justify-between border-b bg-background px-4">
                 <div className="flex items-center gap-2">
                     <SidebarTrigger className="md:hidden" />
                 </div>
                  <div className="flex items-center gap-4">
-                    {/* The "Return to Landing" button was here */}
                 </div>
             </header>
-            <main className="flex-1 overflow-auto p-4 md:p-6">
+            <main className="flex-1 overflow-auto p-4 pt-2 md:p-6 md:pt-4">
                 {children}
             </main>
         </SidebarInset>
