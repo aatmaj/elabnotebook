@@ -53,23 +53,36 @@ import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   productName: z.string().min(2, { message: "Product name must be at least 2 characters." }),
-  unitOperation: z.enum(["Top Spray Granulation", "Wet Granulation", "Compression", "Coating"]),
+  unitOperation: z.enum(["Top Spray Granulation", "Wet Granulation", "Compression", "Coating", "Blending", "Milling", "Bottom Spray Granulation (Wurster)", "Roll Compaction", "Drying", "Sifting", "Capsule Filling", "Powder Layering", "Hot Melt Extrusion", "Extrusion/Spheronization"]),
   category: z.enum(["Lab → Pilot", "Pilot → Plant 1", "Plant 1 → Plant 2"]),
   strength: z.coerce.number().positive({ message: "Strength must be a positive number." }),
   vertical: z.string(),
   market: z.string(),
   scaleSelection: z.enum(["Scale 2", "Scale 3", "Scale 4"]),
+  // Granulation
   sprayRate: z.coerce.number().optional(),
   binderPercentage: z.coerce.number().optional(),
   inletTemp: z.coerce.number().optional(),
   outletTemp: z.coerce.number().optional(),
   panSpeed: z.coerce.number().optional(),
   nozzlePosition: z.coerce.number().optional(),
+  // Compression
   turretSpeed: z.coerce.number().optional(),
   numberOfPunches: z.coerce.number().optional(),
   compressionForce: z.coerce.number().optional(),
+  // Coating
   bedSpeed: z.coerce.number().optional(),
   atomizationPressure: z.coerce.number().optional(),
+  // Blending
+  blendingTime: z.coerce.number().optional(),
+  blenderSpeed: z.coerce.number().optional(),
+  // Milling
+  millSpeed: z.coerce.number().optional(),
+  screenSize: z.coerce.number().optional(),
+  // Roll Compaction
+  rollForce: z.coerce.number().optional(),
+  rollSpeed: z.coerce.number().optional(),
+  gapSize: z.coerce.number().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -102,6 +115,13 @@ export default function ScaleUpPredictorPage() {
       compressionForce: undefined,
       bedSpeed: undefined,
       atomizationPressure: undefined,
+      blendingTime: undefined,
+      blenderSpeed: undefined,
+      millSpeed: undefined,
+      screenSize: undefined,
+      rollForce: undefined,
+      rollSpeed: undefined,
+      gapSize: undefined,
     },
   });
 
@@ -123,6 +143,8 @@ export default function ScaleUpPredictorPage() {
   const renderDynamicFields = () => {
     switch (selectedUnitOp) {
       case "Top Spray Granulation":
+      case "Bottom Spray Granulation (Wurster)":
+      case "Powder Layering":
       case "Wet Granulation":
         return (
           <>
@@ -294,8 +316,115 @@ export default function ScaleUpPredictorPage() {
             />
           </>
         );
+       case "Blending":
+        return (
+          <>
+            <FormField
+              control={form.control}
+              name="blendingTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Blending Time (min)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 15" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="blenderSpeed"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Blender Speed (RPM)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 20" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        );
+      case "Milling":
+      case "Sifting":
+        return (
+          <>
+            <FormField
+              control={form.control}
+              name="millSpeed"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mill Speed (RPM)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 3000" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="screenSize"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Screen Size (microns)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 500" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        );
+      case "Roll Compaction":
+        return (
+          <>
+            <FormField
+              control={form.control}
+              name="rollForce"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Roll Force (kN/cm)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 10" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rollSpeed"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Roll Speed (RPM)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 5" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="gapSize"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gap Size (mm)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 1.5" {...field} value={field.value ?? ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        );
       default:
-        return null;
+        return <p className="text-muted-foreground text-sm">Prediction for this unit operation is not yet implemented.</p>;
     }
   };
 
@@ -355,10 +484,20 @@ export default function ScaleUpPredictorPage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
+                            <SelectItem value="Blending">Blending</SelectItem>
+                            <SelectItem value="Bottom Spray Granulation (Wurster)">Bottom Spray Granulation (Wurster)</SelectItem>
+                            <SelectItem value="Capsule Filling">Capsule Filling</SelectItem>
+                            <SelectItem value="Coating">Coating</SelectItem>
+                            <SelectItem value="Compression">Compression</SelectItem>
+                            <SelectItem value="Drying">Drying</SelectItem>
+                            <SelectItem value="Extrusion/Spheronization">Extrusion/Spheronization</SelectItem>
+                            <SelectItem value="Hot Melt Extrusion">Hot Melt Extrusion</SelectItem>
+                            <SelectItem value="Milling">Milling</SelectItem>
+                            <SelectItem value="Powder Layering">Powder Layering</SelectItem>
+                            <SelectItem value="Roll Compaction">Roll Compaction</SelectItem>
+                            <SelectItem value="Sifting">Sifting</SelectItem>
                             <SelectItem value="Top Spray Granulation">Top Spray Granulation</SelectItem>
                             <SelectItem value="Wet Granulation">Wet Granulation</SelectItem>
-                            <SelectItem value="Compression">Compression</SelectItem>
-                            <SelectItem value="Coating">Coating</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -443,7 +582,7 @@ export default function ScaleUpPredictorPage() {
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select target scale" />
-                              </SelectTrigger>
+                              </Trigger>
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="Scale 2">Scale 2</SelectItem>

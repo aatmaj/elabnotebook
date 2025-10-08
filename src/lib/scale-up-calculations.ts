@@ -1,21 +1,34 @@
 
 export type PredictionInput = {
     productName: string;
-    unitOperation: "Top Spray Granulation" | "Wet Granulation" | "Compression" | "Coating";
+    unitOperation: "Top Spray Granulation" | "Wet Granulation" | "Compression" | "Coating" | "Blending" | "Milling" | "Bottom Spray Granulation (Wurster)" | "Roll Compaction" | "Drying" | "Sifting" | "Capsule Filling" | "Powder Layering" | "Hot Melt Extrusion" | "Extrusion/Spheronization";
     category: "Lab → Pilot" | "Pilot → Plant 1" | "Plant 1 → Plant 2";
     strength: number;
     scaleSelection: "Scale 2" | "Scale 3" | "Scale 4";
+    // Granulation
     sprayRate?: number;
     binderPercentage?: number;
     inletTemp?: number;
     outletTemp?: number;
     panSpeed?: number;
     nozzlePosition?: number;
+    // Compression
     turretSpeed?: number;
     numberOfPunches?: number;
     compressionForce?: number;
+    // Coating
     bedSpeed?: number;
     atomizationPressure?: number;
+    // Blending
+    blendingTime?: number;
+    blenderSpeed?: number;
+    // Milling
+    millSpeed?: number;
+    screenSize?: number;
+    // Roll Compaction
+    rollForce?: number;
+    rollSpeed?: number;
+    gapSize?: number;
 };
 
 export type PredictionOutput = {
@@ -48,6 +61,13 @@ const DUMMY_UNITS = {
     compressionForce: "kN",
     bedSpeed: "RPM",
     atomizationPressure: "bar",
+    blendingTime: "min",
+    blenderSpeed: "RPM",
+    millSpeed: "RPM",
+    screenSize: "microns",
+    rollForce: "kN/cm",
+    rollSpeed: "RPM",
+    gapSize: "mm",
 };
 
 /**
@@ -64,6 +84,8 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
 
     switch (input.unitOperation) {
         case "Top Spray Granulation":
+        case "Bottom Spray Granulation (Wurster)":
+        case "Powder Layering":
         case "Wet Granulation":
             {
                 const currentSprayRate = input.sprayRate || 100;
@@ -145,11 +167,85 @@ export function calculateScaleUp(input: PredictionInput): PredictionOutput {
                 });
             }
             break;
+        
+        case "Blending":
+            {
+                const currentBlendingTime = input.blendingTime || 15;
+                // Blending time might increase with volume, but speed is key
+                const recommendedBlendingTime = currentBlendingTime * Math.pow(scaleFactor, 0.15);
+                 output.recommendedParameters.push({
+                    name: "Blending Time",
+                    currentValue: currentBlendingTime,
+                    recommendedValue: recommendedBlendingTime.toFixed(2),
+                    unit: DUMMY_UNITS.blendingTime,
+                });
+
+                const currentBlenderSpeed = input.blenderSpeed || 20;
+                // Blender speed (tip speed) is often kept constant
+                const recommendedBlenderSpeed = currentBlenderSpeed;
+                 output.recommendedParameters.push({
+                    name: "Blender Speed",
+                    currentValue: currentBlenderSpeed,
+                    recommendedValue: recommendedBlenderSpeed.toFixed(2),
+                    unit: DUMMY_UNITS.blenderSpeed,
+                });
+            }
+            break;
+
+        case "Milling":
+        case "Sifting":
+            {
+                const currentMillSpeed = input.millSpeed || 3000;
+                // Tip speed is often kept constant
+                const recommendedMillSpeed = currentMillSpeed;
+                 output.recommendedParameters.push({
+                    name: "Mill Speed",
+                    currentValue: currentMillSpeed,
+                    recommendedValue: recommendedMillSpeed.toFixed(2),
+                    unit: DUMMY_UNITS.millSpeed,
+                });
+                
+                const currentScreenSize = input.screenSize || 500;
+                // Screen size usually remains constant
+                const recommendedScreenSize = currentScreenSize;
+                 output.recommendedParameters.push({
+                    name: "Screen Size",
+                    currentValue: currentScreenSize,
+                    recommendedValue: recommendedScreenSize.toFixed(2),
+                    unit: DUMMY_UNITS.screenSize,
+                });
+            }
+            break;
+        
+        case "Roll Compaction":
+             {
+                const currentRollForce = input.rollForce || 10;
+                // Roll force is a critical parameter, often needs to be kept constant
+                const recommendedRollForce = currentRollForce;
+                 output.recommendedParameters.push({
+                    name: "Roll Force",
+                    currentValue: currentRollForce,
+                    recommendedValue: recommendedRollForce.toFixed(2),
+                    unit: DUMMY_UNITS.rollForce,
+                });
+
+                const currentRollSpeed = input.rollSpeed || 5;
+                // Roll speed may be adjusted based on throughput needs
+                const recommendedRollSpeed = currentRollSpeed * Math.sqrt(scaleFactor);
+                 output.recommendedParameters.push({
+                    name: "Roll Speed",
+                    currentValue: currentRollSpeed,
+                    recommendedValue: recommendedRollSpeed.toFixed(2),
+                    unit: DUMMY_UNITS.rollSpeed,
+                });
+            }
+            break;
+
     }
 
     // Add some dummy constraints
-    if (output.recommendedParameters.some(p => parseFloat(p.recommendedValue as string) > 500)) {
-        output.constraints.push("A recommended value exceeds the typical operational limit of 500. Please verify equipment capacity.");
+    if (output.recommendedParameters.some(p => parseFloat(p.recommendedValue as string) > 5000)) {
+        output.constraints.push("A recommended value exceeds a typical operational limit. Please verify equipment capacity.");
     }
      if (input.market === "EU") {
         output.constraints.push("Ensure compliance with EMA guidelines for scale-up studies (e.g., Annex 15).");
