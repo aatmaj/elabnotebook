@@ -11,11 +11,13 @@ import {
 import {
   Database,
   Scaling,
+  Users,
 } from "lucide-react";
 
 const navItems = [
   { href: "/scale-up-predictor", icon: Scaling, label: "Predictor" },
   { href: "/master-data", icon: Database, label: "Master Data" },
+  { href: "/waitlist", icon: Users, label: "Waitlist" },
 ];
 
 export function DashboardNav() {

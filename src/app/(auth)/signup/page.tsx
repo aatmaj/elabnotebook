@@ -13,8 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 import { CheckCircle } from "lucide-react";
+import { useAppStore } from "@/lib/store";
 
 export default function SignupPage() {
+    const { addToWaitlist } = useAppStore();
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [email, setEmail] = React.useState("");
@@ -23,8 +25,7 @@ export default function SignupPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Waitlist signup", { firstName, lastName, email });
-        // Here you would typically send this data to your backend/waitlist service
+        addToWaitlist({ firstName, lastName, email });
         setSubmitted(true);
     };
 
