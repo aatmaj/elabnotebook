@@ -24,60 +24,26 @@ import {
 } from "@/components/ui/select";
 import { Label } from '@/components/ui/label';
 
-// Define user roles
-export type UserRole = "Scientist" | "PMO" | "Leadership";
-
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Simulate the current user's role with state for demos
-  const [currentUserRole, setCurrentUserRole] = React.useState<UserRole>("Leadership");
   
   return (
     <SidebarProvider>
         <Sidebar>
             <SidebarHeader>
-                <Link href="/molecules" className="flex items-center gap-2 font-bold text-lg">
+                <Link href="/scale-up-predictor" className="flex items-center gap-2 font-bold text-lg">
                     <Logo className="h-6 w-6" />
-                    <span className="group-data-[collapsible=icon]:hidden">Paramanu</span>
+                    <span className="group-data-[collapsible=icon]:hidden">Scale-Up Predictor</span>
                 </Link>
             </SidebarHeader>
             <SidebarContent>
-                 <DashboardNav role={currentUserRole} />
+                 <DashboardNav />
             </SidebarContent>
              <SidebarFooter>
-                <div className="flex flex-col gap-2 p-2 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:items-center">
-                    <div className="group-data-[collapsible=icon]:hidden">
-                      <Label htmlFor="role-switcher" className="text-xs font-medium text-muted-foreground flex items-center gap-2 mb-2">
-                        <Users className="h-4 w-4" />
-                        <span>Demo Role</span>
-                      </Label>
-                      <Select value={currentUserRole} onValueChange={(value) => setCurrentUserRole(value as UserRole)}>
-                        <SelectTrigger className="w-full" id="role-switcher">
-                          <SelectValue placeholder="Select a role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Leadership">Leadership</SelectItem>
-                          <SelectItem value="PMO">PMO</SelectItem>
-                          <SelectItem value="Scientist">Scientist</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                     <div className="group-data-[collapsible=icon]:block hidden">
-                        <Select value={currentUserRole} onValueChange={(value) => setCurrentUserRole(value as UserRole)}>
-                            <SelectTrigger className="size-8 p-0 justify-center">
-                                <Users className="h-4 w-4" />
-                            </SelectTrigger>
-                             <SelectContent side="right">
-                                <SelectItem value="Leadership">Leadership</SelectItem>
-                                <SelectItem value="PMO">PMO</SelectItem>
-                                <SelectItem value="Scientist">Scientist</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
+                
             </SidebarFooter>
         </Sidebar>
         <SidebarInset>
