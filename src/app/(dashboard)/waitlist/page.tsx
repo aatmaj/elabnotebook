@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useAppStore } from "@/lib/store";
+import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
+import { collection, query, orderBy } from "firebase/firestore";
 import {
     Card,
     CardContent,
@@ -18,9 +19,19 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { WaitlistUser } from "@/lib/store";
+
 
 export default function WaitlistPage() {
-    const { waitlist } = useAppStore();
+    const firestore = useFirestore();
+    
+    const waitlistQuery = useMemoFirebase(() => {
+        if (!firestore) return null;
+        return query(collection(firestore, "waitlist"), orderBy("date", "desc"));
+    }, [firestore]);
+
+    const { data: waitlist, isLoading } = useCollection<WaitlistUser>(waitlistQuery);
 
     return (
         <div className="space-y-6">
@@ -35,7 +46,7 @@ export default function WaitlistPage() {
                 <CardHeader>
                     <CardTitle>Waitlist Signups</CardTitle>
                     <CardDescription>
-                        A list of all users currently on the waitlist.
+                        A real-time list of all users currently on the waitlist.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -49,14 +60,31 @@ export default function WaitlistPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {waitlist.map((user) => (
+                            {isLoading ? (
+                                Array.from({ length: 3 }).map((_, i) => (
+                                    <TableRow key={i}>
+                                        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                                        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                                        <TableCell><Skeleton className="h-4 w-40" /></TableCell>
+                                        <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                                    </TableRow>
+                                ))
+                            ) : waitlist && waitlist.length > 0 ? (
+                                waitlist.map((user) => (
                                 <TableRow key={user.id}>
                                     <TableCell className="font-medium">{user.firstName}</TableCell>
                                     <TableCell>{user.lastName}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{format(user.date, "PPP")}</TableCell>
+                                    <TableCell>{user.date ? format(user.date.toDate(), "PPP") : 'N/A'}</TableCell>
                                 </TableRow>
-                            ))}
+                            ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={4} className="h-24 text-center">
+                                        No users on the waitlist yet.
+                                    </TableCell>
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>

@@ -28,7 +28,7 @@ export type Parameter = {
 };
 
 export type WaitlistUser = {
-  id: number;
+  id: string; // Changed to string for Firestore
   firstName: string;
   lastName: string;
   email: string;
@@ -40,12 +40,10 @@ type AppState = {
   plants: Plant[];
   equipment: Equipment[];
   parameters: Parameter[];
-  waitlist: WaitlistUser[];
   // Actions
   getUniqueValues: (key: keyof Plant) => string[];
   addPlant: (plant: Omit<Plant, 'id'>) => void;
   addEquipment: (equipment: Omit<Equipment, 'id'>) => void;
-  addToWaitlist: (user: Omit<WaitlistUser, 'id' | 'date'>) => void;
 };
 
 // --- Store Implementation ---
@@ -66,10 +64,6 @@ export const useAppStore = create<AppState>((set, get) => ({
   parameters: [
     { id: 1, name: "Spray Rate", unitOp: "Granulation", min: 50, max: 200, unit: "mL/min" },
     { id: 2, name: "Turret Speed", unitOp: "Compression", min: 10, max: 60, unit: "RPM" },
-  ],
-  waitlist: [
-    { id: 1, firstName: "John", lastName: "Doe", email: "john.doe@example.com", date: new Date("2024-05-20T10:00:00Z") },
-    { id: 2, firstName: "Jane", lastName: "Smith", email: "jane.smith@example.com", date: new Date("2024-05-21T11:30:00Z") },
   ],
 
   // --- Actions ---
@@ -102,17 +96,4 @@ export const useAppStore = create<AppState>((set, get) => ({
       ],
     }));
   },
-
-  addToWaitlist: (user) => {
-    set((state) => ({
-      waitlist: [
-        ...state.waitlist,
-        {
-          id: state.waitlist.length > 0 ? Math.max(...state.waitlist.map(u => u.id)) + 1 : 1,
-          ...user,
-          date: new Date(),
-        }
-      ]
-    }))
-  }
 }));

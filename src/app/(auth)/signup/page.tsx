@@ -13,10 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 import { CheckCircle } from "lucide-react";
-import { useAppStore } from "@/lib/store";
+import { useFirestore, addDocumentNonBlocking } from "@/firebase";
+import { collection } from "firebase/firestore";
 
 export default function SignupPage() {
-    const { addToWaitlist } = useAppStore();
+    const firestore = useFirestore();
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [email, setEmail] = React.useState("");
@@ -25,7 +26,16 @@ export default function SignupPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        addToWaitlist({ firstName, lastName, email });
+        if (!firestore) return;
+
+        const waitlistCollection = collection(firestore, 'waitlist');
+        addDocumentNonBlocking(waitlistCollection, { 
+            firstName, 
+            lastName, 
+            email, 
+            date: new Date() 
+        });
+
         setSubmitted(true);
     };
 

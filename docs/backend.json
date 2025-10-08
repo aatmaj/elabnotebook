@@ -171,36 +171,36 @@
         "content"
       ]
     },
-    "WaitListEntry": {
+    "WaitlistEntry": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "WaitListEntry",
+      "title": "WaitlistEntry",
       "type": "object",
       "description": "Represents an entry in the waitlist.",
       "properties": {
-        "id": {
+        "firstName": {
           "type": "string",
-          "description": "Unique identifier for the waitlist entry."
+          "description": "First name of the person on the waitlist."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the person on the waitlist."
         },
         "email": {
           "type": "string",
           "description": "Email address of the person on the waitlist.",
           "format": "email"
         },
-        "dateJoined": {
+        "date": {
           "type": "string",
           "description": "Date when the person joined the waitlist.",
           "format": "date-time"
-        },
-        "isInvited": {
-          "type": "boolean",
-          "description": "Indicates whether the person has been invited to use the application."
         }
       },
       "required": [
-        "id",
+        "firstName",
+        "lastName",
         "email",
-        "dateJoined",
-        "isInvited"
+        "date"
       ]
     }
   },
@@ -277,22 +277,22 @@
         }
       },
       {
-        "path": "/waitListEntries/{waitListEntryId}",
+        "path": "/waitlist/{waitlistId}",
         "definition": {
-          "entityName": "WaitListEntry",
+          "entityName": "WaitlistEntry",
           "schema": {
-            "$ref": "#/backend/entities/WaitListEntry"
+            "$ref": "#/backend/entities/WaitlistEntry"
           },
-          "description": "Stores data for each wait list entry.",
+          "description": "Stores data for each waitlist entry.",
           "params": [
             {
-              "name": "waitListEntryId",
-              "description": "Unique identifier for the wait list entry."
+              "name": "waitlistId",
+              "description": "Unique identifier for the waitlist entry."
             }
           ]
         }
       }
     ],
-    "reasoning": "The Firestore structure is designed to store data related to lab experiments, scientists, SOPs, regulatory reports, and a waitlist. It focuses on clarity, security, and scalability.  \n\n*   **Authorization Independence:** Relationships between entities like Experiments and Scientists are managed through document references and arrays of IDs. This avoids the need for `get()` calls in security rules by denormalizing relevant authorization data. For instance, experiment documents contain `scientistIds`, allowing access control based on the presence of a user's ID in this array without needing to fetch related scientist documents.\n*   **Structural Segregation:** Different data types with varying access requirements are stored in separate collections.  This includes `experiments`, `scientists`, `sops`, `regulatoryReports`, and `waitListEntries`. This segregation simplifies security rules by ensuring that each collection has a homogeneous security posture.\n*   **Access Modeling:** Access to experiment data is controlled through the `scientistIds` array. A user can access the experiment data if their user ID is present in the `scientistIds` array.  The waitlist uses public read access as it is a marketing component. \n*   **QAPs (Rules are not Filters):** The design enables secure `list` operations. Because authorization information is denormalized within each document, security rules can efficiently filter documents based on the current user's access without needing to perform expensive `get()` operations. The segregation of data into separate collections further supports secure listing by ensuring that listing operations only return data that the user is authorized to access.\n\nRegarding the \"wait list doesn't seem to have actual list?\" feedback, the data structure has a specific `waitListEntries` collection to store each entry, allowing a straightforward read operation. Each item added in the waitlist is stored in the collection."
+    "reasoning": "The Firestore structure is designed to store data related to lab experiments, scientists, SOPs, and regulatory reports. It focuses on clarity, security, and scalability. Relationships between entities like Experiments and Scientists are managed through document references and arrays of IDs. This avoids the need for get() calls in security rules by denormalizing relevant authorization data. For instance, experiment documents contain scientistIds, allowing access control based on the presence of a user's ID in this array without needing to fetch related scientist documents. Different data types with varying access requirements are stored in separate collections. This includes experiments, scientists, sops, and regulatoryReports. This segregation simplifies security rules by ensuring that each collection has a homogeneous security posture. Access to experiment data is controlled through the scientistIds array. A user can access the experiment data if their user ID is present in the scientistIds array. The design enables secure list operations. Because authorization information is denormalized within each document, security rules can efficiently filter documents based on the current user's access without needing to perform expensive get() operations. The segregation of data into separate collections further supports secure listing by ensuring that listing operations only return data that the user is authorized to access."
   }
 }
