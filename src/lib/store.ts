@@ -14,7 +14,7 @@ export type Equipment = {
   id: number;
   name: string;
   type: string;
-  plant: string;
+  plant: string; // This is the name of the linked plant
   capacity: string;
 };
 
@@ -34,6 +34,8 @@ type AppState = {
   parameters: Parameter[];
   // Actions
   getUniqueValues: (key: keyof Plant) => string[];
+  addPlant: (plant: Omit<Plant, 'id'>) => void;
+  addEquipment: (equipment: Omit<Equipment, 'id'>) => void;
 };
 
 // --- Store Implementation ---
@@ -61,5 +63,29 @@ export const useAppStore = create<AppState>((set, get) => ({
     const { plants } = get();
     const values = plants.map(plant => plant[key]);
     return [...new Set(values)];
+  },
+
+  addPlant: (plant) => {
+    set((state) => ({
+      plants: [
+        ...state.plants,
+        {
+          id: state.plants.length > 0 ? Math.max(...state.plants.map(p => p.id)) + 1 : 1,
+          ...plant,
+        },
+      ],
+    }));
+  },
+
+  addEquipment: (equipment) => {
+    set((state) => ({
+      equipment: [
+        ...state.equipment,
+        {
+          id: state.equipment.length > 0 ? Math.max(...state.equipment.map(e => e.id)) + 1 : 1,
+          ...equipment,
+        },
+      ],
+    }));
   },
 }));
