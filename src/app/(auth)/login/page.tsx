@@ -14,10 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useAuth, initiateEmailSignIn } from "@/firebase";
+import { useAuth } from "@/firebase";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 import { useUser } from "@/firebase";
+import { signInWithEmailAndPassword, onAuthStateChanged, AuthError } from "firebase/auth";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -27,10 +28,28 @@ export default function LoginPage() {
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState<string | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
-        initiateEmailSignIn(auth, email, password);
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            // The onAuthStateChanged listener in the layout will handle the redirect
+        } catch (e) {
+            const authError = e as AuthError;
+            switch (authError.code) {
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    setError("Invalid email or password. Please try again.");
+                    break;
+                case 'auth/invalid-email':
+                    setError("Please enter a valid email address.");
+                    break;
+                default:
+                    setError("An unexpected error occurred. Please try again.");
+                    break;
+            }
+        }
     };
 
     React.useEffect(() => {
@@ -85,7 +104,7 @@ export default function LoginPage() {
             <div className="mt-4 text-center text-sm p-6 pt-0">
                 Don&apos;t have an account?{" "}
                 <Link href="/signup" className="underline">
-                    Sign up
+                    Join Waitlist
                 </Link>
             </div>
         </Card>

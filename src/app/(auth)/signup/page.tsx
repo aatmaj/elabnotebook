@@ -14,11 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 import { CheckCircle } from "lucide-react";
-import { useAuth, useFirestore, addDocumentNonBlocking } from "@/firebase";
+import { useFirestore, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
 
 export default function SignupPage() {
-    const auth = useAuth();
     const firestore = useFirestore();
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
@@ -46,7 +45,7 @@ export default function SignupPage() {
         <CardTitle className="text-xl">{submitted ? "You're on the list!" : "Join the Waitlist"}</CardTitle>
         <CardDescription>
           {submitted
-            ? "We'll be in touch soon. You can now log in if you have an account."
+            ? "Thank you for your interest! We'll be in touch soon."
             : "Sign up to be one of the first to get access to Paramanu."
           }
         </CardDescription>
@@ -104,9 +103,9 @@ export default function SignupPage() {
         <CardContent>
             <div className="flex flex-col items-center justify-center text-center p-8">
                 <CheckCircle className="w-16 h-16 text-primary mb-4" />
-                <p className="text-muted-foreground">Thank you for your interest in Paramanu.</p>
-                <Button variant="outline" asChild className="mt-6">
-                    <Link href="/login">Proceed to Login</Link>
+                <p className="text-muted-foreground">We've received your information and will notify you when access is ready.</p>
+                 <Button variant="outline" asChild className="mt-6">
+                    <Link href="/landing">Return to Homepage</Link>
                 </Button>
             </div>
         </CardContent>
