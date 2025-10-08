@@ -417,35 +417,35 @@ const DynamicFields: React.FC<{ control: any; index: number, unitOperation: any 
     }
 };
 
-const ResultRow = ({ param, index }: { param: RecommendedParameter; index: number }) => {
+const ResultRow = ({ param }: { param: RecommendedParameter }) => {
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (
-        <Collapsible key={`${param.name}-${index}`} onOpenChange={setIsOpen} open={isOpen}>
-             <TableRow>
+        <React.Fragment>
+            <TableRow>
                 <TableCell>{param.name}</TableCell>
                 <TableCell>{param.currentValue}</TableCell>
                 <TableCell className="font-bold">{param.recommendedValue}</TableCell>
                 <TableCell>{param.unit}</TableCell>
                 <TableCell className="text-right">
                     <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
-                        <span className="sr-only">{isOpen ? "Hide" : "Show"} formula</span>
-                    </Button>
+                        <Button variant="ghost" size="icon" onClick={() => setIsOpen(prev => !prev)}>
+                            <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
+                            <span className="sr-only">{isOpen ? "Hide" : "Show"} formula</span>
+                        </Button>
                     </CollapsibleTrigger>
                 </TableCell>
             </TableRow>
-            <CollapsibleContent asChild>
-                <TableRow>
+            {isOpen && (
+                 <TableRow>
                     <TableCell colSpan={5} className="p-0">
                         <div className="p-4 bg-muted/50">
                             <p className="font-mono text-xs text-muted-foreground">{param.formula}</p>
                         </div>
                     </TableCell>
                 </TableRow>
-            </CollapsibleContent>
-        </Collapsible>
+            )}
+        </React.Fragment>
     )
 }
 
@@ -785,7 +785,7 @@ export default function ScaleUpPredictorPage() {
                             </TableHeader>
                             <TableBody>
                             {prediction.recommendedParameters.map((param, i) => (
-                                <ResultRow param={param} index={i} key={`${param.name}-${i}`}/>
+                                <ResultRow param={param} key={`${param.name}-${i}`}/>
                             ))}
                             </TableBody>
                         </Table>
