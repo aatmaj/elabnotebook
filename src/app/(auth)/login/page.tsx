@@ -53,7 +53,7 @@ export default function LoginPage() {
     };
 
     React.useEffect(() => {
-        if (!isUserLoading && user) {
+        if (!isUserLoading && user && !user.isAnonymous) {
             router.push("/scale-up-predictor");
         }
     }, [user, isUserLoading, router]);
@@ -104,7 +104,7 @@ export default function LoginPage() {
             <div className="mt-4 text-center text-sm p-6 pt-0">
                 Don&apos;t have an account?{" "}
                 <Link href="/signup" className="underline">
-                    Join Waitlist
+                    Create account
                 </Link>
             </div>
         </Card>

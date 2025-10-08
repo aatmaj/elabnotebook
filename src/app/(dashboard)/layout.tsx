@@ -29,16 +29,21 @@ export default function DashboardLayout({
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!isUserLoading && !user) {
+    // If not loading and there's no user, or the user is anonymous, redirect to login.
+    if (!isUserLoading && (!user || user.isAnonymous)) {
       router.push('/login');
     }
   }, [user, isUserLoading, router]);
 
   const handleSignOut = () => {
-    auth.signOut();
+    if (auth) {
+        auth.signOut();
+    }
   };
 
-  if (isUserLoading || !user) {
+  // While loading, or if the user is not authenticated (or is anonymous), show loading.
+  // The useEffect above will handle the redirect.
+  if (isUserLoading || !user || user.isAnonymous) {
     return (
         <div className="flex min-h-screen items-center justify-center">
             <p>Loading...</p>
