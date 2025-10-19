@@ -21,11 +21,6 @@ import Link from "next/link";
 
 const solutionFeatures = [
     {
-    icon: <Scale className="w-8 h-8 text-primary" />,
-    title: "Scale-Up & Tech Transfer",
-    description: "Employ AI simulations to model process parameters for scale-up, ensuring smooth technology transfer and consistent batch quality from lab to commercial production.",
-    },
-    {
     icon: <FlaskConical className="w-8 h-8 text-primary" />,
     title: "Pre-Formulation Studies",
     description: "Leverage AI to analyze API characteristics and excipient compatibility, predicting stability and performance to de-risk your development path.",
@@ -34,6 +29,11 @@ const solutionFeatures = [
     icon: <SlidersHorizontal className="w-8 h-8 text-primary" />,
     title: "Formulation Development",
     description: "Intelligently design and optimize robust generic formulations with AI-driven DoE, achieving target product profiles faster than traditional methods.",
+    },
+    {
+    icon: <Scale className="w-8 h-8 text-primary" />,
+    title: "Scale-Up & Tech Transfer",
+    description: "Employ AI simulations to model process parameters for scale-up, ensuring smooth technology transfer and consistent batch quality from lab to commercial production.",
     },
     {
     icon: <BarChart3 className="w-8 h-8 text-primary" />,
