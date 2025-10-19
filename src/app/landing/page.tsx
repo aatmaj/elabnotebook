@@ -147,10 +147,10 @@ export default function Home() {
            <div className="relative z-30 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
-                    AI-Powered R&D for Modern Pharma
+                    AI-Powered R&D for Generics Pharma
                   </h1>
                   <p className="mx-auto max-w-[900px] text-muted-foreground md:text-xl">
-                    Paramanu unifies your data to predict outcomes, optimize scale-up, and accelerate discovery from minutes to months.
+                    Paramanu unifies your data to predict outcomes, optimize scale-up, and accelerate discovery from months to minutes.
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
