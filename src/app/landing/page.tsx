@@ -149,8 +149,8 @@ export default function Home() {
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
                     Predict Your Scale-Up Success
                   </h1>
-                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                    Paramanu is purpose-built to accelerate drug development for generics pharma with predictive modeling and generative AI.
+                  <p className="mx-auto max-w-[900px] text-muted-foreground md:text-xl">
+                    Paramanu unifies experimental data, scientific reasoning, and regulatory logic to help pharma R&D teams diagnose formulation issues, predict process outcomes, and optimize scale-up — all within minutes, not months.
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
