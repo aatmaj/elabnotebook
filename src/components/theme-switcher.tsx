@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { Lightbulb, Moon } from 'lucide-react';
+import { ToggleLeft, ToggleRight } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 
 const ThemeSwitcher = () => {
@@ -11,7 +11,7 @@ const ThemeSwitcher = () => {
   useEffect(() => {
     // This code runs only on the client, after the component has mounted.
     const storedTheme = localStorage.getItem('theme');
-    // Default to 'dark' if no theme is stored or system preference is dark
+    // Default to 'dark' if no theme is stored
     const initialTheme = storedTheme || 'dark';
     setTheme(initialTheme);
   }, []);
@@ -46,9 +46,9 @@ const ThemeSwitcher = () => {
       aria-label="Toggle theme"
     >
       {theme === 'dark' ? (
-        <Lightbulb className="h-[1.2rem] w-[1.2rem]" />
+        <ToggleLeft className="h-[1.2rem] w-[1.2rem]" />
       ) : (
-        <Moon className="h-[1.2rem] w-[1.2rem]" />
+        <ToggleRight className="h-[1.2rem] w-[1.2rem]" />
       )}
     </Button>
   );
