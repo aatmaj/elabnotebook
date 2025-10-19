@@ -147,10 +147,10 @@ export default function Home() {
            <div className="relative z-30 flex flex-col items-center space-y-4">
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                   <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl font-headline text-foreground">
-                    Predict Your Scale-Up Success
+                    AI-Powered R&D for Modern Pharma
                   </h1>
                   <p className="mx-auto max-w-[900px] text-muted-foreground md:text-xl">
-                    Paramanu unifies experimental data, scientific reasoning, and regulatory logic to help pharma R&D teams diagnose formulation issues, predict process outcomes, and optimize scale-up — all within minutes, not months.
+                    Paramanu unifies your data to predict outcomes, optimize scale-up, and accelerate discovery from minutes to months.
                   </p>
                 </div>
                 <div className="space-x-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
