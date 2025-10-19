@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Menu } from "lucide-react";
 import * as React from "react";
 import { Logo } from "@/components/logo";
+import { ThemeSwitcher } from "./theme-switcher";
 
 const navLinks = [
   { href: "#solution", label: "Platform" },
@@ -40,7 +41,7 @@ export function LandingHeader() {
             <span className="font-semibold">Paramanu</span>
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-end space-x-6">
+        <div className="flex flex-1 items-center justify-end space-x-2 md:space-x-6">
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
             {navLinks.map((link) => (
               <Link
@@ -52,13 +53,14 @@ export function LandingHeader() {
               </Link>
             ))}
              <Button variant="ghost" asChild size="sm">
-                <Link href="https://formflow-328038258032.europe-west1.run.app/" target="_blank" rel="noopener noreferrer">Login</Link>
+                <Link href="/login">Login</Link>
             </Button>
           </nav>
+          <ThemeSwitcher />
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" className="ml-2 md:hidden">
+            <Button variant="ghost" className="ml-2 md:hidden" size="icon">
               <Menu />
               <span className="sr-only">Toggle Menu</span>
             </Button>
@@ -88,7 +90,7 @@ export function LandingHeader() {
                   </Link>
                 ))}
                  <Button variant="outline" asChild>
-                    <Link href="https://formflow-328038258032.europe-west1.run.app/" target="_blank" rel="noopener noreferrer">Login</Link>
+                    <Link href="/login">Login</Link>
                  </Button>
               </nav>
             </div>

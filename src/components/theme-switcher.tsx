@@ -12,31 +12,31 @@ const ThemeSwitcher = () => {
     // This code runs only on the client, after the component has mounted.
     const storedTheme = localStorage.getItem('theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(storedTheme || (systemPrefersDark ? 'dark' : 'light'));
+    const initialTheme = storedTheme || (systemPrefersDark ? 'dark' : 'light');
+    setTheme(initialTheme);
   }, []);
 
   // Set the theme on the document element whenever the theme state changes
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    if (theme) {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
     }
   }, [theme]);
   
-  // Don't render until the theme is determined from localStorage to avoid hydration mismatch
-  if (theme === null) {
-      return null;
-  }
-
   const toggleTheme = () => {
-    const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
-    setTheme(newTheme);
+    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
   };
   
-  const isDarkMode = document.documentElement.classList.contains('dark');
+  // Don't render until the theme is determined to avoid hydration mismatch
+  if (theme === null) {
+      return <div className="h-9 w-9" />; // Return a placeholder to prevent layout shift
+  }
 
   return (
     <Button
@@ -45,7 +45,7 @@ const ThemeSwitcher = () => {
       size="icon"
       aria-label="Toggle theme"
     >
-      {isDarkMode ? (
+      {theme === 'dark' ? (
         <Sun className="h-[1.2rem] w-[1.2rem]" />
       ) : (
         <Moon className="h-[1.2rem] w-[1.2rem]" />
