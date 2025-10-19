@@ -9,21 +9,24 @@ const ThemeSwitcher = () => {
   const [theme, setTheme] = useState<string | null>(null);
 
   useEffect(() => {
-    setTheme(localStorage.getItem('theme'));
+    // This code runs only on the client, after the component has mounted.
+    const storedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(storedTheme || (systemPrefersDark ? 'dark' : 'light'));
   }, []);
 
   // Set the theme on the document element whenever the theme state changes
   useEffect(() => {
-    if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (theme === 'dark') {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
-    } else if (theme) { // Only run if theme is not null
+    } else if (theme === 'light') {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
   }, [theme]);
   
-  // Don't render until the theme is determined from localStorage
+  // Don't render until the theme is determined from localStorage to avoid hydration mismatch
   if (theme === null) {
       return null;
   }
