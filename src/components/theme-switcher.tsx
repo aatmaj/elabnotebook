@@ -1,40 +1,54 @@
 "use client"
 
-import * as React from "react"
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-
+import React, { useEffect, useState } from 'react';
+import { Sun, Moon } from 'lucide-react';
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
-export function ThemeSwitcher() {
-  const { setTheme } = useTheme()
+const ThemeSwitcher = () => {
+  // We need to wait for the component to mount to read from localStorage
+  const [theme, setTheme] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTheme(localStorage.getItem('theme'));
+  }, []);
+
+  // Set the theme on the document element whenever the theme state changes
+  useEffect(() => {
+    if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else if (theme) { // Only run if theme is not null
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [theme]);
+  
+  // Don't render until the theme is determined from localStorage
+  if (theme === null) {
+      return null;
+  }
+
+  const toggleTheme = () => {
+    const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    setTheme(newTheme);
+  };
+  
+  const isDarkMode = document.documentElement.classList.contains('dark');
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
+    <Button
+      onClick={toggleTheme}
+      variant="ghost"
+      size="icon"
+      aria-label="Toggle theme"
+    >
+      {isDarkMode ? (
+        <Sun className="h-[1.2rem] w-[1.2rem]" />
+      ) : (
+        <Moon className="h-[1.2rem] w-[1.2rem]" />
+      )}
+    </Button>
+  );
+};
+
+export { ThemeSwitcher };
