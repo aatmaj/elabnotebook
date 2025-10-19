@@ -53,11 +53,6 @@ const approachFeatures = [
     title: "Unified Knowledge Graph",
     description: "We structure your disparate R&D data—unstructured notes, instrument data, and results—into an interconnected knowledge graph, revealing hidden relationships between experiments, compounds, and outcomes.",
   },
-   {
-    icon: <Scale className="w-8 h-8 text-primary" />,
-    title: "Predictive Scale-Up Modeling",
-    description: "Go from lab to production with confidence. Our AI models predict optimal parameters for scale-up, minimizing trial-and-error and accelerating your time to market.",
-  },
   {
     icon: <BrainCircuit className="w-8 h-8 text-primary" />,
     title: "AI Co-pilot for Research",
@@ -193,7 +188,7 @@ export default function Home() {
                     Paramanu is built on core principles that turn your laboratory data into a strategic, predictive advantage.
                 </p>
             </div>
-            <div className="mx-auto grid gap-8 sm:max-w-4xl md:grid-cols-3 md:gap-12">
+            <div className="mx-auto grid gap-8 sm:max-w-4xl md:grid-cols-2 md:gap-12 lg:max-w-3xl">
                {approachFeatures.map((feature, index) => (
                   <Card key={index} className="bg-transparent border-none shadow-none">
                      <CardHeader className="flex flex-col items-center text-center gap-4 pb-4">
