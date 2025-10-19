@@ -11,8 +11,8 @@ const ThemeSwitcher = () => {
   useEffect(() => {
     // This code runs only on the client, after the component has mounted.
     const storedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = storedTheme || (systemPrefersDark ? 'dark' : 'light');
+    // Default to 'dark' if no theme is stored.
+    const initialTheme = storedTheme || 'dark';
     setTheme(initialTheme);
   }, []);
 
