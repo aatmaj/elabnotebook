@@ -12,14 +12,13 @@ export function Logo({ className }: { className?: string }) {
       strokeLinejoin="round"
       className={cn("text-primary", className)}
     >
-      <path d="M12 2v2" />
-      <path d="M12 20v2" />
-      <path d="m4.93 4.93 1.41 1.41" />
-      <path d="m17.66 17.66 1.41 1.41" />
-      <path d="M2 12h2" />
-      <path d="M20 12h2" />
-      <path d="m6.34 17.66-1.41 1.41" />
-      <path d="m19.07 4.93-1.41 1.41" />
+      <circle cx="12" cy="12" r="1" />
+      <path d="M20.2 20.2c2.04-2.04.02-5.91-4.44-4.44" />
+      <path d="M3.8 3.8c-2.04 2.04-.02 5.91 4.44 4.44" />
+      <path d="M20.2 3.8c-2.04 2.04-.02 5.91-4.44 4.44" />
+      <path d="M3.8 20.2c2.04-2.04.02-5.91 4.44-4.44" />
+      <path d="M12 2a10 10 0 0 0-7.53 16.59" />
+      <path d="M12 22a10 10 0 0 0 7.53-16.59" />
     </svg>
   );
 }
