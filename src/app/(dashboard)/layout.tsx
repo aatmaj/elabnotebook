@@ -72,9 +72,13 @@ export default function DashboardLayout({
                  <DashboardNav />
             </SidebarContent>
              <SidebarFooter>
-                <Button variant="ghost" onClick={handleSignOut}>
-                    <LogOut className='mr-2' /> Sign Out
-                </Button>
+                <div className="flex items-center justify-between">
+                    <Button variant="ghost" onClick={handleSignOut}>
+                        <LogOut className='mr-2' /> 
+                        <span className="group-data-[collapsible=icon]:hidden">Sign Out</span>
+                    </Button>
+                    <ThemeSwitcher />
+                </div>
             </SidebarFooter>
         </Sidebar>
         <SidebarInset>
@@ -83,7 +87,7 @@ export default function DashboardLayout({
                     <SidebarTrigger className="md:hidden" />
                 </div>
                  <div className="flex items-center gap-4">
-                    <ThemeSwitcher />
+                    
                 </div>
             </header>
             <main className="flex-1 overflow-auto p-4 pt-2 md:p-6 md:pt-4">
