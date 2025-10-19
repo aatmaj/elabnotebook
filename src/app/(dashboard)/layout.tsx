@@ -19,6 +19,7 @@ import { LogOut } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 
 export default function DashboardLayout({
   children,
@@ -82,6 +83,7 @@ export default function DashboardLayout({
                     <SidebarTrigger className="md:hidden" />
                 </div>
                  <div className="flex items-center gap-4">
+                    <ThemeSwitcher />
                 </div>
             </header>
             <main className="flex-1 overflow-auto p-4 pt-2 md:p-6 md:pt-4">
