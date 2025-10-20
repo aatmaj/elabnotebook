@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -53,7 +54,7 @@ export function LandingHeader() {
               </Link>
             ))}
              <Button variant="ghost" asChild size="sm">
-                <Link href="/login">Login</Link>
+                <Link href="https://formflow-328038258032.europe-west1.run.app/">Login</Link>
             </Button>
           </nav>
           <ThemeSwitcher />
@@ -90,7 +91,7 @@ export function LandingHeader() {
                   </Link>
                 ))}
                  <Button variant="outline" asChild>
-                    <Link href="/login">Login</Link>
+                    <Link href="https://formflow-328038258032.europe-west1.run.app/">Login</Link>
                  </Button>
               </nav>
             </div>
