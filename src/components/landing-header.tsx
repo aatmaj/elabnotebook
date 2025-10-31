@@ -54,7 +54,7 @@ export function LandingHeader() {
               </Link>
             ))}
              <Button variant="ghost" asChild size="sm">
-                <Link href="https://paramanu-179677727933.us-west1.run.app" target="_blank" rel="noopener noreferrer">Login</Link>
+                <Link href="https://formflow-dest-179677727933.europe-west1.run.app" target="_blank" rel="noopener noreferrer">Login</Link>
             </Button>
           </nav>
           <ThemeSwitcher />
@@ -91,7 +91,7 @@ export function LandingHeader() {
                   </Link>
                 ))}
                  <Button variant="outline" asChild>
-                    <Link href="https://paramanu-179677727933.us-west1.run.app" target="_blank" rel="noopener noreferrer">Login</Link>
+                    <Link href="https://formflow-dest-179677727933.europe-west1.run.app" target="_blank" rel="noopener noreferrer">Login</Link>
                  </Button>
               </nav>
             </div>
