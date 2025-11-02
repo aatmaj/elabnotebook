@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { LandingHeader } from "@/components/landing-header";
 import { Footer } from "@/components/footer";
-import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale, BrainCircuit, Layers, Link2, GitBranch, Target } from "lucide-react";
+import { FileText, Lock, ShieldCheck, FlaskConical, BarChart3, FolderGit2, Search, SlidersHorizontal, Scale, BrainCircuit, Layers, Link2, GitBranch, Target, ShieldQuestion, GitCompare, BookCheck, Waypoints } from "lucide-react";
 import React from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
 
 const solutionFeatures = [
     {
@@ -28,7 +30,7 @@ const solutionFeatures = [
     {
     icon: <SlidersHorizontal className="w-8 h-8 text-primary" />,
     title: "Formulation Development",
-    description: "Intelligently design and optimize robust generic formulations with AI-driven DoE, achieving target product profiles faster than traditional methods.",
+    description: "Intelligently design and optimize robust generic formulations with AI-driven DoE. Powered by FormulationFlow's mechanistic reasoning engine for faster, more reliable diagnostics.",
     },
     {
     icon: <Scale className="w-8 h-8 text-primary" />,
@@ -77,6 +79,65 @@ const securityFeatures = [
     description: "Our platform is built to meet GxP and FDA 21 CFR Part 11 requirements for data integrity and electronic records.",
   },
 ]
+
+const comparisonData = {
+  chatGPT: [
+    { point: "Generic, pattern-matching responses", advantage: false },
+    { point: "No auditable reasoning or traceability", advantage: false },
+    { point: "Lacks domain-specific scientific models", advantage: false },
+  ],
+  paramanu: [
+    { point: "Mechanistic reasoning for root cause analysis", advantage: true },
+    { point: "Provides auditable, FDA-defensible logic", advantage: true },
+    { point: "Built on physics-informed pharma models", advantage: true },
+  ],
+  consultants: [
+    { point: "Slow, manual, and costly process (weeks to months)", advantage: false },
+    { point: "Dependent on individual expertise and availability", advantage: false },
+    { point: "Analysis is often not easily reproducible", advantage: false },
+  ]
+};
+
+const caseStudies = [
+  {
+    title: "MgSt Particle Size Impact",
+    description: "Diagnosed a tablet hardness issue by linking it to a subtle change in Magnesium Stearate particle size from a new supplier.",
+    accuracy: "88% Accuracy",
+    impact: "Averted a multi-week investigation."
+  },
+  {
+    title: "Scale-Up Over-Lubrication",
+    description: "Predicted and diagnosed an over-lubrication issue during scale-up from a 10kg to 50kg batch size, which was missed by the R&D team.",
+    accuracy: "87% Accuracy",
+    impact: "Saved an estimated $150K batch."
+  },
+  {
+    title: "Packaging Root Cause",
+    description: "Identified the root cause of tablet cracking during packaging by analyzing stress data from the compression and packaging line.",
+    accuracy: "95% Accuracy",
+    impact: "Solved a recurring post-production failure."
+  }
+];
+
+
+const faqs = [
+    {
+        question: "Isn't FormulationFlow just ChatGPT with a domain prompt?",
+        answer: "No. While we leverage LLMs for language understanding, our core is a mechanistic reasoning engine. It uses physics-informed models of pharmaceutical processes (like granulation, compression, and dissolution) to diagnose issues. It's about cause-and-effect, not just text patterns."
+    },
+    {
+        question: "How do we know FormulationFlow is right?",
+        answer: "Every diagnosis comes with a fully auditable reasoning path. We show you which models were used, what data points were considered, and how the conclusion was reached. This makes the output transparent and FDA-defensible, unlike a black-box LLM."
+    },
+    {
+        question: "Can we trust an LLM-based tool for FDA submissions?",
+        answer: "You're not submitting the LLM's output; you're submitting the output of the mechanistic models. The LLM acts as an interface to this engine. The underlying science is based on established pharmaceutical principles, making the results reliable for regulatory purposes."
+    },
+    {
+        question: "What if your mechanistic models are wrong?",
+        answer: "Our models are based on established science and validated against real-world data. However, the system is designed to be adaptable. You can tune correction factors based on your specific equipment and historical batch data, continuously improving the accuracy over time."
+    }
+];
 
 function ContactForm() {
   const [open, setOpen] = React.useState(false);
@@ -154,6 +215,16 @@ export default function Home() {
               </div>
         </section>
         
+        <section id="formulationflow-intro" className="w-full py-8 md:py-10 lg:py-12 border-y">
+            <div className="container px-4 md:px-6">
+                <div className="text-center">
+                    <p className="text-lg md:text-xl text-foreground">
+                        Introducing <span className="font-bold text-primary">FormulationFlow</span>: Get formulation failure diagnostics in <span className="font-semibold">4-6 minutes</span> instead of 2-3 weeks—powered by mechanistic reasoning, not just pattern-matching.
+                    </p>
+                </div>
+            </div>
+        </section>
+
         <section id="solution" className="w-full py-8 md:py-10 lg:py-12">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
@@ -179,7 +250,67 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="approach" className="w-full py-8 md:py-10 lg:py-12 bg-secondary/20">
+        <section id="why-paramanu" className="w-full py-8 md:py-10 lg:py-12 bg-secondary/20">
+            <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                    <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Why Paramanu Formulation Development?</div>
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">A Smarter Approach to Formulation Diagnostics</h2>
+                    <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        Go beyond generic AI and expensive consultants. FormulationFlow provides rapid, science-backed answers.
+                    </p>
+                </div>
+                <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-2">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <GitCompare className="w-6 h-6" />
+                                <span>vs. Generic AI (e.g., ChatGPT)</span>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                           <ul className="space-y-3 text-sm">
+                                {comparisonData.chatGPT.map((item, index) => (
+                                    <li key={index} className="flex items-start gap-3">
+                                        <span className="mt-1 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-destructive/80"></span>
+                                        <span>{item.point}</span>
+                                    </li>
+                                ))}
+                                {comparisonData.paramanu.slice(0, 1).map((item, index) => (
+                                     <li key={index} className="flex items-start gap-3">
+                                        <span className="mt-1 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-primary/80"></span>
+                                        <span className="font-semibold">{item.point}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <BookCheck className="w-6 h-6" />
+                                <span>vs. Traditional Consultants</span>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                             <ul className="space-y-3 text-sm">
+                                {comparisonData.consultants.map((item, index) => (
+                                    <li key={index} className="flex items-start gap-3">
+                                        <span className="mt-1 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-destructive/80"></span>
+                                        <span>{item.point}</span>
+                                    </li>
+                                ))}
+                                 <li className="flex items-start gap-3">
+                                    <span className="mt-1 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-primary/80"></span>
+                                    <span className="font-semibold">Instant diagnostics & auditable results</span>
+                                </li>
+                            </ul>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </section>
+
+        <section id="approach" className="w-full py-8 md:py-10 lg:py-12">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">The Paramanu Method</div>
@@ -203,8 +334,61 @@ export default function Home() {
             </div>
           </div>
         </section>
+        
+        <section id="case-studies" className="w-full py-8 md:py-10 lg:py-12 bg-secondary/20">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Real-World Validation</div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">How We Solved Real Formulation Failures</h2>
+               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                FormulationFlow has been validated against complex, real-world manufacturing challenges.
+              </p>
+            </div>
+            <div className="mx-auto grid gap-8 sm:max-w-5xl md:grid-cols-3">
+              {caseStudies.map((study, index) => (
+                <Card key={index} className="flex flex-col">
+                  <CardHeader>
+                    <CardTitle className="text-lg">{study.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-sm text-muted-foreground">{study.description}</p>
+                  </CardContent>
+                   <div className="p-6 pt-0">
+                     <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">{study.accuracy}</div>
+                     <p className="mt-2 text-sm font-semibold">{study.impact}</p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+            <div className="text-center mt-10">
+                <Button variant="link">See how we solved real formulation failures</Button>
+            </div>
+          </div>
+        </section>
 
-        <section id="security" className="w-full py-8 md:py-10 lg:py-12">
+        <section id="faq" className="w-full py-8 md:py-10 lg:py-12">
+            <div className="container px-4 md:px-6 max-w-4xl">
+                 <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                    <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
+                        <ShieldQuestion className="inline-block w-4 h-4 mr-1" />
+                        Frequently Asked Questions
+                    </div>
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">Answering Your Key Questions</h2>
+                </div>
+                 <Accordion type="single" collapsible className="w-full">
+                    {faqs.map((faq, index) => (
+                        <AccordionItem value={`item-${index}`} key={index}>
+                            <AccordionTrigger className="text-lg text-left">{faq.question}</AccordionTrigger>
+                            <AccordionContent className="text-muted-foreground">
+                                {faq.answer}
+                            </AccordionContent>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
+            </div>
+        </section>
+
+        <section id="security" className="w-full py-8 md:py-10 lg:py-12 bg-secondary/20">
           <div className="container px-4 md:px-6">
              <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Security & Compliance</div>
