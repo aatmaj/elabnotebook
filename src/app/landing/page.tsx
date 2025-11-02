@@ -360,9 +360,6 @@ export default function Home() {
                 </Card>
               ))}
             </div>
-            <div className="text-center mt-10">
-                <Button variant="link">See how we solved real formulation failures</Button>
-            </div>
           </div>
         </section>
 
