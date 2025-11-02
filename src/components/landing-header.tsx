@@ -12,7 +12,6 @@ import { ThemeSwitcher } from "./theme-switcher";
 const navLinks = [
   { href: "#solution", label: "Platform" },
   { href: "#why-paramanu", label: "Why Paramanu" },
-  { href: "#approach", label: "Approach" },
   { href: "#case-studies", label: "Case Studies" },
 ];
 
